@@ -46,7 +46,7 @@ fun LoginScreen(
                 modifier = Modifier.size(100.dp)
             )
 
-            Spacer(modifier = Modifier.height(16.dp))
+            Spacer(modifier = Modifier.height(18.dp))
 
             Column(
                 horizontalAlignment = Alignment.CenterHorizontally
