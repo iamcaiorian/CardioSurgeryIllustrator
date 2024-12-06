@@ -26,7 +26,8 @@ import com.example.cardiosurgeryillustrator.R
 @Composable
 fun LoginScreen(
     onLoginClick: (String, String) -> Unit,
-    onForgotPasswordClick: () -> Unit
+    onForgotPasswordClick: () -> Unit,
+    onRegisterClick: () -> Unit // Adicionado para redirecionar para tela de cadastro
 ) {
     var email by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
@@ -96,7 +97,10 @@ fun LoginScreen(
                     color = if (selectedTab == 1) Color.DarkGray else Color.Gray,
                     modifier = Modifier
                         .padding(horizontal = 8.dp)
-                        .clickable { selectedTab = 1 },
+                        .clickable {
+                            selectedTab = 1
+                            onRegisterClick() // Navegar para a tela de cadastro
+                        },
                     fontSize = 16.sp
                 )
             }
@@ -196,6 +200,7 @@ fun LoginScreen(
 fun PreviewLoginScreen() {
     LoginScreen(
         onLoginClick = { _, _ -> },
-        onForgotPasswordClick = {}
+        onForgotPasswordClick = {},
+        onRegisterClick = {}
     )
 }
