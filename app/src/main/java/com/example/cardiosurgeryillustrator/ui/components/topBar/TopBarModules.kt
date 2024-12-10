@@ -11,12 +11,14 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavController
 
 @ExperimentalMaterial3Api
 @Composable
 fun TopBarModules(
     onSettingsClick: () -> Unit,
-    onHelpClick: () -> Unit
+    onHelpClick: () -> Unit,
+    navController: NavController
 ) {
     var expanded by remember { mutableStateOf(false) }
 
@@ -76,12 +78,14 @@ fun TopBarModules(
         )
     )
 }
-@OptIn(ExperimentalMaterial3Api::class)
-@Preview(showBackground = true)
-@Composable
-private fun TopBarModulesPreview() {
-    TopBarModules(
-        onSettingsClick = {  },
-        onHelpClick = {  }
-    )
-}
+
+//@OptIn(ExperimentalMaterial3Api::class)
+//@Preview(showBackground = true)
+//@Composable
+//private fun TopBarModulesPreview() {
+//    TopBarModules(
+//        onSettingsClick = {  },
+//        onHelpClick = {  },
+//        navController = { },
+//    )
+//}

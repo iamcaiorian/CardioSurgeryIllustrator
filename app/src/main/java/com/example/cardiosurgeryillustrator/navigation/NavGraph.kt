@@ -11,7 +11,6 @@ import com.example.cardiosurgeryillustrator.ui.screens.login.RegisterScreen
 sealed class AppScreen(val route: String) {
     object LoginFlow : AppScreen("login_flow_graph")
     object StudentFlow : AppScreen("student_flow_graph")
-    object ModulesFlow : AppScreen("modules_flow")
 }
 
 sealed class LoginScreen(val route: String) {
@@ -60,9 +59,6 @@ fun AppNavGraph(
         // Student Flow
         composable(AppScreen.StudentFlow.route) {
             StudentNavHost(
-                onNavigateToModules = {
-                    navController.navigate(AppScreen.ModulesFlow.route)
-                },
                 onLogout = {
                     onLogout()
                     navController.navigate(AppScreen.LoginFlow.route) {
@@ -72,8 +68,5 @@ fun AppNavGraph(
             )
         }
 
-        composable(AppScreen.ModulesFlow.route) {
-            ModulesNavHost(onNavigateBack = { navController.popBackStack() })
-        }
     }
 }

@@ -10,8 +10,9 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
+import com.example.cardiosurgeryillustrator.ui.components.topBar.TopBarStudent
 
-@ExperimentalMaterial3Api
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun HomeStudentScreen(navController: NavController) {
     val recentStudies = remember {
@@ -37,86 +38,91 @@ fun HomeStudentScreen(navController: NavController) {
         )
     }
 
-    Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .padding(16.dp),
-        verticalArrangement = Arrangement.spacedBy(16.dp)
-    ) {
-        // Recent Studies Section
-        Text(
-            text = "Últimos estudos",
-            style = MaterialTheme.typography.titleMedium
-        )
-        LazyRow(horizontalArrangement = Arrangement.spacedBy(16.dp)) {
-            items(recentStudies) { study ->
-                Card(
-                    modifier = Modifier
-                        .width(150.dp)
-                        .height(100.dp),
-                    colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface)
-                ) {
-                    Column(
-                        modifier = Modifier.padding(8.dp),
-                        verticalArrangement = Arrangement.SpaceEvenly
+    Scaffold(
+        topBar = { TopBarStudent(navController = navController) }
+    ) { innerPadding ->
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(innerPadding)
+                .padding(16.dp),
+            verticalArrangement = Arrangement.spacedBy(16.dp)
+        ) {
+            // Recent Studies Section
+            Text(
+                text = "Últimos estudos",
+                style = MaterialTheme.typography.titleMedium
+            )
+            LazyRow(horizontalArrangement = Arrangement.spacedBy(16.dp)) {
+                items(recentStudies) { study ->
+                    Card(
+                        modifier = Modifier
+                            .width(150.dp)
+                            .height(100.dp),
+                        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface)
                     ) {
-                        Text(text = study, style = MaterialTheme.typography.bodyMedium)
-                        Button(
-                            onClick = { /* Navegar para detalhes */ },
-                            modifier = Modifier.align(Alignment.End)
+                        Column(
+                            modifier = Modifier.padding(8.dp),
+                            verticalArrangement = Arrangement.SpaceEvenly
                         ) {
-                            Text("Continuar")
+                            Text(text = study, style = MaterialTheme.typography.bodyMedium)
+                            Button(
+                                onClick = { /* Navegar para detalhes */ },
+                                modifier = Modifier.align(Alignment.End)
+                            ) {
+                                Text("Continuar")
+                            }
                         }
                     }
                 }
             }
-        }
 
-        // Quizzes Section
-        Text(
-            text = "Meus Quizzes",
-            style = MaterialTheme.typography.titleMedium
-        )
-        LazyRow(horizontalArrangement = Arrangement.spacedBy(16.dp)) {
-            items(quizzes) { quiz ->
-                Card(
-                    modifier = Modifier
-                        .width(100.dp)
-                        .height(100.dp),
-                    colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface)
-                ) {
-                    Column(
-                        horizontalAlignment = Alignment.CenterHorizontally,
-                        verticalArrangement = Arrangement.Center,
-                        modifier = Modifier.fillMaxSize()
+            // Quizzes Section
+            Text(
+                text = "Meus Quizzes",
+                style = MaterialTheme.typography.titleMedium
+            )
+            LazyRow(horizontalArrangement = Arrangement.spacedBy(16.dp)) {
+                items(quizzes) { quiz ->
+                    Card(
+                        modifier = Modifier
+                            .width(100.dp)
+                            .height(100.dp),
+                        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface)
                     ) {
-                        Text(text = quiz.second, style = MaterialTheme.typography.headlineMedium)
-                        Text(text = quiz.first, style = MaterialTheme.typography.bodySmall)
+                        Column(
+                            horizontalAlignment = Alignment.CenterHorizontally,
+                            verticalArrangement = Arrangement.Center,
+                            modifier = Modifier.fillMaxSize()
+                        ) {
+                            Text(text = quiz.second, style = MaterialTheme.typography.headlineMedium)
+                            Text(text = quiz.first, style = MaterialTheme.typography.bodySmall)
+                        }
                     }
                 }
             }
-        }
 
-        // Modules Section
-        Text(
-            text = "Meus Módulos",
-            style = MaterialTheme.typography.titleMedium
-        )
-        LazyRow(horizontalArrangement = Arrangement.spacedBy(16.dp)) {
-            items(modules) { module ->
-                Card(
-                    modifier = Modifier
-                        .width(100.dp)
-                        .height(100.dp),
-                    colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface)
-                ) {
-                    Column(
-                        horizontalAlignment = Alignment.CenterHorizontally,
-                        verticalArrangement = Arrangement.Center,
-                        modifier = Modifier.fillMaxSize()
+            // Modules Section
+            Text(
+                text = "Meus Módulos",
+                style = MaterialTheme.typography.titleMedium
+            )
+            LazyRow(horizontalArrangement = Arrangement.spacedBy(16.dp)) {
+                items(modules) { module ->
+                    Card(
+                        modifier = Modifier
+                            .width(100.dp)
+                            .height(100.dp),
+                        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface)
                     ) {
-                        Text(text = module.second, style = MaterialTheme.typography.headlineMedium)
-                        Text(text = module.first, style = MaterialTheme.typography.bodySmall)
+                        Column(
+                            horizontalAlignment = Alignment.CenterHorizontally,
+                            verticalArrangement = Arrangement.Center,
+                            modifier = Modifier.fillMaxSize()
+                        ) {
+                            Text(text = module.second, style = MaterialTheme.typography.headlineMedium)
+                            Text(text = module.first, style = MaterialTheme.typography.bodySmall)
+                        }
                     }
                 }
             }
