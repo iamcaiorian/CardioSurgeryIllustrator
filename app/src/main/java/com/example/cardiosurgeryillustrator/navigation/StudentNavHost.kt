@@ -1,22 +1,25 @@
 package com.example.cardiosurgeryillustrator.navigation
 
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AccountCircle
 import androidx.compose.material.icons.filled.FavoriteBorder
 import androidx.compose.material.icons.filled.Home
-import androidx.compose.material.icons.filled.Info
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import com.example.cardiosurgeryillustrator.ui.components.student.BottomBarStudent
-import com.example.cardiosurgeryillustrator.ui.components.student.TopBarStudent
+import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.unit.dp
+import com.example.cardiosurgeryillustrator.ui.components.bottomBar.BottomBarStudent
+import com.example.cardiosurgeryillustrator.ui.components.topBar.TopBarStudent
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import com.example.cardiosurgeryillustrator.R
 import com.example.cardiosurgeryillustrator.ui.screens.student.HomeStudentScreen
 
 sealed class TopBarStudentAction(val route: String, val icon: @Composable () -> Unit, val description: String) {
@@ -48,8 +51,13 @@ sealed class BottomBarStudentAction(val route: String, val icon: @Composable () 
 
     object Modules : BottomBarStudentAction(
         route = "modules",
-        // ---------------- TROCAR ICONE -----------------
-        icon = { androidx.compose.material3.Icon(Icons.Default.Info, contentDescription = "Modules") },
+        icon = {
+            androidx.compose.material3.Icon(
+                painter = painterResource(R.drawable.ic_note),
+                contentDescription = "Modules",
+                modifier = Modifier.size(24.dp)
+            )
+        },
         description = "Modules"
     )
 
@@ -62,16 +70,15 @@ sealed class BottomBarStudentAction(val route: String, val icon: @Composable () 
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun StudentNavHost(onLogout: () -> Unit) {
+fun StudentNavHost(
+    onNavigateToModules: () -> Unit,
+    onLogout: () -> Unit
+) {
     val studentNavController = rememberNavController()
 
     Scaffold(
-        topBar = {
-            TopBarStudent(navController = studentNavController)
-        },
-        bottomBar = {
-            BottomBarStudent(navController = studentNavController)
-        }
+        topBar = { TopBarStudent(navController = studentNavController) },
+        bottomBar = { BottomBarStudent(navController = studentNavController) }
     ) { innerPadding ->
         NavHost(
             navController = studentNavController,
@@ -81,23 +88,15 @@ fun StudentNavHost(onLogout: () -> Unit) {
             composable(BottomBarStudentAction.Home.route) {
                 HomeStudentScreen(navController = studentNavController)
             }
-//            composable(BottomBarStudentAction.Modules.route) {
-//                ModulesScreen(navController = studentNavController)
-//            }
-//            composable(BottomBarStudentAction.Favorites.route) {
-//                FavoritesScreen(navController = studentNavController)
-//            }
-//            composable(TopBarStudentAction.Profile.route) {
-//                ProfileScreen(navController = studentNavController)
-//            }
-//            composable(TopBarStudentAction.Search.route) {
-//                SearchScreen(navController = studentNavController)
-//            }
-//            composable(TopBarStudentAction.Settings.route) {
-//                SettingsScreen(navController = studentNavController, onLogout = onLogout)
-//            }
+
+            composable(BottomBarStudentAction.Modules.route) {
+                onNavigateToModules()
+            }
+
+
         }
     }
 }
+
 
 
