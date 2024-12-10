@@ -42,7 +42,7 @@ fun LoginScreen(
             verticalArrangement = Arrangement.Center
         ) {
             Image(
-                painter = painterResource(id = R.drawable.img),
+                painter = painterResource(id = R.drawable.heart_icon),
                 contentDescription = "App Logo",
                 modifier = Modifier.size(100.dp)
             )
