@@ -1,4 +1,4 @@
-package com.example.cardiosurgeryillustrator.ui.components
+package com.example.cardiosurgeryillustrator.ui.components.textField
 
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.material3.OutlinedTextField

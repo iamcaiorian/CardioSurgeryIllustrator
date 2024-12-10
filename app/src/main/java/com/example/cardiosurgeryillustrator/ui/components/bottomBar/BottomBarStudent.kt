@@ -1,10 +1,12 @@
-package com.example.cardiosurgeryillustrator.ui.components.student
+package com.example.cardiosurgeryillustrator.ui.components.bottomBar
 
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.NavController
 import androidx.navigation.NavDestination.Companion.hierarchy
 import androidx.navigation.compose.currentBackStackEntryAsState
+import androidx.navigation.compose.rememberNavController
 import com.example.cardiosurgeryillustrator.navigation.BottomBarStudentAction
 
 @Composable
@@ -42,4 +44,10 @@ fun BottomBarStudent(navController: NavController) {
             )
         }
     }
+}
+
+@Preview
+@Composable
+private fun BottomBarStudentPreview() {
+    BottomBarStudent(navController = rememberNavController())
 }

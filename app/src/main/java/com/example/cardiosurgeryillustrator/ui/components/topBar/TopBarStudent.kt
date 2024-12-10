@@ -1,4 +1,4 @@
-package com.example.cardiosurgeryillustrator.ui.components.student
+package com.example.cardiosurgeryillustrator.ui.components.topBar
 
 import androidx.compose.foundation.layout.Row
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -8,7 +8,6 @@ import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.Color
 import androidx.navigation.NavController
-import androidx.navigation.NavDestination.Companion.hierarchy
 import androidx.navigation.compose.currentBackStackEntryAsState
 import com.example.cardiosurgeryillustrator.navigation.TopBarStudentAction
 
