@@ -1,4 +1,4 @@
-package com.example.cardiosurgeryillustrator.ui.components.topBar
+package com.example.cardiosurgeryillustrator.ui.components.modules
 
 import androidx.compose.runtime.Composable
 import androidx.compose.foundation.layout.*
@@ -9,7 +9,6 @@ import androidx.compose.ui.*
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 
