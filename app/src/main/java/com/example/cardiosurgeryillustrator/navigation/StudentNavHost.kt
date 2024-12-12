@@ -20,6 +20,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.cardiosurgeryillustrator.R
+import com.example.cardiosurgeryillustrator.ui.screens.modules.HomeModulesScreen
 import com.example.cardiosurgeryillustrator.ui.screens.student.HomeStudentScreen
 
 sealed class TopBarStudentAction(val route: String, val icon: @Composable () -> Unit, val description: String) {
@@ -68,16 +69,13 @@ sealed class BottomBarStudentAction(val route: String, val icon: @Composable () 
     )
 }
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun StudentNavHost(
-    onNavigateToModules: () -> Unit,
     onLogout: () -> Unit
 ) {
     val studentNavController = rememberNavController()
 
     Scaffold(
-        topBar = { TopBarStudent(navController = studentNavController) },
         bottomBar = { BottomBarStudent(navController = studentNavController) }
     ) { innerPadding ->
         NavHost(
@@ -90,7 +88,7 @@ fun StudentNavHost(
             }
 
             composable(BottomBarStudentAction.Modules.route) {
-                onNavigateToModules()
+                HomeModulesScreen(navController = studentNavController)
             }
 
 
