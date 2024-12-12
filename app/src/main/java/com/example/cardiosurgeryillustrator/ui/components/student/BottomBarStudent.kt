@@ -1,4 +1,4 @@
-package com.example.cardiosurgeryillustrator.ui.components.bottomBar
+package com.example.cardiosurgeryillustrator.ui.components.student
 
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable

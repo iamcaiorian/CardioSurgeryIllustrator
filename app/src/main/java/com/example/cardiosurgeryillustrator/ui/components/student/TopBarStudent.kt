@@ -1,4 +1,4 @@
-package com.example.cardiosurgeryillustrator.ui.components.topBar
+package com.example.cardiosurgeryillustrator.ui.components.student
 
 import androidx.compose.foundation.layout.Row
 import androidx.compose.material3.ExperimentalMaterial3Api
