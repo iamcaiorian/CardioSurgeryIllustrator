@@ -5,8 +5,8 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navigation
-import com.example.cardiosurgeryillustrator.ui.screens.login.LoginScreen
-import com.example.cardiosurgeryillustrator.ui.screens.login.RegisterScreen
+import com.example.cardiosurgeryillustrator.ui.screens.authentication.LoginScreen
+import com.example.cardiosurgeryillustrator.ui.screens.authentication.RegisterScreen
 
 sealed class AppScreen(val route: String) {
     object LoginFlow : AppScreen("login_flow_graph")
