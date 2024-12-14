@@ -8,12 +8,13 @@ import androidx.navigation.NavDestination.Companion.hierarchy
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.example.cardiosurgeryillustrator.navigation.BottomBarStudentAction
+import com.example.cardiosurgeryillustrator.ui.theme.Blue700
 
 @Composable
 fun BottomBarStudent(navController: NavController) {
     val actions = listOf(
         BottomBarStudentAction.Home,
-        BottomBarStudentAction.Modules,
+        BottomBarStudentAction.Subject,
         BottomBarStudentAction.Favorites
     )
 
@@ -38,7 +39,7 @@ fun BottomBarStudent(navController: NavController) {
                     )
                 },
                 colors = NavigationBarItemDefaults.colors(
-                    selectedIconColor = MaterialTheme.colorScheme.primary,
+                    selectedIconColor = Blue700,
                     unselectedIconColor = MaterialTheme.colorScheme.onSurfaceVariant
                 )
             )
