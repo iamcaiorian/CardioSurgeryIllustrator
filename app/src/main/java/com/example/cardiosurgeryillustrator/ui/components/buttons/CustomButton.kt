@@ -1,4 +1,4 @@
-package com.example.cardiosurgeryillustrator.ui.components.button
+package com.example.cardiosurgeryillustrator.ui.components.buttons
 
 import androidx.compose.material3.Button
 import androidx.compose.material3.Text
