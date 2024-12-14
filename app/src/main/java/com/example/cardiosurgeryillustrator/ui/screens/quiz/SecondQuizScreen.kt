@@ -3,6 +3,7 @@ package com.example.cardiosurgeryillustrator.ui.screens.quiz
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.*
@@ -13,6 +14,8 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.cardiosurgeryillustrator.R
+import com.example.cardiosurgeryillustrator.models.Quiz
+import com.example.cardiosurgeryillustrator.models.mock.mockQuizzes
 import com.example.cardiosurgeryillustrator.ui.components.button.ConfirmationButton
 import com.example.cardiosurgeryillustrator.ui.components.button.QuestionsButton
 import com.example.cardiosurgeryillustrator.ui.components.topBar.TopBarQuiz
@@ -20,21 +23,18 @@ import com.example.cardiosurgeryillustrator.ui.components.topBar.TopBarQuiz
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun SecondQuizScreen(
-    title: String = "Quiz 1",
-    subtitle: String = "Assunto 2",
-    question: String = "Qual a principal função da artéria coronária direita?",
+    quiz: Quiz,
     onBackClick: () -> Unit,
     onMenuOptionClick: (String) -> Unit,
     onAnswerClick: (Boolean) -> Unit
 ) {
-    // Estado para controlar qual botão está selecionado
     var selectedOption by remember { mutableStateOf<String?>(null) }
 
     Scaffold(
         topBar = {
             TopBarQuiz(
-                title = title,
-                subtitle = subtitle,
+                title = quiz.title,
+                subtitle = quiz.subtitle,
                 onBackClick = onBackClick,
                 onMenuOptionClick = onMenuOptionClick
             )
@@ -48,7 +48,6 @@ fun SecondQuizScreen(
             verticalArrangement = Arrangement.spacedBy(16.dp),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            // Imagem no topo
             Image(
                 painter = painterResource(id = R.drawable.coracao_icon),
                 contentDescription = "Imagem do coração",
@@ -58,28 +57,19 @@ fun SecondQuizScreen(
                 contentScale = ContentScale.Crop
             )
 
-            // Título da pergunta
             Text(
-                text = question,
-                style = androidx.compose.material3.MaterialTheme.typography.titleLarge,
+                text = quiz.question,
+                style = MaterialTheme.typography.titleLarge,
                 modifier = Modifier.align(Alignment.Start)
             )
 
-            // Botões de opções
             Column(
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(top = 16.dp),
                 verticalArrangement = Arrangement.spacedBy(8.dp)
             ) {
-                val options = listOf(
-                    "Transportar oxigênio para o coração",
-                    "Levar sangue arterial para o miocárdio",
-                    "Retirar dióxido de carbono do coração",
-                    "Controlar os batimentos cardíacos"
-                )
-
-                options.forEach { option ->
+                quiz.options?.forEach { option ->
                     QuestionsButton(
                         text = option,
                         isSelected = selectedOption == option,
@@ -88,25 +78,21 @@ fun SecondQuizScreen(
                 }
             }
 
-            // Botão de confirmação
             Spacer(modifier = Modifier.height(32.dp))
             ConfirmationButton(
                 text = "Confirmar",
                 onClick = {
-                    onAnswerClick(selectedOption == "Levar sangue arterial para o miocárdio")
+                    onAnswerClick(selectedOption == quiz.correctAnswer)
                 }
             )
         }
     }
 }
-
 @Preview(showBackground = true, showSystemUi = true)
 @Composable
-fun SecondQuizScreenPreview() {
+fun SecondQuizScreenMockPreview() {
     SecondQuizScreen(
-        title = "Quiz 1",
-        subtitle = "Assunto 2",
-        question = "Qual a principal função da artéria coronária direita?",
+        quiz = mockQuizzes[1],
         onBackClick = { println("Voltar clicado") },
         onMenuOptionClick = { option -> println("Menu clicado: $option") },
         onAnswerClick = { isCorrect -> println("Resposta clicada: $isCorrect") }

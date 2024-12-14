@@ -13,15 +13,14 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.cardiosurgeryillustrator.R
+import com.example.cardiosurgeryillustrator.models.Quiz
+import com.example.cardiosurgeryillustrator.models.mock.mockQuizzes
 import com.example.cardiosurgeryillustrator.ui.components.topBar.TopBarQuiz
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun QuizScreen(
-    title: String = "Quiz 1",
-    subtitle: String = "Assunto 1",
-    question: String = "Pergunta 9",
-    description: String = "Dado os tipos de coração existentes, apenas um é adulto e todos possuem obstruções cardíacas.",
+    quiz: Quiz,
     onBackClick: () -> Unit,
     onMenuOptionClick: (String) -> Unit,
     onAnswerClick: (Boolean) -> Unit
@@ -29,8 +28,8 @@ fun QuizScreen(
     Scaffold(
         topBar = {
             TopBarQuiz(
-                title = title,
-                subtitle = subtitle,
+                title = quiz.title,
+                subtitle = quiz.subtitle,
                 onBackClick = onBackClick,
                 onMenuOptionClick = onMenuOptionClick
             )
@@ -44,30 +43,25 @@ fun QuizScreen(
             verticalArrangement = Arrangement.spacedBy(16.dp),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            Row(
-                horizontalArrangement = Arrangement.spacedBy(16.dp),
-                modifier = Modifier.fillMaxWidth()
-            ) {
-                Image(
-                    painter = painterResource(id = R.drawable.coracao_icon),
-                    contentDescription = "Imagem 1",
-                    modifier = Modifier
-                        .weight(1f)
-                        .aspectRatio(1f)
-                        .padding(4.dp)
-                        .width(120.dp),
-                    contentScale = ContentScale.Crop
-                )
-            }
+            Image(
+                painter = painterResource(id = R.drawable.coracao_icon),
+                contentDescription = "Imagem do coração",
+                modifier = Modifier
+                    .weight(1f)
+                    .aspectRatio(1f)
+                    .padding(4.dp)
+                    .width(120.dp),
+                contentScale = ContentScale.Crop
+            )
 
             Text(
-                text = question,
+                text = quiz.question,
                 style = MaterialTheme.typography.titleLarge,
                 modifier = Modifier.align(Alignment.Start)
             )
 
             Text(
-                text = description,
+                text = quiz.description,
                 style = MaterialTheme.typography.bodyMedium
             )
 
@@ -86,22 +80,16 @@ fun QuizScreen(
                     onClick = { onAnswerClick(true) }
                 )
             }
-
         }
     }
 }
-
 @Preview(showBackground = true, showSystemUi = true)
 @Composable
-fun QuizScreenPreview() {
+fun QuizScreenMockPreview() {
     QuizScreen(
-        title = "Quiz 1",
-        subtitle = "Assunto 1",
-        question = "Pergunta 1",
-        description = "Dado os tipos de corações existentes, " +
-                "apenas um é adulto e todos possuem obstruções cardíacas.",
-        onBackClick = {},
-        onMenuOptionClick = { option -> println("Menu option clicked: $option") },
-        onAnswerClick = { isCorrect -> println("Answer clicked: $isCorrect") }
+        quiz = mockQuizzes[0],
+        onBackClick = { println("Voltar clicado") },
+        onMenuOptionClick = { option -> println("Menu clicado: $option") },
+        onAnswerClick = { isCorrect -> println("Resposta clicada: $isCorrect") }
     )
 }
