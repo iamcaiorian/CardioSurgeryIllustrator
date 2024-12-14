@@ -9,14 +9,22 @@ import androidx.compose.ui.*
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
+import androidx.navigation.compose.rememberNavController
+import com.example.cardiosurgeryillustrator.R
+import com.example.cardiosurgeryillustrator.ui.theme.Zinc900
 
 @ExperimentalMaterial3Api
 @Composable
 fun TopBarModules(
+    title: String,
     onSettingsClick: () -> Unit,
     onHelpClick: () -> Unit,
+    onNavigateBack: () -> Unit,
     navController: NavController
 ) {
     var expanded by remember { mutableStateOf(false) }
@@ -29,14 +37,22 @@ fun TopBarModules(
                 verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = Arrangement.Start
             ) {
-                Icon(
-                    imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-                    contentDescription = "Back",
-                    modifier = Modifier.size(24.dp)
-                )
+                Button(
+                    onClick = onNavigateBack,
+                    colors = ButtonDefaults.buttonColors(
+                        containerColor = Color.Transparent,
+                        contentColor = Zinc900
+                    )
+                ) {
+                    Icon(
+                        modifier = Modifier.size(24.dp),
+                        painter = painterResource(id = R.drawable.ic_arrow_left),
+                        contentDescription = "Ícone do botão",
+                    )
+                }
                 Spacer(modifier = Modifier.width(12.dp))
                 Text(
-                    text = "Módulos",
+                    text = title,
                     style = MaterialTheme.typography.titleLarge,
                     maxLines = 1,
                     overflow = TextOverflow.Ellipsis
@@ -78,13 +94,14 @@ fun TopBarModules(
     )
 }
 
-//@OptIn(ExperimentalMaterial3Api::class)
-//@Preview(showBackground = true)
-//@Composable
-//private fun TopBarModulesPreview() {
-//    TopBarModules(
-//        onSettingsClick = {  },
-//        onHelpClick = {  },
-//        navController = { },
-//    )
-//}
+@OptIn(ExperimentalMaterial3Api::class)
+@Preview
+@Composable
+private fun TopBarModulesPreview() {
+    TopBarModules(
+        title = "Example",
+        navController = rememberNavController(),
+        onHelpClick = {},
+        onSettingsClick = {},
+        onNavigateBack = {})
+}

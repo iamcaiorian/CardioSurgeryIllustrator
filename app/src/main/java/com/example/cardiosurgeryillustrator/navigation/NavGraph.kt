@@ -36,7 +36,6 @@ fun AppNavGraph(
                 LoginScreen(
                     onLoginClick = { _, _ ->
                         onLogin()
-                        // Navigate to Student Flow
                         navController.navigate(AppScreen.StudentFlow.route) {
                             popUpTo(AppScreen.LoginFlow.route) { inclusive = true }
                         }
