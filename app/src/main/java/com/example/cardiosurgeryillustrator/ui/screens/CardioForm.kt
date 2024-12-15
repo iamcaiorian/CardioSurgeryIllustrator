@@ -88,7 +88,7 @@ fun CardioForm() {
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
                 Image(
-                    painter = painterResource(id = R.drawable.app_logo),
+                    painter = painterResource(id = R.drawable.heart_icon),
                     contentDescription = "App Logo",
                     modifier = Modifier.size(40.dp)
                 )
