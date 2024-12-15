@@ -175,7 +175,7 @@ fun StudentNavHost(
             val moduleId = backStackEntry.arguments?.getString("moduleId")
             val study = StudyMock.find { it.id == moduleId }
 
-            Scaffold { innerPadding -> // Sem BottomBar
+            Scaffold { innerPadding ->
                 study?.let {
                     StudyScreen(
                         moduleId = moduleId ?: "1",
@@ -202,7 +202,7 @@ fun StudentNavHost(
             val moduleId = backStackEntry.arguments?.getString("moduleId")
             val quiz = mockQuizzes.find { it.id == moduleId }
 
-            Scaffold { innerPadding -> // Sem BottomBar
+            Scaffold { innerPadding ->
                 quiz?.let {
                     QuizScreen(
                         quiz = it,
@@ -227,7 +227,7 @@ fun StudentNavHost(
             val moduleId = backStackEntry.arguments?.getString("moduleId")
             val quiz = mockQuizzes.find { it.id == moduleId }
 
-            Scaffold { innerPadding -> // Sem BottomBar
+            Scaffold { innerPadding ->
                 quiz?.let {
                     SecondQuizScreen(
                         quiz = it,

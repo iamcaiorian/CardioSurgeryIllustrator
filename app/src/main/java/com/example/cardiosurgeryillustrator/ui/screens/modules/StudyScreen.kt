@@ -22,9 +22,9 @@ import com.example.cardiosurgeryillustrator.ui.components.topBar.TopBarQuiz
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun StudyScreen(
-    moduleId: String, // ID do estudo
+    moduleId: String,
     onPreviousClick: (String?) -> Unit,
-    onNextClick: (String) -> Unit, // Ajustado para receber o ID correto
+    onNextClick: (String) -> Unit,
     onBackClick: () -> Unit,
     modifier: Modifier = Modifier,
     onMenuOptionClick: (String) -> Unit
