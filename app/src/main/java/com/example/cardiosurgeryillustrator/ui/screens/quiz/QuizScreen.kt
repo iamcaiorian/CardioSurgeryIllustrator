@@ -23,7 +23,8 @@ fun QuizScreen(
     quiz: Quiz,
     onBackClick: () -> Unit,
     onMenuOptionClick: (String) -> Unit,
-    onAnswerClick: (Boolean) -> Unit
+    onAnswerClick: (Boolean) -> Unit,
+    onNavigateToSecondQuiz: (String) -> Unit // Adicione esta função
 ) {
     Scaffold(
         topBar = {
@@ -73,16 +74,23 @@ fun QuizScreen(
             ) {
                 ErrorButton(
                     text = "Errado",
-                    onClick = { onAnswerClick(false) }
+                    onClick = {
+                        onAnswerClick(false)
+                        onNavigateToSecondQuiz(quiz.id) // Navega para a tela de SecondQuiz
+                    }
                 )
                 SuccessButton(
                     text = "Certo",
-                    onClick = { onAnswerClick(true) }
+                    onClick = {
+                        onAnswerClick(true)
+                        onNavigateToSecondQuiz(quiz.id) // Navega para a tela de SecondQuiz
+                    }
                 )
             }
         }
     }
 }
+
 @Preview(showBackground = true, showSystemUi = true)
 @Composable
 fun QuizScreenMockPreview() {
@@ -90,6 +98,7 @@ fun QuizScreenMockPreview() {
         quiz = mockQuizzes[0],
         onBackClick = { println("Voltar clicado") },
         onMenuOptionClick = { option -> println("Menu clicado: $option") },
-        onAnswerClick = { isCorrect -> println("Resposta clicada: $isCorrect") }
+        onAnswerClick = { isCorrect -> println("Resposta clicada: $isCorrect") },
+        onNavigateToSecondQuiz = { println("Navegar para SecondQuizScreen") } // Adicionar parâmetro fictício
     )
 }
