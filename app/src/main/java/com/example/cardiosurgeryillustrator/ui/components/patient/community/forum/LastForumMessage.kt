@@ -23,6 +23,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.cardiosurgeryillustrator.R
 import com.example.cardiosurgeryillustrator.ui.theme.Blue100
+import com.example.cardiosurgeryillustrator.ui.theme.Blue700
 import com.example.cardiosurgeryillustrator.ui.theme.Typography
 
 @Composable
@@ -44,6 +45,7 @@ fun LastMessageForum(
                 .size(32.dp)
                 .clip(CircleShape)
         )
+
         Spacer(modifier = Modifier.width(8.dp))
 
         Box(
@@ -57,7 +59,7 @@ fun LastMessageForum(
                     )
                 )
                 .background(
-                    color = Blue100
+                    color = Blue700.copy(alpha = 0.2f)
                 )
                 .padding(12.dp)
                 .fillMaxWidth()

@@ -28,7 +28,7 @@ fun CommunityTopBar(
             .fillMaxWidth()
             .padding(
                 horizontal = 16.dp,
-                vertical = 8.dp
+                vertical = 12.dp
             ),
         verticalAlignment = Alignment.CenterVertically
     ) {
@@ -36,7 +36,7 @@ fun CommunityTopBar(
             painter = avatarPainter,
             contentDescription = "User Avatar",
             modifier = Modifier
-                .size(40.dp)
+                .size(56.dp)
                 .clip(CircleShape)
         )
 

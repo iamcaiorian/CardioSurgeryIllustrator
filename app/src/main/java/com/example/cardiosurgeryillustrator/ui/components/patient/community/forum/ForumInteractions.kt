@@ -51,8 +51,7 @@ fun ForumInteractions(
                 IconButton(onClick = onCommentClick) {
                     Icon(
                         painter = painterResource(id = R.drawable.ic_comment),
-                        contentDescription = "Comentar",
-                        modifier = Modifier.size(20.dp)
+                        contentDescription = "Comentar"
                     )
                 }
                 Text(text = comments.toString(), style = Typography.bodySmall)
@@ -75,7 +74,7 @@ private fun ForumInteractionsPreview() {
         likes = 2000,
         comments = 500,
         isLiked = false,
-        isSaved = true,
+        isSaved = false,
         onLikeClick = {},
         onCommentClick = {},
         onSaveClick = {}

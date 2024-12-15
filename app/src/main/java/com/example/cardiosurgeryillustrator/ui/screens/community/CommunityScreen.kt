@@ -43,7 +43,7 @@ fun CommunityScreen(
             .fillMaxHeight()
             .fillMaxWidth(),
         horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.spacedBy(16.dp)
+        verticalArrangement = Arrangement.spacedBy(12.dp)
     ) {
         CommunityTopBar(
             avatarPainter = avatarPainter
@@ -81,8 +81,8 @@ private fun CommunityScreenPreview() {
         backgroundImageRes = R.drawable.img_defaul,
         likes = 2000,
         comments = 500,
-        isLiked = false,
-        isSaved = true,
+        isLiked = true,
+        isSaved = false,
         userAvatar = R.drawable.avatar_1,
         message = "Lorem ipsum dolor sit amet, consectetur adipiscing elit...",
         onLikeClick = {},

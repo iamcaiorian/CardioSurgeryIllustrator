@@ -6,5 +6,6 @@ data class Topic(
     val theme: String,
     val title: String,
     val likes: Int,
+    val comments: Int,
     val timestamp: Long
 )
