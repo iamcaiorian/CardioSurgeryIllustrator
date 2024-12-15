@@ -22,7 +22,6 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.cardiosurgeryillustrator.R
-import com.example.cardiosurgeryillustrator.ui.theme.Blue100
 import com.example.cardiosurgeryillustrator.ui.theme.Blue700
 import com.example.cardiosurgeryillustrator.ui.theme.Typography
 
