@@ -114,6 +114,8 @@ sealed class BottomBarStudentAction(
 sealed class SubjectAction(val route: String) {
     object Modules : SubjectAction("modules")
     object Study : SubjectAction("study")
+    object Quiz : SubjectAction("quiz")
+    object SecondQuiz : SubjectAction("secondQuiz")
 }
 
 
@@ -123,97 +125,118 @@ fun StudentNavHost(
 ) {
     val studentNavController = rememberNavController()
 
-    Scaffold(
-        bottomBar = { BottomBarStudent(navController = studentNavController) }
-    ) { innerPadding ->
-        NavHost(
-            navController = studentNavController,
-            startDestination = BottomBarStudentAction.Home.route,
-            modifier = Modifier.padding(innerPadding)
-        ) {
-            composable(BottomBarStudentAction.Home.route) {
-                HomeStudentScreen(navController = studentNavController)
+    NavHost(
+        navController = studentNavController,
+        startDestination = BottomBarStudentAction.Home.route
+    ) {
+        composable(BottomBarStudentAction.Home.route) {
+            Scaffold(
+                bottomBar = { BottomBarStudent(navController = studentNavController) }
+            ) { innerPadding ->
+                HomeStudentScreen(navController = studentNavController, modifier = Modifier.padding(innerPadding))
             }
+        }
 
-            composable(BottomBarStudentAction.Subject.route) {
+        composable(BottomBarStudentAction.Subject.route) {
+            Scaffold(
+                bottomBar = { BottomBarStudent(navController = studentNavController) }
+            ) { innerPadding ->
                 SubjectsScreen(
                     navController = studentNavController,
+                    modifier = Modifier.padding(innerPadding),
                     onNavigateBack = { studentNavController.popBackStack() }
                 )
             }
+        }
 
-            composable(
-                route = "${SubjectAction.Modules.route}/{subjectId}",
-                arguments = listOf(navArgument("subjectId") { type = NavType.StringType })
-            ) { backStackEntry ->
-                val subjectId = backStackEntry.arguments?.getString("subjectId")
-                val filteredModules = mockModules.filter { it.subjectId == subjectId }
+        composable(
+            route = "${SubjectAction.Modules.route}/{subjectId}",
+            arguments = listOf(navArgument("subjectId") { type = NavType.StringType })
+        ) { backStackEntry ->
+            val subjectId = backStackEntry.arguments?.getString("subjectId")
+            val filteredModules = mockModules.filter { it.subjectId == subjectId }
+
+            Scaffold(
+                bottomBar = { BottomBarStudent(navController = studentNavController) }
+            ) { innerPadding ->
                 ModulesScreen(
                     navController = studentNavController,
                     modulesList = filteredModules,
+                    modifier = Modifier.padding(innerPadding),
                     onNavigateBack = { studentNavController.popBackStack() }
                 )
             }
+        }
 
-            composable(
-                route = "${SubjectAction.Study.route}/{moduleId}",
-                arguments = listOf(navArgument("moduleId") { type = NavType.StringType })
-            ) { backStackEntry ->
-                val moduleId = backStackEntry.arguments?.getString("moduleId")
-                val study = StudyMock.find { it.id == moduleId }
+        composable(
+            route = "${SubjectAction.Study.route}/{moduleId}",
+            arguments = listOf(navArgument("moduleId") { type = NavType.StringType })
+        ) { backStackEntry ->
+            val moduleId = backStackEntry.arguments?.getString("moduleId")
+            val study = StudyMock.find { it.id == moduleId }
+
+            Scaffold { innerPadding -> // Sem BottomBar
                 study?.let {
                     StudyScreen(
                         moduleId = moduleId ?: "1",
+                        modifier = Modifier.padding(innerPadding),
                         onPreviousClick = { previousId ->
                             if (previousId != null) {
-                                studentNavController.navigate("study/$previousId")
+                                studentNavController.navigate("${SubjectAction.Study.route}/$previousId")
                             }
                         },
                         onNextClick = { nextId ->
-                            if (nextId != null) {
-                                studentNavController.navigate("study/$nextId")
-                            }
+                            studentNavController.navigate("${SubjectAction.Quiz.route}/$nextId")
                         },
                         onBackClick = { studentNavController.popBackStack() },
                         onMenuOptionClick = { println("Menu clicado: $it") }
                     )
                 }
             }
+        }
 
-            composable(
-                route = "quiz/{quizId}",
-                arguments = listOf(navArgument("quizId") { type = NavType.StringType })
-            ) { backStackEntry ->
-                val quizId = backStackEntry.arguments?.getString("quizId")
-                val quiz = mockQuizzes.find { it.id == quizId }
+        composable(
+            route = "${SubjectAction.Quiz.route}/{moduleId}",
+            arguments = listOf(navArgument("moduleId") { type = NavType.StringType })
+        ) { backStackEntry ->
+            val moduleId = backStackEntry.arguments?.getString("moduleId")
+            val quiz = mockQuizzes.find { it.id == moduleId }
+
+            Scaffold { innerPadding -> // Sem BottomBar
                 quiz?.let {
                     QuizScreen(
                         quiz = it,
+                        modifier = Modifier.padding(innerPadding),
                         onBackClick = { studentNavController.popBackStack() },
                         onMenuOptionClick = { println("Menu clicado") },
-                        onAnswerClick = { isCorrect -> println("Resposta clicada: $isCorrect") },
+                        onAnswerClick = { isCorrect ->
+                            println("Resposta clicada: $isCorrect")
+                        },
                         onNavigateToSecondQuiz = {
-                            studentNavController.navigate("secondQuiz/$quizId")
+                            studentNavController.navigate("${SubjectAction.SecondQuiz.route}/$moduleId")
                         }
                     )
                 }
             }
+        }
 
-            composable(
-                route = "secondQuiz/{quizId}",
-                arguments = listOf(navArgument("quizId") { type = NavType.StringType })
-            ) { backStackEntry ->
-                val quizId = backStackEntry.arguments?.getString("quizId")
-                val quiz = mockQuizzes.find { it.id == quizId }
+        composable(
+            route = "${SubjectAction.SecondQuiz.route}/{moduleId}",
+            arguments = listOf(navArgument("moduleId") { type = NavType.StringType })
+        ) { backStackEntry ->
+            val moduleId = backStackEntry.arguments?.getString("moduleId")
+            val quiz = mockQuizzes.find { it.id == moduleId }
+
+            Scaffold { innerPadding -> // Sem BottomBar
                 quiz?.let {
                     SecondQuizScreen(
                         quiz = it,
-                        onBackClick = { studentNavController.popBackStack() },
-                        onMenuOptionClick = { println("Menu clicado") },
-                        onAnswerClick = { isCorrect -> println("Quiz concluído com resposta: $isCorrect") }
+                        modifier = Modifier.padding(innerPadding),
+                        onBackClick = { studentNavController.popBackStack() }
                     )
                 }
             }
         }
     }
 }
+

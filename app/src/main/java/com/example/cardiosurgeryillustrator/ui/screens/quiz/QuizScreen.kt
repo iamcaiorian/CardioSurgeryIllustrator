@@ -21,10 +21,11 @@ import com.example.cardiosurgeryillustrator.ui.components.topBar.TopBarQuiz
 @Composable
 fun QuizScreen(
     quiz: Quiz,
+    modifier: Modifier = Modifier,
     onBackClick: () -> Unit,
     onMenuOptionClick: (String) -> Unit,
     onAnswerClick: (Boolean) -> Unit,
-    onNavigateToSecondQuiz: (String) -> Unit // Adicione esta função
+    onNavigateToSecondQuiz: (String) -> Unit
 ) {
     Scaffold(
         topBar = {
@@ -58,13 +59,16 @@ fun QuizScreen(
             Text(
                 text = quiz.question,
                 style = MaterialTheme.typography.titleLarge,
-                modifier = Modifier.align(Alignment.Start)
+                modifier = Modifier.align(Alignment.CenterHorizontally)
             )
 
             Text(
                 text = quiz.description,
-                style = MaterialTheme.typography.bodyMedium
+                style = MaterialTheme.typography.bodyMedium,
+                modifier = Modifier.align(Alignment.CenterHorizontally)
             )
+
+            Spacer(modifier = Modifier.height(32.dp))
 
             Row(
                 modifier = Modifier
@@ -76,20 +80,21 @@ fun QuizScreen(
                     text = "Errado",
                     onClick = {
                         onAnswerClick(false)
-                        onNavigateToSecondQuiz(quiz.id) // Navega para a tela de SecondQuiz
+                        onNavigateToSecondQuiz(quiz.id)
                     }
                 )
                 SuccessButton(
                     text = "Certo",
                     onClick = {
                         onAnswerClick(true)
-                        onNavigateToSecondQuiz(quiz.id) // Navega para a tela de SecondQuiz
+                        onNavigateToSecondQuiz(quiz.id)
                     }
                 )
             }
         }
     }
 }
+
 
 @Preview(showBackground = true, showSystemUi = true)
 @Composable
@@ -99,6 +104,6 @@ fun QuizScreenMockPreview() {
         onBackClick = { println("Voltar clicado") },
         onMenuOptionClick = { option -> println("Menu clicado: $option") },
         onAnswerClick = { isCorrect -> println("Resposta clicada: $isCorrect") },
-        onNavigateToSecondQuiz = { println("Navegar para SecondQuizScreen") } // Adicionar parâmetro fictício
+        onNavigateToSecondQuiz = { println("Navegar para SecondQuizScreen") }
     )
 }

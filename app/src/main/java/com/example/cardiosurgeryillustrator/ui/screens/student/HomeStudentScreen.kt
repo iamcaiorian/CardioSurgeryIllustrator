@@ -14,7 +14,8 @@ import com.example.cardiosurgeryillustrator.ui.components.student.TopBarStudent
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun HomeStudentScreen(navController: NavController) {
+fun HomeStudentScreen(navController: NavController, modifier: Modifier = Modifier) {
+
     val recentStudies = remember {
         listOf(
             "Módulo 2 - 30% concluído",

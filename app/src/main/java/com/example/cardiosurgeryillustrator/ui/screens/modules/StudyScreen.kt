@@ -4,6 +4,7 @@ import ErrorButton
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -23,8 +24,9 @@ import com.example.cardiosurgeryillustrator.ui.components.topBar.TopBarQuiz
 fun StudyScreen(
     moduleId: String, // ID do estudo
     onPreviousClick: (String?) -> Unit,
-    onNextClick: (String?) -> Unit,
+    onNextClick: (String) -> Unit, // Ajustado para receber o ID correto
     onBackClick: () -> Unit,
+    modifier: Modifier = Modifier,
     onMenuOptionClick: (String) -> Unit
 ) {
     val study = StudyMock.find { it.moduleId == moduleId }
@@ -56,18 +58,18 @@ fun StudyScreen(
 
             Text(
                 text = study.title,
-                style = androidx.compose.material3.MaterialTheme.typography.titleLarge,
+                style = MaterialTheme.typography.titleLarge,
                 modifier = Modifier.align(Alignment.CenterHorizontally)
             )
 
             Text(
                 text = study.description,
-                style = androidx.compose.material3.MaterialTheme.typography.bodyMedium,
+                style = MaterialTheme.typography.bodyMedium,
                 modifier = Modifier.align(Alignment.CenterHorizontally)
             )
 
             Image(
-                painter = painterResource(id = R.drawable.anatomia_coracao), // Substituir pela imagem correta
+                painter = painterResource(id = R.drawable.anatomia_coracao),
                 contentDescription = "Imagem do ${study.title}",
                 modifier = Modifier
                     .fillMaxWidth()
@@ -92,14 +94,14 @@ fun StudyScreen(
                 SuccessButton(
                     text = "Próximo",
                     onClick = {
-                        val nextId = (study.id.toIntOrNull()?.plus(1))?.toString()
-                        onNextClick(nextId)
+                        onNextClick(study.moduleId)
                     }
                 )
             }
         }
     }
 }
+
 
 @Preview(showBackground = true, showSystemUi = true)
 @Composable

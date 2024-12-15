@@ -24,19 +24,16 @@ import com.example.cardiosurgeryillustrator.ui.components.topBar.TopBarQuiz
 @Composable
 fun SecondQuizScreen(
     quiz: Quiz,
-    onBackClick: () -> Unit,
-    onMenuOptionClick: (String) -> Unit,
-    onAnswerClick: (Boolean) -> Unit
+    modifier: Modifier = Modifier,
+    onBackClick: () -> Unit
 ) {
-    var selectedOption by remember { mutableStateOf<String?>(null) }
-
     Scaffold(
         topBar = {
             TopBarQuiz(
                 title = quiz.title,
                 subtitle = quiz.subtitle,
                 onBackClick = onBackClick,
-                onMenuOptionClick = onMenuOptionClick
+                onMenuOptionClick = {}
             )
         }
     ) { innerPadding ->
@@ -72,29 +69,19 @@ fun SecondQuizScreen(
                 quiz.options?.forEach { option ->
                     QuestionsButton(
                         text = option,
-                        isSelected = selectedOption == option,
-                        onClick = { selectedOption = option }
+                        isSelected = false,
+                        onClick = { }
                     )
                 }
             }
 
             Spacer(modifier = Modifier.height(32.dp))
+
             ConfirmationButton(
                 text = "Confirmar",
-                onClick = {
-                    onAnswerClick(selectedOption == quiz.correctAnswer)
-                }
+                onClick = { }
             )
         }
     }
 }
-@Preview(showBackground = true, showSystemUi = true)
-@Composable
-fun SecondQuizScreenMockPreview() {
-    SecondQuizScreen(
-        quiz = mockQuizzes[1],
-        onBackClick = { println("Voltar clicado") },
-        onMenuOptionClick = { option -> println("Menu clicado: $option") },
-        onAnswerClick = { isCorrect -> println("Resposta clicada: $isCorrect") }
-    )
-}
+
