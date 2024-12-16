@@ -26,15 +26,8 @@ fun CommunityScreen(
     title: String,
     subtitle: String,
     backgroundImageRes: Int,
-    likes: Int,
-    comments: Int,
-    isLiked: Boolean,
-    isSaved: Boolean,
     userAvatar: Int,
     message: String,
-    onLikeClick: () -> Unit,
-    onCommentClick: () -> Unit,
-    onSaveClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     Column(
@@ -57,13 +50,6 @@ fun CommunityScreen(
             title = title,
             subtitle = subtitle,
             backgroundImageRes = backgroundImageRes,
-            likes = likes,
-            comments = comments,
-            isLiked = isLiked,
-            isSaved = isSaved,
-            onLikeClick = onLikeClick,
-            onCommentClick = onCommentClick,
-            onSaveClick = onSaveClick,
             userAvatar = userAvatar,
             message = message
         )
@@ -79,15 +65,8 @@ private fun CommunityScreenPreview() {
         title = "Pós Operatório",
         subtitle = "Como foi seu pós operatório?",
         backgroundImageRes = R.drawable.img_defaul,
-        likes = 2000,
-        comments = 500,
-        isLiked = true,
-        isSaved = false,
         userAvatar = R.drawable.avatar_1,
         message = "Lorem ipsum dolor sit amet, consectetur adipiscing elit...",
-        onLikeClick = {},
-        onCommentClick = {},
-        onSaveClick = {},
         modifier = Modifier.fillMaxWidth()
     )
 }

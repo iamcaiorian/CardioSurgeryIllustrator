@@ -6,11 +6,8 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.Card
-import androidx.compose.material3.CardDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -22,15 +19,8 @@ fun ForumItem(
     title: String,
     subtitle: String,
     backgroundImageRes: Int,
-    likes: Int,
-    comments: Int,
-    isLiked: Boolean,
-    isSaved: Boolean,
     userAvatar: Int,
     message: String,
-    onLikeClick: () -> Unit,
-    onCommentClick: () -> Unit,
-    onSaveClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     Box (
@@ -52,13 +42,10 @@ fun ForumItem(
                 backgroundImageRes = backgroundImageRes
             )
             ForumInteractions(
-                likes = likes,
-                comments = comments,
-                isLiked = isLiked,
-                isSaved = isSaved,
-                onLikeClick = onLikeClick,
-                onCommentClick = onCommentClick,
-                onSaveClick = onSaveClick
+                initialLikes = 2000,
+                initialComments = 500,
+                initialIsLiked = false,
+                initialIsSaved = false
             )
             LastMessageForum(
                 userAvatar = userAvatar,
@@ -75,14 +62,7 @@ fun ForumItemPreview() {
         title = "Pós Operatório",
         subtitle = "Como foi seu pós operatório?",
         backgroundImageRes = R.drawable.img_defaul,
-        likes = 2000,
-        comments = 500,
-        isLiked = false,
-        isSaved = true,
         userAvatar = R.drawable.avatar_1,
-        message = "Lorem ipsum dolor sit amet, consectetur adipiscing elit...",
-        onLikeClick = {},
-        onCommentClick = {},
-        onSaveClick = {}
+        message = "Lorem ipsum dolor sit amet, consectetur adipiscing elit..."
     )
 }
