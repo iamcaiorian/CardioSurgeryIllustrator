@@ -18,11 +18,11 @@ import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import com.example.cardiosurgeryillustrator.R
 import com.example.cardiosurgeryillustrator.ui.components.patient.BottomBarPacient
-import com.example.cardiosurgeryillustrator.ui.screens.patient.ArteryDetailsScreen
+import com.example.cardiosurgeryillustrator.ui.screens.patient.home.ArteryDetailsScreen
 import com.example.cardiosurgeryillustrator.ui.screens.patient.AssistantScreen
-import com.example.cardiosurgeryillustrator.ui.screens.patient.CommunityScreen
-import com.example.cardiosurgeryillustrator.ui.screens.patient.HomePacientScreen
+import com.example.cardiosurgeryillustrator.ui.screens.patient.home.HomePacientScreen
 import com.example.cardiosurgeryillustrator.ui.screens.patient.MoreScreen
+import com.example.cardiosurgeryillustrator.ui.screens.patient.community.CommunityScreen
 
 @ExperimentalMaterial3Api
 @Composable
@@ -42,7 +42,7 @@ fun PatientNavHost() {
             }
 
             composable(BottomBarPacientAction.Community.route) {
-                CommunityScreen(navController = pacientNavController)
+                CommunityScreen( navController = pacientNavController)
             }
 
             composable(BottomBarPacientAction.Assistant.route) {

@@ -8,9 +8,12 @@ import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navigation
 import com.example.cardiosurgeryillustrator.ui.screens.authentication.LoginScreen
 import com.example.cardiosurgeryillustrator.ui.screens.authentication.RegisterScreen
+import com.example.cardiosurgeryillustrator.ui.screens.welcome.ChooseUserScreen
+import com.example.cardiosurgeryillustrator.ui.screens.welcome.WelcomeScreen
 
 sealed class AppScreen(val route: String) {
     object LoginFlow : AppScreen("login_flow_graph")
+    object WelcomeFlow: WelcomeScreen("welcome_flow_graph")
     object StudentFlow : AppScreen("student_flow_graph")
     object PatientFlow : AppScreen("patient_flow_graph")
 }
@@ -18,6 +21,11 @@ sealed class AppScreen(val route: String) {
 sealed class LoginScreen(val route: String) {
     object Login : LoginScreen("login_screen")
     object Register : LoginScreen("register_screen")
+}
+
+sealed class WelcomeScreen(val route: String) {
+    object Welcome: WelcomeScreen("welcome_screen")
+    object ChooseUser: WelcomeScreen("choose_user_screen")
 }
 
 @ExperimentalMaterial3Api
@@ -31,8 +39,34 @@ fun AppNavGraph(
 
     NavHost(
         navController = navController,
-        startDestination = if (isAuthenticated) AppScreen.StudentFlow.route else AppScreen.LoginFlow.route
+        startDestination = if (isAuthenticated) AppScreen.StudentFlow.route else AppScreen.WelcomeFlow.route
     ) {
+
+        // Welcome Flow
+        navigation(startDestination = AppScreen.WelcomeFlow.route, route = WelcomeScreen.Welcome.route) {
+            composable(WelcomeScreen.Welcome.route) {
+                WelcomeScreen(
+                    onNavigateToChooseUser = {
+                        navController.navigate(WelcomeScreen.ChooseUser.route)
+                    }
+                )
+            }
+            composable(WelcomeScreen.ChooseUser.route) {
+                ChooseUserScreen(
+                    onNavigateToStudent = {
+                        navController.navigate(AppScreen.StudentFlow.route) {
+                            popUpTo(WelcomeScreen.Welcome.route) { inclusive = true }
+                        }
+                    },
+                    onNavigateToPatient = {
+                        navController.navigate(AppScreen.PatientFlow.route) {
+                            popUpTo(WelcomeScreen.Welcome.route) { inclusive = true }
+                        }
+                    }
+                )
+            }
+        }
+
         // Login Flow
         navigation(startDestination = LoginScreen.Login.route, route = AppScreen.LoginFlow.route) {
             composable(LoginScreen.Login.route) {

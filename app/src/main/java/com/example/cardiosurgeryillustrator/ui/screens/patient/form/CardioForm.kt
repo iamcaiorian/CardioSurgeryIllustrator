@@ -1,4 +1,4 @@
-package com.example.cardiosurgeryillustrator.ui.screens
+package com.example.cardiosurgeryillustrator.ui.screens.patient.form
 
 import com.example.cardiosurgeryillustrator.ui.components.CheckboxGroup
 import com.example.cardiosurgeryillustrator.ui.components.RadioGroup
@@ -19,7 +19,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier

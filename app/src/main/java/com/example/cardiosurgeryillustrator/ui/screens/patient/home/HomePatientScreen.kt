@@ -1,4 +1,4 @@
-package com.example.cardiosurgeryillustrator.ui.screens.patient
+package com.example.cardiosurgeryillustrator.ui.screens.patient.home
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
