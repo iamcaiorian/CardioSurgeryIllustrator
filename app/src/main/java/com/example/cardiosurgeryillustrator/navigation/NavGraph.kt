@@ -1,5 +1,6 @@
 package com.example.cardiosurgeryillustrator.navigation
 
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.runtime.Composable
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -11,6 +12,7 @@ import com.example.cardiosurgeryillustrator.ui.screens.login.RegisterScreen
 sealed class AppScreen(val route: String) {
     object LoginFlow : AppScreen("login_flow_graph")
     object StudentFlow : AppScreen("student_flow_graph")
+    object PatientFlow : AppScreen("patient_flow_graph")
 }
 
 sealed class LoginScreen(val route: String) {
@@ -18,6 +20,7 @@ sealed class LoginScreen(val route: String) {
     object Register : LoginScreen("register_screen")
 }
 
+@ExperimentalMaterial3Api
 @Composable
 fun AppNavGraph(
     isAuthenticated: Boolean,
@@ -66,6 +69,11 @@ fun AppNavGraph(
                     }
                 }
             )
+        }
+
+        //Patient Flow
+        composable(AppScreen.PatientFlow.route) {
+            PatientNavHost()
         }
 
     }
