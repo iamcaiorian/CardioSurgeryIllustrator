@@ -12,6 +12,7 @@ import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
@@ -23,8 +24,13 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import com.example.cardiosurgeryillustrator.R
+import com.example.cardiosurgeryillustrator.models.mock.StudyMock
 import com.example.cardiosurgeryillustrator.models.mock.mockModules
+import com.example.cardiosurgeryillustrator.models.mock.mockQuizzes
 import com.example.cardiosurgeryillustrator.ui.screens.modules.ModulesScreen
+import com.example.cardiosurgeryillustrator.ui.screens.modules.StudyScreen
+import com.example.cardiosurgeryillustrator.ui.screens.quiz.QuizScreen
+import com.example.cardiosurgeryillustrator.ui.screens.quiz.SecondQuizScreen
 import com.example.cardiosurgeryillustrator.ui.screens.subject.SubjectsScreen
 import com.example.cardiosurgeryillustrator.ui.screens.student.HomeStudentScreen
 
@@ -107,6 +113,9 @@ sealed class BottomBarStudentAction(
 
 sealed class SubjectAction(val route: String) {
     object Modules : SubjectAction("modules")
+    object Study : SubjectAction("study")
+    object Quiz : SubjectAction("quiz")
+    object SecondQuiz : SubjectAction("secondQuiz")
 }
 
 
@@ -116,44 +125,118 @@ fun StudentNavHost(
 ) {
     val studentNavController = rememberNavController()
 
-    Scaffold(
-        bottomBar = { BottomBarStudent(navController = studentNavController) }
-    ) { innerPadding ->
-        NavHost(
-            navController = studentNavController,
-            startDestination = BottomBarStudentAction.Home.route,
-            modifier = Modifier.padding(innerPadding)
-        ) {
-            composable(BottomBarStudentAction.Home.route) {
-                HomeStudentScreen(navController = studentNavController)
+    NavHost(
+        navController = studentNavController,
+        startDestination = BottomBarStudentAction.Home.route
+    ) {
+        composable(BottomBarStudentAction.Home.route) {
+            Scaffold(
+                bottomBar = { BottomBarStudent(navController = studentNavController) }
+            ) { innerPadding ->
+                HomeStudentScreen(navController = studentNavController, modifier = Modifier.padding(innerPadding))
             }
+        }
 
-            composable(BottomBarStudentAction.Subject.route) {
-                SubjectsScreen(navController = studentNavController, onNavigateBack = {
-                    studentNavController.popBackStack()
-                })
-
+        composable(BottomBarStudentAction.Subject.route) {
+            Scaffold(
+                bottomBar = { BottomBarStudent(navController = studentNavController) }
+            ) { innerPadding ->
+                SubjectsScreen(
+                    navController = studentNavController,
+                    modifier = Modifier.padding(innerPadding),
+                    onNavigateBack = { studentNavController.popBackStack() }
+                )
             }
+        }
 
-            composable(
-                route = "${SubjectAction.Modules.route}/{subjectId}",
-                arguments = listOf(navArgument("subjectId") { type = NavType.StringType })
-            ) { backStackEntry ->
-                val subjectId = backStackEntry.arguments?.getString("subjectId")
-                val filteredModules = mockModules.filter { it.subjectId == subjectId }
+        composable(
+            route = "${SubjectAction.Modules.route}/{subjectId}",
+            arguments = listOf(navArgument("subjectId") { type = NavType.StringType })
+        ) { backStackEntry ->
+            val subjectId = backStackEntry.arguments?.getString("subjectId")
+            val filteredModules = mockModules.filter { it.subjectId == subjectId }
+
+            Scaffold(
+                bottomBar = { BottomBarStudent(navController = studentNavController) }
+            ) { innerPadding ->
                 ModulesScreen(
                     navController = studentNavController,
                     modulesList = filteredModules,
-                    onNavigateBack = {
-                        studentNavController.popBackStack()
-                    }
+                    modifier = Modifier.padding(innerPadding),
+                    onNavigateBack = { studentNavController.popBackStack() }
                 )
             }
+        }
 
+        composable(
+            route = "${SubjectAction.Study.route}/{moduleId}",
+            arguments = listOf(navArgument("moduleId") { type = NavType.StringType })
+        ) { backStackEntry ->
+            val moduleId = backStackEntry.arguments?.getString("moduleId")
+            val study = StudyMock.find { it.id == moduleId }
 
+            Scaffold { innerPadding ->
+                study?.let {
+                    StudyScreen(
+                        moduleId = moduleId ?: "1",
+                        modifier = Modifier.padding(innerPadding),
+                        onPreviousClick = { previousId ->
+                            if (previousId != null) {
+                                studentNavController.navigate("${SubjectAction.Study.route}/$previousId")
+                            }
+                        },
+                        onNextClick = { nextId ->
+                            studentNavController.navigate("${SubjectAction.Quiz.route}/$nextId")
+                        },
+                        onBackClick = { studentNavController.popBackStack() },
+                        onMenuOptionClick = { println("Menu clicado: $it") }
+                    )
+                }
+            }
+        }
+
+        composable(
+            route = "${SubjectAction.Quiz.route}/{moduleId}",
+            arguments = listOf(navArgument("moduleId") { type = NavType.StringType })
+        ) { backStackEntry ->
+            val moduleId = backStackEntry.arguments?.getString("moduleId")
+            val quiz = mockQuizzes.find { it.id == moduleId }
+
+            Scaffold { innerPadding ->
+                quiz?.let {
+                    QuizScreen(
+                        quiz = it,
+                        modifier = Modifier.padding(innerPadding),
+                        onBackClick = { studentNavController.popBackStack() },
+                        onMenuOptionClick = { println("Menu clicado") },
+                        onAnswerClick = { isCorrect ->
+                            println("Resposta clicada: $isCorrect")
+                        },
+                        onNavigateToSecondQuiz = {
+                            studentNavController.navigate("${SubjectAction.SecondQuiz.route}/$moduleId")
+                        }
+                    )
+                }
+            }
+        }
+
+        composable(
+            route = "${SubjectAction.SecondQuiz.route}/{moduleId}",
+            arguments = listOf(navArgument("moduleId") { type = NavType.StringType })
+        ) { backStackEntry ->
+            val moduleId = backStackEntry.arguments?.getString("moduleId")
+            val quiz = mockQuizzes.find { it.id == moduleId }
+
+            Scaffold { innerPadding ->
+                quiz?.let {
+                    SecondQuizScreen(
+                        quiz = it,
+                        modifier = Modifier.padding(innerPadding),
+                        onBackClick = { studentNavController.popBackStack() }
+                    )
+                }
+            }
         }
     }
 }
-
-
 

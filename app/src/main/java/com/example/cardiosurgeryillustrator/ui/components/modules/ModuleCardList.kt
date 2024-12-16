@@ -38,7 +38,7 @@ fun ModuleCardList(
             items(items = modulesList, key = { it.id }) {module ->
                 ModuleCard(
                     module = module,
-                    onClick = {}
+                    onClick = {onModuleClick(module)}
                 )
             }
         }
