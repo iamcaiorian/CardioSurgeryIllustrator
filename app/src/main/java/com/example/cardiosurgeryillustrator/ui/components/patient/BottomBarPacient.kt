@@ -12,6 +12,7 @@ import androidx.navigation.NavDestination.Companion.hierarchy
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.example.cardiosurgeryillustrator.navigation.BottomBarPacientAction
+import com.example.cardiosurgeryillustrator.ui.theme.Blue700
 
 @Composable
 fun BottomBarPacient(navController: NavController) {
@@ -43,7 +44,7 @@ fun BottomBarPacient(navController: NavController) {
                     )
                 },
                 colors = NavigationBarItemDefaults.colors(
-                    selectedIconColor = MaterialTheme.colorScheme.primary,
+                    selectedIconColor = Blue700,
                     unselectedIconColor = MaterialTheme.colorScheme.onSurfaceVariant
                 )
             )
