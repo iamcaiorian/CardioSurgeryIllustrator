@@ -1,13 +1,17 @@
 package com.example.cardiosurgeryillustrator.navigation
 
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Modifier
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navigation
+import com.example.cardiosurgeryillustrator.R
 import com.example.cardiosurgeryillustrator.ui.screens.authentication.LoginScreen
 import com.example.cardiosurgeryillustrator.ui.screens.authentication.RegisterScreen
+import com.example.cardiosurgeryillustrator.ui.screens.community.ForumScreen
 import com.example.cardiosurgeryillustrator.ui.screens.welcome.ChooseUserScreen
 import com.example.cardiosurgeryillustrator.ui.screens.welcome.WelcomeScreen
 
@@ -43,7 +47,7 @@ fun AppNavGraph(
     ) {
 
         // Welcome Flow
-        navigation(startDestination = AppScreen.WelcomeFlow.route, route = WelcomeScreen.Welcome.route) {
+        navigation(startDestination = WelcomeScreen.Welcome.route, route = AppScreen.WelcomeFlow.route) {
             composable(WelcomeScreen.Welcome.route) {
                 WelcomeScreen(
                     onNavigateToChooseUser = {
@@ -54,7 +58,7 @@ fun AppNavGraph(
             composable(WelcomeScreen.ChooseUser.route) {
                 ChooseUserScreen(
                     onNavigateToStudent = {
-                        navController.navigate(AppScreen.StudentFlow.route) {
+                        navController.navigate(AppScreen.LoginFlow.route) {
                             popUpTo(WelcomeScreen.Welcome.route) { inclusive = true }
                         }
                     },
@@ -108,6 +112,5 @@ fun AppNavGraph(
         composable(AppScreen.PatientFlow.route) {
             PatientNavHost()
         }
-
     }
 }

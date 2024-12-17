@@ -13,6 +13,8 @@ import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavController
+import androidx.navigation.compose.rememberNavController
 import com.example.cardiosurgeryillustrator.R
 import com.example.cardiosurgeryillustrator.ui.components.patient.community.CommunityTopBar
 import com.example.cardiosurgeryillustrator.ui.components.patient.community.filter.CommunityCategoryFilterChipList
@@ -51,6 +53,7 @@ fun CommunityScreen(
             subtitle = subtitle,
             backgroundImageRes = backgroundImageRes,
             userAvatar = userAvatar,
+            navController = rememberNavController(),
             message = message
         )
     }

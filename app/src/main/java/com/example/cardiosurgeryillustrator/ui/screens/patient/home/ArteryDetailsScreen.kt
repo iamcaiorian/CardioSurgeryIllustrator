@@ -32,7 +32,7 @@ import com.example.cardiosurgeryillustrator.R
 
 @ExperimentalMaterial3Api
 @Composable
-fun ArteryDetailsScreen(navController: NavController, arteryName: String) {
+fun ArteryDetailsScreen(navController: NavController, arteryName: String, modifier: Modifier) {
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -137,5 +137,5 @@ fun ArteryDetailsScreen(navController: NavController, arteryName: String) {
 @ExperimentalMaterial3Api
 @Composable
 private fun ArteryDetailsScreenPreview() {
-    ArteryDetailsScreen(navController = rememberNavController(), arteryName = "Coronária")
+    ArteryDetailsScreen(navController = rememberNavController(), arteryName = "Coronária", modifier = Modifier)
 }

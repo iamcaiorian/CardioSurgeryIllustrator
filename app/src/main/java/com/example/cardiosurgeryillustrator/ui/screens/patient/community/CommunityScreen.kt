@@ -31,7 +31,7 @@ fun CommunityScreen(
     userAvatar: Int? = null,
     message: String = "",
     modifier: Modifier = Modifier,
-    navController: NavController? = null
+    navController: NavController
 ) {
     Column(
         modifier = modifier
@@ -59,6 +59,7 @@ fun CommunityScreen(
             subtitle = subtitle,
             backgroundImageRes = backgroundImageRes ?: R.drawable.img_defaul,
             userAvatar = userAvatar ?: R.drawable.avatar_1,
+            navController = navController,
             message = message
         )
     }
