@@ -3,7 +3,9 @@ package com.example.cardiosurgeryillustrator.ui.screens.patient.form
 import com.example.cardiosurgeryillustrator.ui.components.CheckboxGroup
 import com.example.cardiosurgeryillustrator.ui.components.RadioGroup
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -26,13 +28,16 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
 import com.example.cardiosurgeryillustrator.R
 import com.example.cardiosurgeryillustrator.ui.components.TextInputField
+import com.example.cardiosurgeryillustrator.ui.components.button.ConfirmationButton
 
 @Composable
-fun CardioForm() {
+fun CardioForm( onNavigateToHome: () -> Unit) {
     var height by remember { mutableStateOf("") }
     var weight by remember { mutableStateOf("") }
     var imc by remember { mutableStateOf("") }
@@ -79,11 +84,15 @@ fun CardioForm() {
 
     var educationPreference by remember { mutableStateOf("") }
 
-    LazyColumn(modifier = Modifier.fillMaxSize().padding(16.dp)) {
+    LazyColumn(modifier = Modifier
+        .fillMaxSize()
+        .padding(16.dp)) {
 
         item {
             Column(
-                modifier = Modifier.fillMaxWidth().padding(32.dp),
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(32.dp),
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
                 Image(
@@ -470,19 +479,12 @@ fun CardioForm() {
         }
 
         item {
-            Spacer(modifier = Modifier.height(16.dp))
-            Button(
-                onClick = {},
-                colors = ButtonDefaults.buttonColors(
-                    containerColor = Color(0xFF0369A1),
-                    contentColor = Color.White
-                ),
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(horizontal = 16.dp, vertical = 32.dp)
-                    .width(120.dp)
-            ) {
-                Text("Confirmar")
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.Center
+            ){
+                Spacer(modifier = Modifier.height(16.dp))
+                ConfirmationButton(text = "Confirmar", onClick = onNavigateToHome)
             }
         }
     }
@@ -511,4 +513,10 @@ fun calculateIMC(height: String, weight: String): String {
     } else {
         "Altura ou peso inválido"
     }
+}
+
+@Preview
+@Composable
+private fun CardioFormPreview() {
+    CardioForm(onNavigateToHome = {})
 }

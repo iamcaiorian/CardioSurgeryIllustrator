@@ -52,8 +52,7 @@ fun ArteryDetailsScreen(navController: NavController, arteryName: String, modifi
             Text(
                 text = "Cardio Surgery Illustrator",
                 fontSize = 20.sp,
-                color = Color(0xFF0369A1),
-                fontWeight = FontWeight.Bold
+                color = Color(0xFF0369A1)
             )
         }
 

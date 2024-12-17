@@ -12,12 +12,13 @@ import com.example.cardiosurgeryillustrator.R
 import com.example.cardiosurgeryillustrator.ui.screens.authentication.LoginScreen
 import com.example.cardiosurgeryillustrator.ui.screens.authentication.RegisterScreen
 import com.example.cardiosurgeryillustrator.ui.screens.community.ForumScreen
+import com.example.cardiosurgeryillustrator.ui.screens.patient.form.CardioForm
 import com.example.cardiosurgeryillustrator.ui.screens.welcome.ChooseUserScreen
 import com.example.cardiosurgeryillustrator.ui.screens.welcome.WelcomeScreen
 
 sealed class AppScreen(val route: String) {
     object LoginFlow : AppScreen("login_flow_graph")
-    object WelcomeFlow: WelcomeScreen("welcome_flow_graph")
+    object WelcomeFlow : WelcomeScreen("welcome_flow_graph")
     object StudentFlow : AppScreen("student_flow_graph")
     object PatientFlow : AppScreen("patient_flow_graph")
 }
@@ -28,8 +29,12 @@ sealed class LoginScreen(val route: String) {
 }
 
 sealed class WelcomeScreen(val route: String) {
-    object Welcome: WelcomeScreen("welcome_screen")
-    object ChooseUser: WelcomeScreen("choose_user_screen")
+    object Welcome : WelcomeScreen("welcome_screen")
+    object ChooseUser : WelcomeScreen("choose_user_screen")
+}
+
+sealed class FormScreen(val route: String) {
+    object Form : FormScreen("form_screen")
 }
 
 @ExperimentalMaterial3Api
@@ -47,7 +52,10 @@ fun AppNavGraph(
     ) {
 
         // Welcome Flow
-        navigation(startDestination = WelcomeScreen.Welcome.route, route = AppScreen.WelcomeFlow.route) {
+        navigation(
+            startDestination = WelcomeScreen.Welcome.route,
+            route = AppScreen.WelcomeFlow.route
+        ) {
             composable(WelcomeScreen.Welcome.route) {
                 WelcomeScreen(
                     onNavigateToChooseUser = {
@@ -63,12 +71,23 @@ fun AppNavGraph(
                         }
                     },
                     onNavigateToPatient = {
-                        navController.navigate(AppScreen.PatientFlow.route) {
+                        navController.navigate(FormScreen.Form.route) {
                             popUpTo(WelcomeScreen.Welcome.route) { inclusive = true }
                         }
                     }
                 )
             }
+        }
+
+        //Form Flow
+        composable(FormScreen.Form.route) {
+            CardioForm(
+                onNavigateToHome = {
+                    navController.navigate(AppScreen.PatientFlow.route) {
+                        popUpTo(WelcomeScreen.Welcome.route) { inclusive = true }
+                    }
+                }
+            )
         }
 
         // Login Flow
@@ -81,7 +100,7 @@ fun AppNavGraph(
                             popUpTo(AppScreen.LoginFlow.route) { inclusive = true }
                         }
                     },
-                    onForgotPasswordClick = {  },
+                    onForgotPasswordClick = { },
                     onRegisterClick = { navController.navigate(LoginScreen.Register.route) }
                 )
             }
