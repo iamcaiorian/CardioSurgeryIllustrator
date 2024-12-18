@@ -9,6 +9,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navigation
 import com.example.cardiosurgeryillustrator.R
+import com.example.cardiosurgeryillustrator.models.mock.mockQuestions
 import com.example.cardiosurgeryillustrator.ui.screens.authentication.LoginScreen
 import com.example.cardiosurgeryillustrator.ui.screens.authentication.RegisterScreen
 import com.example.cardiosurgeryillustrator.ui.screens.community.ForumScreen
@@ -86,7 +87,8 @@ fun AppNavGraph(
                     navController.navigate(AppScreen.PatientFlow.route) {
                         popUpTo(WelcomeScreen.Welcome.route) { inclusive = true }
                     }
-                }
+                },
+                questionsList = mockQuestions
             )
         }
 

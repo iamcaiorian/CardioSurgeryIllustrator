@@ -8,8 +8,10 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.example.cardiosurgeryillustrator.ui.screens.patient.form.toggleOption
 
 @Composable
 fun CheckboxGroup(
@@ -24,7 +26,7 @@ fun CheckboxGroup(
     Column(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(vertical = 32.dp, horizontal = 16.dp)
+            .padding(vertical = 32.dp)
     ) {
         Text(
             text = label,
@@ -45,7 +47,10 @@ fun CheckboxGroup(
                             onOtherTextChanged("")
                         }
                         onOptionToggled(option)
-                    }
+                    },
+                    colors = CheckboxDefaults.colors(
+                        checkedColor = Color(0xFF00369A1)
+                    )
                 )
                 Text(
                     text = option,
@@ -57,7 +62,6 @@ fun CheckboxGroup(
                 )
             }
             if (option == "Outra" && selectedOptions.contains(option)) {
-                // Mostra o campo de input apenas se "Outra" estiver selecionado
                 OutlinedTextField(
                     value = otherText,
                     onValueChange = { newText ->
@@ -71,20 +75,39 @@ fun CheckboxGroup(
                         color = Color.Black,
                         fontSize = 16.sp
                     ),
-//                    decorationBox = { innerTextField ->
-//                        Box(
-//                            modifier = Modifier
-//                                .fillMaxWidth()
-//                                .padding(8.dp)
-//                                .background(MaterialTheme.colorScheme.surface)
-//                                .border(width = 1.dp, color = Color.Gray),
-//                            contentAlignment = Alignment.CenterStart
-//                        ) {
-//                            innerTextField()
-//                        }
-//                    }
+                    label = { Text("Resposta") },
+                    colors = OutlinedTextFieldDefaults.colors(
+                        focusedBorderColor = Color(0xFF00369A1),
+                        focusedLabelColor = Color(0xFF00369A1)
+                    )
                 )
             }
         }
     }
+}
+
+
+@Preview
+@Composable
+private fun CheckBoxGroupPreview() {
+
+    var selectedOptions by remember { mutableStateOf(listOf<String>()) }
+
+    CheckboxGroup(
+        label = "Marque todas as opções que quiser.",
+        options = listOf(
+            "Opção 1",
+            "Opção 2",
+            "Opção 3",
+            "Opção 4",
+            "Outra"
+        ),
+        selectedOptions = selectedOptions,
+        onOptionToggled = { option ->
+            toggleOption(option, selectedOptions) { newSelectedOptions ->
+                selectedOptions = newSelectedOptions
+            }
+        },
+        onOtherTextChanged = {}
+    )
 }
