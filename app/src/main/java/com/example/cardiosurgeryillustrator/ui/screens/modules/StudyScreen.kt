@@ -17,7 +17,7 @@ import androidx.compose.ui.unit.dp
 import com.example.cardiosurgeryillustrator.R
 import com.example.cardiosurgeryillustrator.models.mock.StudyMock
 import com.example.cardiosurgeryillustrator.ui.components.button.SuccessButton
-import com.example.cardiosurgeryillustrator.ui.components.topBar.TopBarQuiz
+import com.example.cardiosurgeryillustrator.ui.components.quiz.TopBarQuiz
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
