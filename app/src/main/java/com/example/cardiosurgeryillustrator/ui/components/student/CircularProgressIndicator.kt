@@ -16,7 +16,7 @@ import com.example.cardiosurgeryillustrator.ui.theme.Zinc300
 fun CircularProgressWithPercentage(modifier: Modifier = Modifier, progress: Float) {
     val percentageProgress = (progress * 100).toInt()
 
-    Box(contentAlignment = Alignment.Center, modifier = modifier.size(100.dp)) {
+    Box(contentAlignment = Alignment.Center, modifier = modifier.size(96.dp)) {
         CircularProgressIndicator(
             modifier = Modifier.fillMaxSize(),
             progress = { progress },
