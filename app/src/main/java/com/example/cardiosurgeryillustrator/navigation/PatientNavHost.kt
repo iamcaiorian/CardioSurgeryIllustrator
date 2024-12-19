@@ -1,6 +1,7 @@
 package com.example.cardiosurgeryillustrator.navigation
 
 import androidx.compose.foundation.layout.fillMaxWidth
+
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material.icons.Icons
@@ -17,6 +18,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
+
 import androidx.navigation.navigation
 import com.example.cardiosurgeryillustrator.R
 import com.example.cardiosurgeryillustrator.ui.components.patient.BottomBarPacient
@@ -27,6 +29,7 @@ import com.example.cardiosurgeryillustrator.ui.screens.patient.home.HomePacientS
 import com.example.cardiosurgeryillustrator.ui.screens.patient.MoreScreen
 import com.example.cardiosurgeryillustrator.ui.screens.patient.community.CommunityScreen
 import com.example.cardiosurgeryillustrator.ui.screens.patient.form.CardioForm
+
 
 @ExperimentalMaterial3Api
 @Composable
@@ -125,7 +128,6 @@ fun PatientNavHost() {
         }
     }
 }
-
 
 sealed class BottomBarPacientAction(
     val route: String,
