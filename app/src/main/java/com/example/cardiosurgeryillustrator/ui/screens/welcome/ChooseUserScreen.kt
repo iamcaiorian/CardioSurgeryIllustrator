@@ -22,7 +22,7 @@ import com.example.cardiosurgeryillustrator.ui.components.welcome.WelcomeHeader
 import com.example.cardiosurgeryillustrator.ui.theme.Typography
 
 @Composable
-fun ChooseUserScreen(modifier: Modifier = Modifier, onNavigateToUser: () -> Unit) {
+fun ChooseUserScreen(modifier: Modifier = Modifier, onNavigateToPatient: () -> Unit, onNavigateToStudent: () -> Unit) {
     Column(
         modifier = modifier
             .background(Color.White)
@@ -50,7 +50,7 @@ fun ChooseUserScreen(modifier: Modifier = Modifier, onNavigateToUser: () -> Unit
             StandardButton(
                 modifier = Modifier.fillMaxWidth(),
                 text = "Estudante",
-                onClick = onNavigateToUser
+                onClick = onNavigateToStudent
             )
 
             Text(text = "ou")
@@ -58,7 +58,7 @@ fun ChooseUserScreen(modifier: Modifier = Modifier, onNavigateToUser: () -> Unit
             StandardButton(
                 modifier = Modifier.fillMaxWidth(),
                 text = "Paciente",
-                onClick = onNavigateToUser
+                onClick = onNavigateToPatient
             )
         }
     }
@@ -67,5 +67,5 @@ fun ChooseUserScreen(modifier: Modifier = Modifier, onNavigateToUser: () -> Unit
 @Preview
 @Composable
 private fun ChooseUserScreenPreview() {
-    ChooseUserScreen(onNavigateToUser = {})
+    ChooseUserScreen(onNavigateToPatient = {}, onNavigateToStudent = {})
 }

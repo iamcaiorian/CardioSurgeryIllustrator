@@ -1,5 +1,7 @@
 package com.example.cardiosurgeryillustrator.navigation
 
+import androidx.compose.foundation.layout.fillMaxWidth
+
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material.icons.Icons
@@ -16,49 +18,112 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
+
+import androidx.navigation.navigation
 import com.example.cardiosurgeryillustrator.R
 import com.example.cardiosurgeryillustrator.ui.components.patient.BottomBarPacient
-import com.example.cardiosurgeryillustrator.ui.screens.patient.ArteryDetailsScreen
+import com.example.cardiosurgeryillustrator.ui.screens.community.ForumScreen
+import com.example.cardiosurgeryillustrator.ui.screens.patient.home.ArteryDetailsScreen
 import com.example.cardiosurgeryillustrator.ui.screens.patient.AssistantScreen
-import com.example.cardiosurgeryillustrator.ui.screens.patient.CommunityScreen
-import com.example.cardiosurgeryillustrator.ui.screens.patient.HomePacientScreen
+import com.example.cardiosurgeryillustrator.ui.screens.patient.home.HomePacientScreen
 import com.example.cardiosurgeryillustrator.ui.screens.patient.MoreScreen
+import com.example.cardiosurgeryillustrator.ui.screens.patient.community.CommunityScreen
+import com.example.cardiosurgeryillustrator.ui.screens.patient.form.CardioForm
+
 
 @ExperimentalMaterial3Api
 @Composable
 fun PatientNavHost() {
     val pacientNavController = rememberNavController()
 
-    Scaffold(
-        bottomBar = { BottomBarPacient(navController = pacientNavController) }
-    ) { innerPadding ->
-        NavHost(
-            navController = pacientNavController,
-            startDestination = BottomBarPacientAction.HomePacient.route,
-            modifier = Modifier.padding(innerPadding)
-        ) {
-            composable(BottomBarPacientAction.HomePacient.route) {
-                HomePacientScreen(navController = pacientNavController)
+    NavHost(
+        navController = pacientNavController,
+        startDestination = BottomBarPacientAction.HomePacient.route,
+        modifier = Modifier
+    ) {
+        // Tela Home
+        composable(BottomBarPacientAction.HomePacient.route) {
+            Scaffold(
+                bottomBar = { BottomBarPacient(navController = pacientNavController) }
+            ) { innerPadding ->
+                HomePacientScreen(
+                    navController = pacientNavController,
+                    modifier = Modifier.padding(innerPadding)
+                )
             }
+        }
 
-            composable(BottomBarPacientAction.Community.route) {
-                CommunityScreen(navController = pacientNavController)
+        // Tela Comunidade
+        composable(BottomBarPacientAction.Community.route) {
+            Scaffold(
+                bottomBar = { BottomBarPacient(navController = pacientNavController) }
+            ) { innerPadding ->
+                CommunityScreen(
+                    avatarPainter = painterResource(id = R.drawable.avatar_1),
+                    onSelectedCategoryChanged = { /* Ação ao selecionar */ },
+                    title = "Pós Operatório",
+                    subtitle = "Como foi seu pós operatório?",
+                    backgroundImageRes = R.drawable.img_defaul,
+                    userAvatar = R.drawable.avatar_1,
+                    message = "Lorem ipsum dolor sit amet, consectetur adipiscing elit...",
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(innerPadding),
+                    navController = pacientNavController
+                )
             }
+        }
 
-            composable(BottomBarPacientAction.Assistant.route) {
-                AssistantScreen(navController = pacientNavController)
+        // Tela Fórum
+        composable("forum_screen") {
+            Scaffold( ) { innerPadding ->
+                ForumScreen(
+                    onSelectedCategoryChanged = { /* Ação ao selecionar */ },
+                    userAvatar = R.drawable.avatar_1,
+                    message = "Lorem ipsum dolor sit amet, consectetur adipiscing elit...",
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(innerPadding)
+                )
             }
+        }
 
-            composable(BottomBarPacientAction.More.route) {
-                MoreScreen(navController = pacientNavController)
+        // Tela Assistente
+        composable(BottomBarPacientAction.Assistant.route) {
+            Scaffold(
+                bottomBar = { BottomBarPacient(navController = pacientNavController) }
+            ) { innerPadding ->
+                AssistantScreen(
+                    navController = pacientNavController,
+                    modifier = Modifier.padding(innerPadding)
+                )
             }
+        }
 
-            composable(
-                route = "artery_details/{arteryName}",
-                arguments = listOf(navArgument("arteryName") { type = NavType.StringType })
-            ) { backStackEntry ->
-                val arteryName = backStackEntry.arguments?.getString("arteryName") ?: ""
-                ArteryDetailsScreen(navController = pacientNavController, arteryName = arteryName)
+        // Tela Mais
+        composable(BottomBarPacientAction.More.route) {
+            Scaffold(
+                bottomBar = { BottomBarPacient(navController = pacientNavController) }
+            ) { innerPadding ->
+                MoreScreen(
+                    navController = pacientNavController,
+                    modifier = Modifier.padding(innerPadding)
+                )
+            }
+        }
+
+        // Detalhes da Artéria
+        composable(
+            route = "artery_details/{arteryName}",
+            arguments = listOf(navArgument("arteryName") { type = NavType.StringType })
+        ) { backStackEntry ->
+            val arteryName = backStackEntry.arguments?.getString("arteryName") ?: ""
+            Scaffold( ) { innerPadding ->
+                ArteryDetailsScreen(
+                    navController = pacientNavController,
+                    arteryName = arteryName,
+                    modifier = Modifier.padding(innerPadding)
+                )
             }
         }
     }

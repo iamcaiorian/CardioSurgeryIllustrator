@@ -11,6 +11,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavController
+import androidx.navigation.compose.rememberNavController
 import com.example.cardiosurgeryillustrator.R
 
 
@@ -21,6 +23,7 @@ fun ForumItem(
     backgroundImageRes: Int,
     userAvatar: Int,
     message: String,
+    navController: NavController,
     modifier: Modifier = Modifier
 ) {
     Box (
@@ -30,7 +33,7 @@ fun ForumItem(
                 color = Color.Transparent,
                 shape = RoundedCornerShape(12.dp)
             )
-            .clickable {  }
+            .clickable { navController.navigate("forum_screen") }
     ) {
         Column(
             modifier = modifier
@@ -63,6 +66,7 @@ fun ForumItemPreview() {
         subtitle = "Como foi seu pós operatório?",
         backgroundImageRes = R.drawable.img_defaul,
         userAvatar = R.drawable.avatar_1,
+        navController = rememberNavController(),
         message = "Lorem ipsum dolor sit amet, consectetur adipiscing elit..."
     )
 }
