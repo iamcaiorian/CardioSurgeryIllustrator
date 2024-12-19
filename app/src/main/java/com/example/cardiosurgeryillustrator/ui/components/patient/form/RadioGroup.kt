@@ -30,10 +30,9 @@ fun RadioGroup(
     options: List<String>,
     selectedOption: String,
     onOptionSelected: (String) -> Unit,
-    otherOptionText: (String) -> Unit = {}
+    otherOptionText: (String) -> Unit = {},
+    otherText: String
 ) {
-    var otherText by remember { mutableStateOf("") }
-
     Column(
         modifier = Modifier
             .fillMaxWidth()
@@ -73,7 +72,6 @@ fun RadioGroup(
             OutlinedTextField(
                 value = otherText,
                 onValueChange = { newText ->
-                    otherText = newText
                     otherOptionText(newText)
                 },
                 modifier = Modifier
@@ -111,6 +109,7 @@ private fun RadioGroupPreview() {
         onOptionSelected = { option ->
            selectedCondition = option
         },
-        otherOptionText = {}
+        otherOptionText = {},
+        otherText = ""
     )
 }

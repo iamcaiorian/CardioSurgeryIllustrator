@@ -88,6 +88,7 @@ fun AppNavGraph(
                         popUpTo(WelcomeScreen.Welcome.route) { inclusive = true }
                     }
                 },
+                onBack = {   navController.navigate(WelcomeScreen.ChooseUser.route) },
                 questionsList = mockQuestions
             )
         }

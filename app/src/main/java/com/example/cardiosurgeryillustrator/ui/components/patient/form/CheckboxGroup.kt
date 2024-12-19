@@ -19,10 +19,9 @@ fun CheckboxGroup(
     options: List<String>,
     selectedOptions: List<String>,
     onOptionToggled: (String) -> Unit,
-    onOtherTextChanged: (String) -> Unit = {} // Callback para capturar o texto de "Outra"
+    onOtherTextChanged: (String) -> Unit = {},
+    otherText: String
 ) {
-    var otherText by remember { mutableStateOf("") } // Estado local para armazenar o texto de "Outra"
-
     Column(
         modifier = Modifier
             .fillMaxWidth()
@@ -43,7 +42,6 @@ fun CheckboxGroup(
                     onCheckedChange = { isChecked ->
                         if (option == "Outra" && !isChecked) {
                             // Limpa o texto de "Outra" se for desmarcado
-                            otherText = ""
                             onOtherTextChanged("")
                         }
                         onOptionToggled(option)
@@ -65,7 +63,6 @@ fun CheckboxGroup(
                 OutlinedTextField(
                     value = otherText,
                     onValueChange = { newText ->
-                        otherText = newText
                         onOtherTextChanged(newText)
                     },
                     modifier = Modifier
@@ -108,6 +105,7 @@ private fun CheckBoxGroupPreview() {
                 selectedOptions = newSelectedOptions
             }
         },
-        onOtherTextChanged = {}
+        onOtherTextChanged = {},
+        otherText = ""
     )
 }
