@@ -10,6 +10,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -29,10 +30,14 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.example.cardiosurgeryillustrator.R
+import com.example.cardiosurgeryillustrator.models.mock.mockArtery
 
 @ExperimentalMaterial3Api
 @Composable
 fun ArteryDetailsScreen(navController: NavController, arteryName: String, modifier: Modifier) {
+
+    val artery = mockArtery.find { it.id == arteryName }
+
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -71,20 +76,16 @@ fun ArteryDetailsScreen(navController: NavController, arteryName: String, modifi
             }
 
             Text(
-                text = "Artéria ${arteryName} entupida",
+                text = "Artéria ${artery?.arteryName ?: "Desconhecida"}",
                 fontSize = 22.sp,
                 color = Color.Black,
             )
         }
 
-        Column(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(16.dp)
-        ) {
+        if (artery != null) {
             Image(
-                painter = painterResource(id = R.drawable.artery_blocked),
-                contentDescription = "Imagem da Artéria",
+                painter = painterResource(id = artery.imageRes),
+                contentDescription = "Imagem da Artéria ${artery.arteryName}",
                 contentScale = ContentScale.Fit,
                 modifier = Modifier
                     .fillMaxWidth()
@@ -93,39 +94,54 @@ fun ArteryDetailsScreen(navController: NavController, arteryName: String, modifi
 
             Spacer(modifier = Modifier.height(16.dp))
 
+            LazyColumn(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(16.dp),
+                horizontalAlignment = Alignment.Start
+            ) {
+                artery.texts.forEach { infoText ->
+                    item {
+                        Column(
+                            modifier = Modifier.fillMaxWidth()
+                        ) {
+                            Text(
+                                text = infoText.title,
+                                fontSize = 22.sp,
+                                color = Color.Black
+                            )
+
+                            Spacer(modifier = Modifier.height(8.dp))
+
+                            Text(
+                                text = infoText.subtitle,
+                                fontSize = 16.sp,
+                                fontWeight = FontWeight.Medium,
+                                color = Color.Black
+                            )
+
+                            Spacer(modifier = Modifier.height(8.dp))
+
+                            Text(
+                                text = infoText.content,
+                                fontSize = 16.sp,
+                                color = Color.Gray
+                            )
+
+                        }
+                    }
+
+                    item {
+                        Spacer(modifier = Modifier.height(56.dp))
+                    }
+                }
+            }
+        } else {
             Text(
-                text = "Artéria entupida",
-                fontSize = 22.sp,
-
-                )
-
-            Spacer(modifier = Modifier.height(8.dp))
-
-            // Parágrafo de texto
-            Text(
-                text = "Acúmulo de Placas de Gordura\n\nO principal responsável pelo entupimento das artérias é o depósito de placas de gordura (lipídios), principalmente colesterol LDL" +
-                        "(\"colesterol ruim\"). Quando esses depósitos se acumulam na parede arterial, eles formam placas que estreitam o diâmetro interno da artéria, dificultando o fluxo sanguíneo.",
-                fontSize = 16.sp
-            )
-
-            Spacer(modifier = Modifier.height(16.dp))
-
-            // Seção adicional (Exemplo: Fatores de risco)
-            Text(
-                text = "Fatores de risco",
-                fontSize = 22.sp,
-            )
-
-            Spacer(modifier = Modifier.height(8.dp))
-
-            Text(
-                text = "Dieta rica em gorduras saturadas e trans aumenta os níveis de colesterol LDL," +
-                        " sedentarismo diminui a capacidade do corpo de metabolizar gorduras, " +
-                        "tabagismo danifica a parede arterial e aumenta o risco de inflamação, " +
-                        "altos níveis de glicose no sangue favorecem o acúmulo de gordura nas artérias, " +
-                        "pressão alta força as paredes das artérias, tornando-as mais vulneráveis a lesões, " +
-                        "e obesidade está associada a níveis elevados de colesterol e pressão arterial.",
-                fontSize = 16.sp
+                text = "Artéria não encontrada.",
+                fontSize = 18.sp,
+                color = Color.Red,
+                modifier = Modifier.padding(16.dp)
             )
         }
     }
@@ -136,5 +152,9 @@ fun ArteryDetailsScreen(navController: NavController, arteryName: String, modifi
 @ExperimentalMaterial3Api
 @Composable
 private fun ArteryDetailsScreenPreview() {
-    ArteryDetailsScreen(navController = rememberNavController(), arteryName = "Coronária", modifier = Modifier)
+    ArteryDetailsScreen(
+        navController = rememberNavController(),
+        arteryName = "left_coronary",
+        modifier = Modifier
+    )
 }

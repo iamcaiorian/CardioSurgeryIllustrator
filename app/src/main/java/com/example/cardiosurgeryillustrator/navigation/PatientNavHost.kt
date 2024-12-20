@@ -19,16 +19,15 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 
-import androidx.navigation.navigation
 import com.example.cardiosurgeryillustrator.R
+import com.example.cardiosurgeryillustrator.models.mock.mockInfoText
 import com.example.cardiosurgeryillustrator.ui.components.patient.BottomBarPacient
-import com.example.cardiosurgeryillustrator.ui.screens.community.ForumScreen
 import com.example.cardiosurgeryillustrator.ui.screens.patient.home.ArteryDetailsScreen
 import com.example.cardiosurgeryillustrator.ui.screens.patient.AssistantScreen
 import com.example.cardiosurgeryillustrator.ui.screens.patient.home.HomePacientScreen
 import com.example.cardiosurgeryillustrator.ui.screens.patient.MoreScreen
 import com.example.cardiosurgeryillustrator.ui.screens.patient.community.CommunityScreen
-import com.example.cardiosurgeryillustrator.ui.screens.patient.form.CardioForm
+import com.example.cardiosurgeryillustrator.ui.screens.patient.community.ForumScreen
 
 
 @ExperimentalMaterial3Api
@@ -48,7 +47,8 @@ fun PatientNavHost() {
             ) { innerPadding ->
                 HomePacientScreen(
                     navController = pacientNavController,
-                    modifier = Modifier.padding(innerPadding)
+                    modifier = Modifier.padding(innerPadding),
+                    infoTextList = mockInfoText
                 )
             }
         }
