@@ -30,7 +30,7 @@ fun HomeStudentScreen(navController: NavController, modifier: Modifier = Modifie
             verticalArrangement = Arrangement.spacedBy(16.dp)
         ) {
             LastModuleCard(module = mockModules[4],
-                onClick = { navController.navigate("${SubjectAction.Study.route}/${mockModules[1].id}") })
+                onClick = { navController.navigate("${SubjectAction.ModulesVideo.route}/${mockModules[1].id}") })
             LastQuizCard(module = mockModules[1], onClick = {})
             StudentQuizzes()
             StudentModules()

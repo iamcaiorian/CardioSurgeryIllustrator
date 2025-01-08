@@ -39,7 +39,7 @@ fun ModulesScreen(
                 .fillMaxSize()
                 .padding(innerPadding),
             modulesList = modulesList,
-            onModuleClick = {module -> navController.navigate("${SubjectAction.Study.route}/${module.id}")}
+            onModuleClick = {module -> navController.navigate("${SubjectAction.ModulesVideo.route}/${module.id}")}
         )
     }
 }
