@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AccountCircle
+import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.FavoriteBorder
 import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.Search
@@ -26,6 +27,7 @@ import com.example.cardiosurgeryillustrator.models.mock.StudyMock
 import com.example.cardiosurgeryillustrator.models.mock.mockModules
 import com.example.cardiosurgeryillustrator.models.mock.mockQuizzes
 import com.example.cardiosurgeryillustrator.ui.screens.modules.ModuleVideoScreen
+import com.example.cardiosurgeryillustrator.ui.screens.favorite.FavoriteScreen
 import com.example.cardiosurgeryillustrator.ui.screens.modules.ModulesScreen
 import com.example.cardiosurgeryillustrator.ui.screens.modules.StudyScreen
 import com.example.cardiosurgeryillustrator.ui.screens.quiz.QuizScreen
@@ -102,11 +104,11 @@ sealed class BottomBarStudentAction(
         route = "favorites",
         icon = {
             androidx.compose.material3.Icon(
-                Icons.Default.FavoriteBorder,
+                Icons.Default.Favorite,
                 contentDescription = "Favorite"
             )
         },
-        description = "Favorites"
+        description = "Favoritos"
     )
 }
 
@@ -148,6 +150,18 @@ fun StudentNavHost(
                     navController = studentNavController,
                     modifier = Modifier.padding(innerPadding),
                     onNavigateBack = { studentNavController.popBackStack() }
+                )
+            }
+        }
+
+        composable(BottomBarStudentAction.Favorites.route) {
+            Scaffold(
+                bottomBar = { BottomBarStudent(navController = studentNavController) }
+            ) { innerPadding ->
+                FavoriteScreen(
+                    navController = studentNavController,
+                    modulesList = mockModules,
+                    modifier = Modifier.padding(innerPadding)
                 )
             }
         }

@@ -1,4 +1,4 @@
-package com.example.cardiosurgeryillustrator.ui.screens.community
+package com.example.cardiosurgeryillustrator.ui.screens.patient.community
 
 import android.annotation.SuppressLint
 import androidx.compose.foundation.background

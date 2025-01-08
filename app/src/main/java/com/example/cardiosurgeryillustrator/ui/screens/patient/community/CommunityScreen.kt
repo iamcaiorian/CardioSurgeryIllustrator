@@ -1,4 +1,4 @@
-package com.example.cardiosurgeryillustrator.ui.screens.community
+package com.example.cardiosurgeryillustrator.ui.screens.patient.community
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -13,6 +13,8 @@ import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavController
+import androidx.navigation.compose.rememberNavController
 import com.example.cardiosurgeryillustrator.R
 import com.example.cardiosurgeryillustrator.ui.components.patient.community.CommunityTopBar
 import com.example.cardiosurgeryillustrator.ui.components.patient.community.filter.CommunityCategoryFilterChipList
@@ -21,14 +23,15 @@ import com.example.cardiosurgeryillustrator.ui.components.patient.community.foru
 
 @Composable
 fun CommunityScreen(
-    avatarPainter: Painter,
-    onSelectedCategoryChanged: (CommunityFilterChipView) -> Unit,
-    title: String,
-    subtitle: String,
-    backgroundImageRes: Int,
-    userAvatar: Int,
-    message: String,
-    modifier: Modifier = Modifier
+    avatarPainter: Painter? = null,
+    onSelectedCategoryChanged: ((CommunityFilterChipView) -> Unit)? = null,
+    title: String = "",
+    subtitle: String = "",
+    backgroundImageRes: Int? = null,
+    userAvatar: Int? = null,
+    message: String = "",
+    modifier: Modifier = Modifier,
+    navController: NavController
 ) {
     Column(
         modifier = modifier
@@ -38,19 +41,25 @@ fun CommunityScreen(
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.spacedBy(12.dp)
     ) {
-        CommunityTopBar(
-            avatarPainter = avatarPainter
-        )
 
-        CommunityCategoryFilterChipList(
-            onSelectedCategoryChanged = onSelectedCategoryChanged
-        )
+        avatarPainter?.let{
+            CommunityTopBar(
+                avatarPainter = avatarPainter
+            )
+        }
 
+
+        onSelectedCategoryChanged?.let { callback ->
+            CommunityCategoryFilterChipList(onSelectedCategoryChanged = callback)
+        }
+
+        // Verificar null para backgroundImageRes e userAvatar dentro do ForumItem
         ForumItem(
             title = title,
             subtitle = subtitle,
-            backgroundImageRes = backgroundImageRes,
-            userAvatar = userAvatar,
+            backgroundImageRes = backgroundImageRes ?: R.drawable.img_defaul,
+            userAvatar = userAvatar ?: R.drawable.avatar_1,
+            navController = navController,
             message = message
         )
     }
@@ -67,6 +76,7 @@ private fun CommunityScreenPreview() {
         backgroundImageRes = R.drawable.img_defaul,
         userAvatar = R.drawable.avatar_1,
         message = "Lorem ipsum dolor sit amet, consectetur adipiscing elit...",
-        modifier = Modifier.fillMaxWidth()
+        modifier = Modifier.fillMaxWidth(),
+        navController = rememberNavController()
     )
 }
