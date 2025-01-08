@@ -11,6 +11,7 @@ import androidx.compose.material.icons.filled.FavoriteBorder
 import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material.icons.filled.Settings
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -34,6 +35,7 @@ import com.example.cardiosurgeryillustrator.ui.screens.quiz.QuizScreen
 import com.example.cardiosurgeryillustrator.ui.screens.quiz.SecondQuizScreen
 import com.example.cardiosurgeryillustrator.ui.screens.subject.SubjectsScreen
 import com.example.cardiosurgeryillustrator.ui.screens.student.HomeStudentScreen
+import com.example.cardiosurgeryillustrator.ui.screens.student.SettingsStudentScreen
 
 sealed class TopBarStudentAction(
     val route: String,
@@ -122,6 +124,7 @@ sealed class SubjectAction(val route: String) {
 
 
 @Composable
+@ExperimentalMaterial3Api
 fun StudentNavHost(
     onLogout: () -> Unit
 ) {
@@ -131,6 +134,18 @@ fun StudentNavHost(
         navController = studentNavController,
         startDestination = BottomBarStudentAction.Home.route
     ) {
+        composable(TopBarStudentAction.Settings.route) {
+            Scaffold (
+                bottomBar = { BottomBarStudent(navController = studentNavController) }
+            ){innerPadding ->
+                SettingsStudentScreen(
+                    navController = studentNavController,
+                    modifier = Modifier.padding(innerPadding),
+                    onNavigateBack = { studentNavController.popBackStack() },
+                )
+            }
+        }
+
         composable(BottomBarStudentAction.Home.route) {
             Scaffold(
                 bottomBar = { BottomBarStudent(navController = studentNavController) }
