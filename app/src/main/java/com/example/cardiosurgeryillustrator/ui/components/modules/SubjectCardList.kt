@@ -10,6 +10,10 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -24,32 +28,38 @@ fun SubjectCardList(
     subjectList: List<Subject>,
     onSubjectClick: (Subject) -> Unit
 ) {
+    var query by remember { mutableStateOf("") }
+    val filteredSubjects = subjectList.filter {subject ->
+        subject.title.contains(query, ignoreCase = true) ||
+                subject.description.contains(query, ignoreCase = true)
+    }
+
     Column(
         modifier = modifier
-            .padding(horizontal = 16.dp)
-            .fillMaxSize(),
-        Arrangement.spacedBy(24.dp)
+            .fillMaxSize()
+            .padding(horizontal = 16.dp),
+        verticalArrangement = Arrangement.spacedBy(24.dp)
     ) {
 
         Box {
-            SearchInput()
+            SearchInput(
+                query = query,
+                onQueryChange = { query = it }
+            )
         }
 
-        LazyColumn {
-            items(items = subjectList, key = { it.id }) { subject ->
+        LazyColumn (
+            modifier = Modifier.padding(),
+        ){
+            items(items = filteredSubjects, key = { it.id }) { subject ->
                 SubjectCard(subject = subject, onClick = {
                     onSubjectClick(subject)
                 })
-                HorizontalDivider(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(vertical = 24.dp),
-                    color = Zinc100
-                )
             }
         }
     }
 }
+
 
 @Preview
 @Composable

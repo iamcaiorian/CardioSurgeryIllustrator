@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -48,6 +49,13 @@ fun SubjectCard(modifier: Modifier = Modifier, subject: Subject, onClick: (Subje
                     )
             }
             Text(text = subject.description, style = Typography.bodyMedium, color = Zinc800)
+
+            HorizontalDivider(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(vertical = 24.dp),
+                color = Zinc100
+            )
         }
     }
 }
