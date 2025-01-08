@@ -6,5 +6,6 @@ data class Module(
     val title: String,
     val description: String,
     val cover: String,
-    val progress: Float
+    val progress: Float,
+    val longDescription: String
 )
