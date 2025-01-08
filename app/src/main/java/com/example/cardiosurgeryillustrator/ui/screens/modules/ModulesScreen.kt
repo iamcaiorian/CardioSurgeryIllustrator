@@ -11,6 +11,7 @@ import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.example.cardiosurgeryillustrator.models.Module
 import com.example.cardiosurgeryillustrator.models.mock.mockModules
+import com.example.cardiosurgeryillustrator.navigation.SubjectAction
 import com.example.cardiosurgeryillustrator.ui.components.modules.ModuleCardList
 import com.example.cardiosurgeryillustrator.ui.components.modules.TopBarModules
 
@@ -38,7 +39,7 @@ fun ModulesScreen(
                 .fillMaxSize()
                 .padding(innerPadding),
             modulesList = modulesList,
-            onModuleClick = {}
+            onModuleClick = {module -> navController.navigate("${SubjectAction.ModulesVideo.route}/${module.id}")}
         )
     }
 }

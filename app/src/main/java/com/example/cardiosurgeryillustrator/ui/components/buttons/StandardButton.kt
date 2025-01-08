@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.heightIn
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
@@ -42,7 +43,12 @@ fun StandardButton(
             horizontalArrangement = Arrangement.spacedBy(8.dp)
         ) {
             iconRes?.let {
-                Icon(painter = painterResource(id = iconRes), contentDescription = "Ícone do Botão")
+                Icon(
+                    modifier = Modifier
+                        .size(24.dp),
+                    painter = painterResource(id = iconRes),
+                    contentDescription = "Ícone do Botão",
+                )
             }
             text?.let { Text(text = text.uppercase(), style = Typography.labelMedium) }
         }
