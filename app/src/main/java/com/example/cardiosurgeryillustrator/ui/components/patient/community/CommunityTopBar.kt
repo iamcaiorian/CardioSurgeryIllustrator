@@ -17,7 +17,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.cardiosurgeryillustrator.R
-import com.example.cardiosurgeryillustrator.ui.components.input.SearchInput
+import com.example.cardiosurgeryillustrator.ui.components.community.SearchInputCommunity
 
 @Composable
 fun CommunityTopBar(
@@ -42,7 +42,7 @@ fun CommunityTopBar(
 
         Spacer(modifier = Modifier.width(12.dp))
 
-        SearchInput()
+        SearchInputCommunity()
     }
 }
 

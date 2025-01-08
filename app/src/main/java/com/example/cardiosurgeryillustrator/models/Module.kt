@@ -10,6 +10,6 @@ data class Module(
     val description: String,
     val cover: String,
     val progress: Float,
-    val longDescription: String
+    val longDescription: String,
     val isFavorite: MutableState<Boolean> = mutableStateOf(false)
 )
