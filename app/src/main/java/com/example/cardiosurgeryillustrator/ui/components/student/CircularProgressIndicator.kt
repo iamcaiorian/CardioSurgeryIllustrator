@@ -1,10 +1,9 @@
-package com.example.cardiosurgeryillustrator.ui.screens.quiz
+package com.example.cardiosurgeryillustrator.ui.components.student
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.text.style.TextAlign
@@ -17,7 +16,7 @@ import com.example.cardiosurgeryillustrator.ui.theme.Zinc300
 fun CircularProgressWithPercentage(modifier: Modifier = Modifier, progress: Float) {
     val percentageProgress = (progress * 100).toInt()
 
-    Box(contentAlignment = Alignment.Center, modifier = modifier.size(100.dp)) {
+    Box(contentAlignment = Alignment.Center, modifier = modifier.size(96.dp)) {
         CircularProgressIndicator(
             modifier = Modifier.fillMaxSize(),
             progress = { progress },

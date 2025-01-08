@@ -11,14 +11,12 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.cardiosurgeryillustrator.R
 import com.example.cardiosurgeryillustrator.models.Quiz
-import com.example.cardiosurgeryillustrator.models.mock.mockQuizzes
 import com.example.cardiosurgeryillustrator.ui.components.button.ConfirmationButton
 import com.example.cardiosurgeryillustrator.ui.components.button.QuestionsButton
-import com.example.cardiosurgeryillustrator.ui.components.topBar.TopBarQuiz
+import com.example.cardiosurgeryillustrator.ui.components.quiz.TopBarQuiz
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable

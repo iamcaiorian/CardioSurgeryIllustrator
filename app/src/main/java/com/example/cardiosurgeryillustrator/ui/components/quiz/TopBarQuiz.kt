@@ -1,4 +1,4 @@
-package com.example.cardiosurgeryillustrator.ui.components.topBar
+package com.example.cardiosurgeryillustrator.ui.components.quiz
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.icons.filled.MoreVert

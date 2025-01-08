@@ -3,7 +3,6 @@ package com.example.cardiosurgeryillustrator.navigation
 import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AccountCircle
@@ -13,7 +12,6 @@ import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
@@ -28,6 +26,7 @@ import com.example.cardiosurgeryillustrator.R
 import com.example.cardiosurgeryillustrator.models.mock.StudyMock
 import com.example.cardiosurgeryillustrator.models.mock.mockModules
 import com.example.cardiosurgeryillustrator.models.mock.mockQuizzes
+import com.example.cardiosurgeryillustrator.ui.screens.modules.ModuleVideoScreen
 import com.example.cardiosurgeryillustrator.ui.screens.favorite.FavoriteScreen
 import com.example.cardiosurgeryillustrator.ui.screens.modules.ModulesScreen
 import com.example.cardiosurgeryillustrator.ui.screens.modules.StudyScreen
@@ -115,6 +114,7 @@ sealed class BottomBarStudentAction(
 
 sealed class SubjectAction(val route: String) {
     object Modules : SubjectAction("modules")
+    object ModulesVideo : SubjectAction("modulesVideo")
     object Study : SubjectAction("study")
     object Quiz : SubjectAction("quiz")
     object SecondQuiz : SubjectAction("secondQuiz")
@@ -135,7 +135,10 @@ fun StudentNavHost(
             Scaffold(
                 bottomBar = { BottomBarStudent(navController = studentNavController) }
             ) { innerPadding ->
-                HomeStudentScreen(navController = studentNavController, modifier = Modifier.padding(innerPadding))
+                HomeStudentScreen(
+                    navController = studentNavController,
+                    modifier = Modifier.padding(innerPadding)
+                )
             }
         }
 
@@ -183,11 +186,32 @@ fun StudentNavHost(
         }
 
         composable(
+            route = "${SubjectAction.ModulesVideo.route}/{moduleId}",
+            arguments = listOf(navArgument("moduleId") { type = NavType.StringType })
+        ) { backStackEntry ->
+            val moduleId = backStackEntry.arguments?.getString("moduleId")
+            val module = mockModules.find { it.id == moduleId }
+
+            Scaffold { innerPadding ->
+                module?.let {
+                    ModuleVideoScreen (
+                        module = module,
+                        modifier = Modifier.padding(innerPadding),
+                        onBackClick = { studentNavController.popBackStack() },
+                        onMenuOptionClick = { println("Menu clicado: $it") },
+                        navController = studentNavController
+                    )
+
+                }
+            }
+        }
+
+        composable(
             route = "${SubjectAction.Study.route}/{moduleId}",
             arguments = listOf(navArgument("moduleId") { type = NavType.StringType })
         ) { backStackEntry ->
             val moduleId = backStackEntry.arguments?.getString("moduleId")
-            val study = StudyMock.find { it.id == moduleId }
+            val study = StudyMock.find { it.moduleId == moduleId }
 
             Scaffold { innerPadding ->
                 study?.let {
