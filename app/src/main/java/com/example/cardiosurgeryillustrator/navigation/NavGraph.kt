@@ -13,7 +13,6 @@ import com.example.cardiosurgeryillustrator.R
 import com.example.cardiosurgeryillustrator.models.mock.mockQuestions
 import com.example.cardiosurgeryillustrator.ui.screens.authentication.LoginScreen
 import com.example.cardiosurgeryillustrator.ui.screens.authentication.RegisterScreen
-import com.example.cardiosurgeryillustrator.ui.screens.community.ForumScreen
 import com.example.cardiosurgeryillustrator.ui.screens.patient.form.CardioForm
 import com.example.cardiosurgeryillustrator.ui.screens.welcome.ChooseUserScreen
 import com.example.cardiosurgeryillustrator.ui.screens.welcome.WelcomeScreen
