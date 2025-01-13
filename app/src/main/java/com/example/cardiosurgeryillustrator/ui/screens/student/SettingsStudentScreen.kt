@@ -56,6 +56,13 @@ fun SettingsStudentScreen(
                     SettingsAction.Profile.route
                 )
             })
+
+            SettingsOption(title = "Alterar senha", onClickOption = {
+                navController.navigate(
+                    SettingsAction.ValidadeCode.route
+                )
+            })
+
         }
     }
 }

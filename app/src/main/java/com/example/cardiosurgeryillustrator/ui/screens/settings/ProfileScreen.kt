@@ -85,15 +85,6 @@ fun ProfileScreen(modifier: Modifier = Modifier, onNavigateBack: () -> Unit) {
                     modifier = Modifier.padding(vertical = 12.dp)
                 )
 
-                TextInputField(
-                    label = "Senha",
-                    value = "senha",
-                    onValueChange = {},
-                    isPassword = true,
-                    modifier = Modifier.padding(vertical = 12.dp)
-
-                )
-
                 ConfirmationButton(
                     text = "Confirmar alteração",
                     onClick = {},

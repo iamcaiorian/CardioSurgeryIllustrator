@@ -32,7 +32,7 @@ fun SettingsOption(
     title: String
 ) {
     Card(
-        modifier = modifier,
+        modifier = modifier.padding(0.dp),
         onClick = onClickOption,
         colors = CardDefaults.cardColors(
             containerColor = Color.Transparent

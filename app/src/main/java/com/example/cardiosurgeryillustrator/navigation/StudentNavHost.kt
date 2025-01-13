@@ -33,7 +33,9 @@ import com.example.cardiosurgeryillustrator.ui.screens.modules.ModulesScreen
 import com.example.cardiosurgeryillustrator.ui.screens.modules.StudyScreen
 import com.example.cardiosurgeryillustrator.ui.screens.quiz.QuizScreen
 import com.example.cardiosurgeryillustrator.ui.screens.quiz.SecondQuizScreen
+import com.example.cardiosurgeryillustrator.ui.screens.settings.ChangePasswordScreen
 import com.example.cardiosurgeryillustrator.ui.screens.settings.ProfileScreen
+import com.example.cardiosurgeryillustrator.ui.screens.settings.ValidateCodeScreen
 import com.example.cardiosurgeryillustrator.ui.screens.subject.SubjectsScreen
 import com.example.cardiosurgeryillustrator.ui.screens.student.HomeStudentScreen
 import com.example.cardiosurgeryillustrator.ui.screens.student.SettingsStudentScreen
@@ -126,6 +128,8 @@ sealed class SubjectAction(val route: String) {
 sealed class SettingsAction(val route: String) {
     object Notifications : SettingsAction("notifications")
     object Profile : SettingsAction("profile")
+    object ValidadeCode : SettingsAction("validadeCode")
+    object ChangePassword : SettingsAction("changePassword")
 }
 
 
@@ -192,6 +196,25 @@ fun StudentNavHost(
                 bottomBar = { BottomBarStudent(navController = studentNavController) }
             ) { innerPadding ->
                 ProfileScreen(
+                    modifier = Modifier.padding(innerPadding),
+                    onNavigateBack = { studentNavController.popBackStack() },
+                )
+            }
+        }
+
+        composable(SettingsAction.ValidadeCode.route) {
+            Scaffold { innerPadding ->
+                ValidateCodeScreen(
+                    modifier = Modifier.padding(innerPadding),
+                    onNavigateBack = { studentNavController.popBackStack() },
+                    navController = studentNavController
+                )
+            }
+        }
+
+        composable(SettingsAction.ChangePassword.route) {
+            Scaffold { innerPadding ->
+                ChangePasswordScreen(
                     modifier = Modifier.padding(innerPadding),
                     onNavigateBack = { studentNavController.popBackStack() },
                 )
