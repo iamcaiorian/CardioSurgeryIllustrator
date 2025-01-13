@@ -14,6 +14,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.input.PasswordVisualTransformation
+import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -22,12 +24,13 @@ import androidx.compose.ui.unit.sp
 fun TextInputField(
     label: String,
     value: String,
-    onValueChange: (String) -> Unit
+    modifier: Modifier = Modifier,
+    onValueChange: (String) -> Unit,
+    isPassword: Boolean = false
 ) {
     Column(
-        modifier = Modifier
+        modifier = modifier
             .fillMaxWidth()
-            .padding(vertical = 32.dp)
     ) {
         Text(
             text = label,
@@ -41,24 +44,34 @@ fun TextInputField(
         Spacer(modifier = Modifier.height(8.dp))
 
         OutlinedTextField(
-            label = {Text("Resposta")},
+            label = { Text("Resposta") },
             value = value,
             onValueChange = onValueChange,
             modifier = Modifier.fillMaxWidth(),
-            colors = OutlinedTextFieldDefaults. colors(
+            colors = OutlinedTextFieldDefaults.colors(
                 focusedBorderColor = Color(0xFF00369A1),
                 focusedLabelColor = Color(0xFF00369A1)
-            )
+            ),
+            visualTransformation = if (isPassword) PasswordVisualTransformation() else VisualTransformation.None
         )
     }
 }
 
-
 @Preview
 @Composable
 private fun TextInputFieldPreview() {
-    TextInputField(
-        label = "Qual é a sua altura? (Digite em metros, ex: 1.65)",
-        value = "",
-        onValueChange = {})
+    Column {
+        TextInputField(
+            label = "Qual é a sua altura? (Digite em metros, ex: 1.65)",
+            value = "",
+            onValueChange = {}
+        )
+        Spacer(modifier = Modifier.height(16.dp))
+        TextInputField(
+            label = "Digite sua senha",
+            value = "",
+            onValueChange = {},
+            isPassword = true // Exemplo de campo de senha
+        )
+    }
 }
