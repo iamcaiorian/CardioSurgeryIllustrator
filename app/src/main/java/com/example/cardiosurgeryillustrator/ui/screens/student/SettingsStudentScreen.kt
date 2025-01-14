@@ -10,11 +10,15 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+
+import androidx.navigation.NavController
+
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.example.cardiosurgeryillustrator.navigation.SettingsAction
+
 import com.example.cardiosurgeryillustrator.ui.components.settings.SettingsOption
 import com.example.cardiosurgeryillustrator.ui.components.settings.SettingsOptionSwitch
 import com.example.cardiosurgeryillustrator.ui.components.settings.TopBarSettings
@@ -43,13 +47,19 @@ fun SettingsStudentScreen(
                 .padding(innerPadding),
         ) {
 
+            SettingsOption(
+                title = "Notificações",
+                onClickOption = {
+                    navController.navigate("notifications")
+                }
+            )
+
             SettingsOptionSwitch(
                 title = "Modo escuro",
                 isChecked = isDarkThemeEnabled,
                 onCheckedChange = { viewModel.toggleTheme(navController.context) }
             )
 
-            SettingsOption(title = "Notificações", onClickOption = {})
 
             SettingsOption(title = "Tela de perfil", onClickOption = {
                 navController.navigate(
