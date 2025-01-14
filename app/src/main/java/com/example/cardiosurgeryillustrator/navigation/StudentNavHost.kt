@@ -31,6 +31,8 @@ import com.example.cardiosurgeryillustrator.ui.screens.modules.ModuleVideoScreen
 import com.example.cardiosurgeryillustrator.ui.screens.favorite.FavoriteScreen
 import com.example.cardiosurgeryillustrator.ui.screens.modules.ModulesScreen
 import com.example.cardiosurgeryillustrator.ui.screens.modules.StudyScreen
+import com.example.cardiosurgeryillustrator.ui.screens.notification.HabitDetailScreen
+import com.example.cardiosurgeryillustrator.ui.screens.notification.NotificationSettingsScreen
 import com.example.cardiosurgeryillustrator.ui.screens.quiz.QuizScreen
 import com.example.cardiosurgeryillustrator.ui.screens.quiz.SecondQuizScreen
 import com.example.cardiosurgeryillustrator.ui.screens.subject.SubjectsScreen
@@ -122,6 +124,9 @@ sealed class SubjectAction(val route: String) {
     object SecondQuiz : SubjectAction("secondQuiz")
 }
 
+sealed class SettingsAction(val route: String) {
+    object Notifications : SettingsAction("notifications")
+}
 
 @Composable
 @ExperimentalMaterial3Api
@@ -135,13 +140,30 @@ fun StudentNavHost(
         startDestination = BottomBarStudentAction.Home.route
     ) {
         composable(TopBarStudentAction.Settings.route) {
-            Scaffold (
+            Scaffold(
                 bottomBar = { BottomBarStudent(navController = studentNavController) }
-            ){innerPadding ->
+            ) { innerPadding ->
                 SettingsStudentScreen(
                     navController = studentNavController,
                     modifier = Modifier.padding(innerPadding),
-                    onNavigateBack = { studentNavController.popBackStack() },
+                    onNavigateBack = { studentNavController.popBackStack() }
+                )
+            }
+        }
+
+        composable("notifications") {
+            NotificationSettingsScreen(
+                onBackClick = { studentNavController.popBackStack() }
+            )
+        }
+
+        composable(BottomBarStudentAction.Home.route) {
+            Scaffold(
+                bottomBar = { BottomBarStudent(navController = studentNavController) }
+            ) { innerPadding ->
+                HomeStudentScreen(
+                    navController = studentNavController,
+                    modifier = Modifier.padding(innerPadding)
                 )
             }
         }
@@ -271,6 +293,22 @@ fun StudentNavHost(
                     )
                 }
             }
+        }
+        composable(
+            route = "habit_detail/{title}/{description}",
+            arguments = listOf(
+                navArgument("title") { type = NavType.StringType },
+                navArgument("description") { type = NavType.StringType }
+            )
+        ) { backStackEntry ->
+            val title = backStackEntry.arguments?.getString("title") ?: "Detalhes"
+            val description = backStackEntry.arguments?.getString("description") ?: "Sem descrição disponível."
+
+            HabitDetailScreen(
+                title = title,
+                description = description,
+                onBackClick = { studentNavController.popBackStack() }
+            )
         }
 
         composable(

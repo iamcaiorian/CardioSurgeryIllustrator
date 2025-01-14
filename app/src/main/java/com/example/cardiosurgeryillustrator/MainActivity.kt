@@ -10,8 +10,9 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
-import androidx.navigation.compose.rememberNavController
-import com.example.cardiosurgeryillustrator.navigation.AppNavGraph
+import com.example.cardiosurgeryillustrator.navigation.AppScreen
+import com.example.cardiosurgeryillustrator.navigation.BottomBarStudentAction
+import com.example.cardiosurgeryillustrator.navigation.NavGraph
 import com.example.cardiosurgeryillustrator.ui.theme.CardioSurgeryIllustratorTheme
 
 @ExperimentalMaterial3Api
@@ -23,19 +24,23 @@ class MainActivity : ComponentActivity() {
                 Surface {
                     var isAuthenticated by remember { mutableStateOf(false) }
 
-                    AppNavGraph(
+                    val navigateTo = intent.getStringExtra("navigate_to")
+                    val habitTitle = intent.getStringExtra("habit_title")
+                    val habitDescription = intent.getStringExtra("habit_message")
+
+                    val startDestination = when (navigateTo) {
+                        "habit_detail" -> "habit_detail/${habitTitle ?: "Detalhes"}/${habitDescription ?: "Aqui você sempre manterá bons hábitos!"}"
+                        else -> if (isAuthenticated) AppScreen.StudentFlow.route else AppScreen.WelcomeFlow.route
+                    }
+
+                    NavGraph(
                         isAuthenticated = isAuthenticated,
-                        onLogin = {
-                            isAuthenticated = true
-                        },
-                        onLogout = {
-                            isAuthenticated = false
-                        }
+                        onLogin = { isAuthenticated = true },
+                        onLogout = { isAuthenticated = false },
+                        startDestination = startDestination
                     )
                 }
             }
         }
     }
 }
-
-
