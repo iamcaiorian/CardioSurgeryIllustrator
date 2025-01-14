@@ -14,8 +14,11 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.material3.Button
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -31,6 +34,8 @@ import androidx.navigation.compose.rememberNavController
 import com.example.cardiosurgeryillustrator.R
 import com.example.cardiosurgeryillustrator.models.InfoText
 import com.example.cardiosurgeryillustrator.models.mock.mockInfoText
+import com.example.cardiosurgeryillustrator.ui.components.buttons.StandardButton
+import com.example.cardiosurgeryillustrator.ui.modals.feedback.FeedbackModal
 
 @Composable
 fun HomePacientScreen(modifier: Modifier = Modifier, navController: NavController, infoTextList: List<InfoText>) {
@@ -40,6 +45,8 @@ fun HomePacientScreen(modifier: Modifier = Modifier, navController: NavControlle
             .padding(16.dp),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
+        val showBottomSheet = remember { mutableStateOf(false) }
+
         Row {
             Image(
                 painter = painterResource(id = R.drawable.heart_icon),
@@ -108,6 +115,15 @@ fun HomePacientScreen(modifier: Modifier = Modifier, navController: NavControlle
 
         Spacer(modifier = Modifier.height(16.dp))
 
+        // Botão para abrir o modal
+        StandardButton(
+            onClick = { showBottomSheet.value = true },
+            text = "Abrir Feedback",
+            modifier = Modifier.fillMaxWidth()
+        )
+
+        Spacer(modifier = Modifier.height(16.dp))
+
         LazyColumn(
             modifier = Modifier
                 .fillMaxSize()
@@ -139,6 +155,13 @@ fun HomePacientScreen(modifier: Modifier = Modifier, navController: NavControlle
                     Spacer(modifier = Modifier.height(56.dp))
                 }
             }
+        }
+
+        // Exibe o modal se `showBottomSheet` for true
+        if (showBottomSheet.value) {
+            FeedbackModal(
+                onDismiss = { showBottomSheet.value = false }
+            )
         }
     }
 }

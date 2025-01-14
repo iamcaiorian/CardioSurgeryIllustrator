@@ -23,7 +23,7 @@ import com.example.cardiosurgeryillustrator.ui.theme.Zinc900
 
 @Composable
 @ExperimentalMaterial3Api
-fun TopBarSettings(modifier: Modifier = Modifier, onNavigateBack: () -> Unit) {
+fun TopBarSettings(modifier: Modifier = Modifier, onNavigateBack: () -> Unit, title: String) {
     TopAppBar(
         title = {
             Row (
@@ -45,7 +45,7 @@ fun TopBarSettings(modifier: Modifier = Modifier, onNavigateBack: () -> Unit) {
                         contentDescription = "Ícone do botão",
                     )
                 }
-                Text(text = "Configurações", style = Typography.headlineLarge)
+                Text(text = title, style = Typography.headlineLarge)
             }
         }
     )
@@ -55,5 +55,5 @@ fun TopBarSettings(modifier: Modifier = Modifier, onNavigateBack: () -> Unit) {
 @Composable
 @ExperimentalMaterial3Api
 private fun TopBarSettingsPreview() {
-    TopBarSettings(modifier = Modifier, onNavigateBack = {})
+    TopBarSettings(modifier = Modifier, onNavigateBack = {}, title = "Configurações")
 }

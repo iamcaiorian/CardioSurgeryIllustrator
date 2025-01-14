@@ -93,6 +93,7 @@ fun CardioForm(
                 QuestionType.TEXTINPUT -> {
                     val value = answers[question.id.toString()] ?: ""
                     TextInputField(label = question.text,
+                        modifier = Modifier.padding(vertical = 32.dp),
                         value = value,
                         onValueChange = { newValue ->
                             // Crie um novo mapa com as alterações
