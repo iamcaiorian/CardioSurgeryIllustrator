@@ -28,6 +28,7 @@ import com.example.cardiosurgeryillustrator.ui.screens.patient.home.HomePacientS
 import com.example.cardiosurgeryillustrator.ui.screens.patient.MoreScreen
 import com.example.cardiosurgeryillustrator.ui.screens.patient.community.CommunityScreen
 import com.example.cardiosurgeryillustrator.ui.screens.patient.community.ForumScreen
+import com.example.cardiosurgeryillustrator.ui.screens.patient.nearbyClinics.NearbyClinics
 
 
 @ExperimentalMaterial3Api
@@ -125,6 +126,10 @@ fun PatientNavHost() {
                     modifier = Modifier.padding(innerPadding)
                 )
             }
+        }
+
+        composable("nearby_clinics") {
+            NearbyClinics(navController = pacientNavController)
         }
     }
 }

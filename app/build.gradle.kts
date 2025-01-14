@@ -54,6 +54,12 @@ dependencies {
     implementation(libs.androidx.material3)
     implementation("androidx.media:media:1.6.0")
 
+    implementation(libs.maps.compose)
+
+    implementation ("com.google.accompanist:accompanist-permissions:0.37.0")
+    implementation ("com.google.android.gms:play-services-location:21.3.0")
+
+
     // AndroidX Core
     implementation("androidx.core:core-ktx:1.12.0")
 
