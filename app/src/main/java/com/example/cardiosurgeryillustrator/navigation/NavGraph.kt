@@ -16,6 +16,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import androidx.navigation.navigation
+import com.example.cardiosurgeryillustrator.models.mock.mockQuestions
 import com.example.cardiosurgeryillustrator.ui.screens.authentication.LoginScreen
 import com.example.cardiosurgeryillustrator.ui.screens.authentication.RegisterScreen
 import com.example.cardiosurgeryillustrator.ui.screens.notification.HabitDetailScreen
@@ -105,7 +106,7 @@ fun NavGraph(
                         }
                     },
                     onBack = { navController.navigate(WelcomeScreen.ChooseUser.route) },
-                    questionsList = emptyList()
+                    questionsList = mockQuestions
                 )
             }
 
@@ -165,6 +166,11 @@ fun NavGraph(
                         }
                     }
                 )
+            }
+
+            // Patient Flow
+            composable(AppScreen.PatientFlow.route) {
+                PatientNavHost()
             }
 
 
