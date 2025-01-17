@@ -14,7 +14,6 @@ import com.example.cardiosurgeryillustrator.navigation.AppScreen
 import com.example.cardiosurgeryillustrator.navigation.BottomBarStudentAction
 import com.example.cardiosurgeryillustrator.navigation.NavGraph
 
-import com.example.cardiosurgeryillustrator.navigation.AppNavGraph
 
 import com.example.cardiosurgeryillustrator.ui.theme.CardioSurgeryIllustratorTheme
 
