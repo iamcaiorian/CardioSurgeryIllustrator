@@ -17,12 +17,12 @@ import androidx.navigation.navigation
 import com.example.cardiosurgeryillustrator.models.mock.mockQuestions
 import com.example.cardiosurgeryillustrator.ui.screens.authentication.LoginScreen
 import com.example.cardiosurgeryillustrator.ui.screens.authentication.RegisterScreen
-import com.example.cardiosurgeryillustrator.ui.screens.notification.HabitDetailScreen
-import com.example.cardiosurgeryillustrator.ui.screens.notification.NotificationSettingsScreen
+import com.example.cardiosurgeryillustrator.ui.screens.student.notification.HabitDetailScreen
+import com.example.cardiosurgeryillustrator.ui.screens.student.notification.NotificationSettingsScreen
 import com.example.cardiosurgeryillustrator.ui.screens.patient.form.CardioForm
 import com.example.cardiosurgeryillustrator.ui.screens.welcome.ChooseUserScreen
 import com.example.cardiosurgeryillustrator.ui.screens.welcome.WelcomeScreen
-import com.example.cardiosurgeryillustrator.ui.view_models.SettingsViewModel
+import com.example.cardiosurgeryillustrator.ui.view_models.settings.SettingsViewModel
 
 sealed class AppScreen(val route: String) {
     object LoginFlow : AppScreen("login_flow_graph")

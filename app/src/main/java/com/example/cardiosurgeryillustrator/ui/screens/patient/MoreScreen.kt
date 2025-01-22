@@ -22,7 +22,7 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.example.cardiosurgeryillustrator.R
-import com.example.cardiosurgeryillustrator.ui.components.settings.SettingsOption
+import com.example.cardiosurgeryillustrator.ui.components.student.settings_student.SettingsOption
 
 @Composable
 fun MoreScreen(modifier: Modifier = Modifier, navController: NavController) {
