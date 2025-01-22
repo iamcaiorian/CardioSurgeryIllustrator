@@ -1,4 +1,4 @@
-package com.example.cardiosurgeryillustrator.models
+package com.example.cardiosurgeryillustrator.models.student.quiz
 
 data class Study(
     val id: String,

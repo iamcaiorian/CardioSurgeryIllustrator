@@ -1,6 +1,6 @@
 package com.example.cardiosurgeryillustrator.models.mock
 
-import com.example.cardiosurgeryillustrator.models.Quiz
+import com.example.cardiosurgeryillustrator.models.student.quiz.Quiz
 
 val mockQuizzes = listOf(
     Quiz(

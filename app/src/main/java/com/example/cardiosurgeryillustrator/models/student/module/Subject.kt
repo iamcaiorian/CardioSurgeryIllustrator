@@ -1,4 +1,4 @@
-package com.example.cardiosurgeryillustrator.models
+package com.example.cardiosurgeryillustrator.models.student.module
 
 data class Subject(
     val id: String,

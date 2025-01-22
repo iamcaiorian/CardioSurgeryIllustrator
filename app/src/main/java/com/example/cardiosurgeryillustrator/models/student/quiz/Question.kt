@@ -1,4 +1,4 @@
-package com.example.cardiosurgeryillustrator.models
+package com.example.cardiosurgeryillustrator.models.student.quiz
 
 data class Question(
     val id: Int,
@@ -7,6 +7,4 @@ data class Question(
     val type: QuestionType
 )
 
-enum class QuestionType {
-    CHECKBOX, RADIOBUTTON, TEXTINPUT
-}
+

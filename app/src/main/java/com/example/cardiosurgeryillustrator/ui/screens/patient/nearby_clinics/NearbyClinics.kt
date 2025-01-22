@@ -1,4 +1,4 @@
-package com.example.cardiosurgeryillustrator.ui.screens.patient.nearbyClinics
+package com.example.cardiosurgeryillustrator.ui.screens.patient.nearby_clinics
 
 import android.Manifest
 import android.annotation.SuppressLint
@@ -31,7 +31,7 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.example.cardiosurgeryillustrator.models.mock.mockClinics
-import com.example.cardiosurgeryillustrator.ui.components.patient.ClinicCardList
+import com.example.cardiosurgeryillustrator.ui.components.patient.nearby_clinics.ClinicCardList
 import com.example.cardiosurgeryillustrator.ui.theme.Zinc100
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import com.google.accompanist.permissions.rememberMultiplePermissionsState

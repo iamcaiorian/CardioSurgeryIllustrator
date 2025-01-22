@@ -13,7 +13,7 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import com.example.cardiosurgeryillustrator.R
-import com.example.cardiosurgeryillustrator.models.Quiz
+import com.example.cardiosurgeryillustrator.models.student.quiz.Quiz
 import com.example.cardiosurgeryillustrator.ui.components.button.ConfirmationButton
 import com.example.cardiosurgeryillustrator.ui.components.button.QuestionsButton
 import com.example.cardiosurgeryillustrator.ui.components.student.quiz.TopBarQuiz

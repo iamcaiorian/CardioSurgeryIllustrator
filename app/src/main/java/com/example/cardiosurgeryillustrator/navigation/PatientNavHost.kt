@@ -28,7 +28,7 @@ import com.example.cardiosurgeryillustrator.ui.screens.patient.home.HomePacientS
 import com.example.cardiosurgeryillustrator.ui.screens.patient.MoreScreen
 import com.example.cardiosurgeryillustrator.ui.screens.patient.community.CommunityScreen
 import com.example.cardiosurgeryillustrator.ui.screens.patient.community.ForumScreen
-import com.example.cardiosurgeryillustrator.ui.screens.patient.nearbyClinics.NearbyClinics
+import com.example.cardiosurgeryillustrator.ui.screens.patient.nearby_clinics.NearbyClinics
 
 
 @ExperimentalMaterial3Api

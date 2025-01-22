@@ -1,4 +1,4 @@
-package com.example.cardiosurgeryillustrator.models
+package com.example.cardiosurgeryillustrator.models.patient.nearby_clinics
 
 data class Clinic (
     val id: String,

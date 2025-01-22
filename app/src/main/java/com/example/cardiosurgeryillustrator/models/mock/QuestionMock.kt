@@ -1,6 +1,6 @@
 package com.example.cardiosurgeryillustrator.models.mock
 
-import com.example.cardiosurgeryillustrator.models.Question
+import com.example.cardiosurgeryillustrator.models.student.quiz.Question
 import com.example.cardiosurgeryillustrator.models.QuestionType
 
 

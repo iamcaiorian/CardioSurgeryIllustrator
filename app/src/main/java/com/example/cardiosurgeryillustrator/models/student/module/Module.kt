@@ -1,4 +1,4 @@
-package com.example.cardiosurgeryillustrator.models
+package com.example.cardiosurgeryillustrator.models.student.module
 
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf

@@ -1,4 +1,4 @@
-package com.example.cardiosurgeryillustrator.ui.components.patient
+package com.example.cardiosurgeryillustrator.ui.components.patient.nearby_clinics
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -25,7 +25,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.cardiosurgeryillustrator.R
-import com.example.cardiosurgeryillustrator.models.Clinic
+import com.example.cardiosurgeryillustrator.models.patient.nearby_clinics.Clinic
 import com.example.cardiosurgeryillustrator.ui.theme.Typography
 import com.example.cardiosurgeryillustrator.ui.theme.Zinc100
 import com.example.cardiosurgeryillustrator.ui.theme.Zinc200

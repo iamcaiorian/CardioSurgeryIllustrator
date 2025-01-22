@@ -8,7 +8,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.material3.HorizontalDivider
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -17,10 +16,9 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.example.cardiosurgeryillustrator.models.Subject
+import com.example.cardiosurgeryillustrator.models.student.module.Subject
 import com.example.cardiosurgeryillustrator.models.mock.mockSubjects
 import com.example.cardiosurgeryillustrator.ui.components.input.SearchInput
-import com.example.cardiosurgeryillustrator.ui.theme.Zinc100
 
 @Composable
 fun SubjectCardList(
