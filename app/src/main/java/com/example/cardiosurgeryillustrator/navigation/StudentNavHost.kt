@@ -7,7 +7,6 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AccountCircle
 import androidx.compose.material.icons.filled.Favorite
-import androidx.compose.material.icons.filled.FavoriteBorder
 import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material.icons.filled.Settings
@@ -40,7 +39,7 @@ import com.example.cardiosurgeryillustrator.ui.screens.settings.ProfileScreen
 import com.example.cardiosurgeryillustrator.ui.screens.settings.ValidateCodeScreen
 import com.example.cardiosurgeryillustrator.ui.screens.subject.SubjectsScreen
 import com.example.cardiosurgeryillustrator.ui.screens.student.HomeStudentScreen
-import com.example.cardiosurgeryillustrator.ui.screens.student.SettingsStudentScreen
+import com.example.cardiosurgeryillustrator.ui.screens.settings.SettingsStudentScreen
 
 sealed class TopBarStudentAction(
     val route: String,
