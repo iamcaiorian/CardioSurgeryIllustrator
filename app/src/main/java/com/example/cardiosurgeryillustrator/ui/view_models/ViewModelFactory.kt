@@ -3,7 +3,7 @@ package com.example.cardiosurgeryillustrator.ui.view_models
 import android.content.Context
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import com.example.cardiosurgeryillustrator.ui.screens.notification.NotificationViewModel
+import com.example.cardiosurgeryillustrator.ui.screens.student.notification.NotificationViewModel
 
 class NotificationViewModelFactory(
     private val context: Context

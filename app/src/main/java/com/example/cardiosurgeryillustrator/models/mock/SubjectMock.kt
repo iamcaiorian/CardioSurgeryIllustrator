@@ -1,6 +1,6 @@
 package com.example.cardiosurgeryillustrator.models.mock
 
-import com.example.cardiosurgeryillustrator.models.Subject
+import com.example.cardiosurgeryillustrator.models.student.module.Subject
 
 val mockSubjects = listOf(
     Subject(

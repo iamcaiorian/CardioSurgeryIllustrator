@@ -1,7 +1,7 @@
 package com.example.cardiosurgeryillustrator.models.mock
 
 import com.example.cardiosurgeryillustrator.R
-import com.example.cardiosurgeryillustrator.models.Artery
+import com.example.cardiosurgeryillustrator.models.patient.home.Artery
 import com.example.cardiosurgeryillustrator.models.InfoText
 
 val mockArtery = listOf(

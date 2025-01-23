@@ -7,7 +7,6 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AccountCircle
 import androidx.compose.material.icons.filled.Favorite
-import androidx.compose.material.icons.filled.FavoriteBorder
 import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material.icons.filled.Settings
@@ -18,7 +17,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavType
-import com.example.cardiosurgeryillustrator.ui.components.student.BottomBarStudent
+import com.example.cardiosurgeryillustrator.ui.components.student.student.BottomBarStudent
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
@@ -27,20 +26,20 @@ import com.example.cardiosurgeryillustrator.R
 import com.example.cardiosurgeryillustrator.models.mock.StudyMock
 import com.example.cardiosurgeryillustrator.models.mock.mockModules
 import com.example.cardiosurgeryillustrator.models.mock.mockQuizzes
-import com.example.cardiosurgeryillustrator.ui.screens.modules.ModuleVideoScreen
-import com.example.cardiosurgeryillustrator.ui.screens.favorite.FavoriteScreen
-import com.example.cardiosurgeryillustrator.ui.screens.modules.ModulesScreen
-import com.example.cardiosurgeryillustrator.ui.screens.modules.StudyScreen
-import com.example.cardiosurgeryillustrator.ui.screens.notification.HabitDetailScreen
-import com.example.cardiosurgeryillustrator.ui.screens.notification.NotificationSettingsScreen
-import com.example.cardiosurgeryillustrator.ui.screens.quiz.QuizScreen
-import com.example.cardiosurgeryillustrator.ui.screens.quiz.SecondQuizScreen
-import com.example.cardiosurgeryillustrator.ui.screens.settings.ChangePasswordScreen
-import com.example.cardiosurgeryillustrator.ui.screens.settings.ProfileScreen
-import com.example.cardiosurgeryillustrator.ui.screens.settings.ValidateCodeScreen
-import com.example.cardiosurgeryillustrator.ui.screens.subject.SubjectsScreen
-import com.example.cardiosurgeryillustrator.ui.screens.student.HomeStudentScreen
-import com.example.cardiosurgeryillustrator.ui.screens.student.SettingsStudentScreen
+import com.example.cardiosurgeryillustrator.ui.screens.student.modules.ModuleVideoScreen
+import com.example.cardiosurgeryillustrator.ui.screens.student.favorite.FavoriteScreen
+import com.example.cardiosurgeryillustrator.ui.screens.student.modules.ModulesScreen
+import com.example.cardiosurgeryillustrator.ui.screens.student.modules.StudyScreen
+import com.example.cardiosurgeryillustrator.ui.screens.student.notification.HabitDetailScreen
+import com.example.cardiosurgeryillustrator.ui.screens.student.notification.NotificationSettingsScreen
+import com.example.cardiosurgeryillustrator.ui.screens.student.quiz.QuizScreen
+import com.example.cardiosurgeryillustrator.ui.screens.student.quiz.SecondQuizScreen
+import com.example.cardiosurgeryillustrator.ui.screens.student.settings_student.ChangePasswordScreen
+import com.example.cardiosurgeryillustrator.ui.screens.student.settings_student.ProfileScreen
+import com.example.cardiosurgeryillustrator.ui.screens.student.settings_student.ValidateCodeScreen
+import com.example.cardiosurgeryillustrator.ui.screens.student.subject.SubjectsScreen
+import com.example.cardiosurgeryillustrator.ui.screens.student.student.HomeStudentScreen
+import com.example.cardiosurgeryillustrator.ui.screens.student.settings_student.SettingsStudentScreen
 
 sealed class TopBarStudentAction(
     val route: String,

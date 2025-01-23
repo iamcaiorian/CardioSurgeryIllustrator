@@ -1,7 +1,7 @@
 package com.example.cardiosurgeryillustrator.models.mock
 
 import androidx.compose.runtime.mutableStateOf
-import com.example.cardiosurgeryillustrator.models.Module
+import com.example.cardiosurgeryillustrator.models.student.module.Module
 
 val mockModules = listOf(
     Module(
