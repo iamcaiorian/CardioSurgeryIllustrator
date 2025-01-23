@@ -1,7 +1,9 @@
 package com.example.cardiosurgeryillustrator.navigation
 
+import androidx.compose.animation.core.tween
+import androidx.compose.animation.slideInHorizontally
+import androidx.compose.animation.slideOutHorizontally
 import androidx.compose.foundation.layout.fillMaxWidth
-
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material.icons.Icons
@@ -18,16 +20,15 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
-
 import com.example.cardiosurgeryillustrator.R
 import com.example.cardiosurgeryillustrator.models.mock.mockInfoText
 import com.example.cardiosurgeryillustrator.ui.components.patient.BottomBarPacient
-import com.example.cardiosurgeryillustrator.ui.screens.patient.home.ArteryDetailsScreen
 import com.example.cardiosurgeryillustrator.ui.screens.patient.AssistantScreen
-import com.example.cardiosurgeryillustrator.ui.screens.patient.home.HomePacientScreen
 import com.example.cardiosurgeryillustrator.ui.screens.patient.MoreScreen
 import com.example.cardiosurgeryillustrator.ui.screens.patient.community.CommunityScreen
 import com.example.cardiosurgeryillustrator.ui.screens.patient.community.ForumScreen
+import com.example.cardiosurgeryillustrator.ui.screens.patient.home.ArteryDetailsScreen
+import com.example.cardiosurgeryillustrator.ui.screens.patient.home.HomePacientScreen
 import com.example.cardiosurgeryillustrator.ui.screens.patient.nearby_clinics.NearbyClinics
 
 
@@ -36,10 +37,58 @@ import com.example.cardiosurgeryillustrator.ui.screens.patient.nearby_clinics.Ne
 fun PatientNavHost() {
     val pacientNavController = rememberNavController()
 
+    val bottomBarRoutes = listOf(BottomBarPacientAction.HomePacient.route, BottomBarPacientAction.Community.route, BottomBarPacientAction.Assistant.route, BottomBarPacientAction.More.route)
+
     NavHost(
         navController = pacientNavController,
         startDestination = BottomBarPacientAction.HomePacient.route,
-        modifier = Modifier
+        modifier = Modifier,
+        enterTransition = {
+            val fromIndex = bottomBarRoutes.indexOf(initialState.destination.route)
+            val toIndex = bottomBarRoutes.indexOf(targetState.destination.route)
+            if (toIndex > fromIndex) {
+                // Navegação "para frente" (da direita para esquerda)
+                slideInHorizontally(
+                    initialOffsetX = { fullWidth -> fullWidth },
+                    animationSpec = tween(durationMillis = 300)
+                )
+            } else {
+                // Navegação "para trás" (da esquerda para direita)
+                slideInHorizontally(
+                    initialOffsetX = { fullWidth -> -fullWidth },
+                    animationSpec = tween(durationMillis = 300)
+                )
+            }
+        },
+        exitTransition = {
+            val fromIndex = bottomBarRoutes.indexOf(initialState.destination.route)
+            val toIndex = bottomBarRoutes.indexOf(targetState.destination.route)
+            if (toIndex > fromIndex) {
+                // Navegação "para frente" (saindo para a esquerda)
+                slideOutHorizontally(
+                    targetOffsetX = { fullWidth -> -fullWidth },
+                    animationSpec = tween(durationMillis = 300)
+                )
+            } else {
+                // Navegação "para trás" (saindo para a direita)
+                slideOutHorizontally(
+                    targetOffsetX = { fullWidth -> fullWidth },
+                    animationSpec = tween(durationMillis = 300)
+                )
+            }
+        },
+        popEnterTransition = {
+            slideInHorizontally(
+                initialOffsetX = { fullWidth -> -fullWidth },
+                animationSpec = tween(durationMillis = 300)
+            )
+        },
+        popExitTransition = {
+            slideOutHorizontally(
+                targetOffsetX = { fullWidth -> fullWidth },
+                animationSpec = tween(durationMillis = 300)
+            )
+        }
     ) {
         // Tela Home
         composable(BottomBarPacientAction.HomePacient.route) {
