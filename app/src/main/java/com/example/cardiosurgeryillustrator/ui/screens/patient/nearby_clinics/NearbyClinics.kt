@@ -47,7 +47,7 @@ import com.google.maps.android.compose.rememberCameraPositionState
 
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalPermissionsApi::class)
 @Composable
-fun NearbyClinics(modifier: Modifier = Modifier, navController: NavController) {
+fun NearbyClinics(modifier: Modifier, navController: NavController) {
     val context = LocalContext.current
     val fusedLocationClient = remember { LocationServices.getFusedLocationProviderClient(context) }
     val locationPermissionState = rememberMultiplePermissionsState(
@@ -136,5 +136,5 @@ private fun getCurrentLocation(
 @Preview
 @Composable
 private fun MapsScreenPreview() {
-    NearbyClinics(navController = rememberNavController())
+    NearbyClinics(navController = rememberNavController(), modifier = Modifier)
 }

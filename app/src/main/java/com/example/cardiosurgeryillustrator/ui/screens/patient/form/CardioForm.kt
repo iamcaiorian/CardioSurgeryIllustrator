@@ -43,7 +43,7 @@ import com.example.cardiosurgeryillustrator.ui.components.button.ConfirmationBut
 
 @Composable
 fun CardioForm(
-    onNavigateToHome: () -> Unit, onBack: () -> Unit, questionsList: List<Question>
+    onNavigateToHome: () -> Unit, onBack: () -> Unit, questionsList: List<Question>, modifier: Modifier = Modifier
 ) {
 
     var answers by remember { mutableStateOf(mutableMapOf<String, String>()) }
@@ -185,5 +185,5 @@ fun calculateIMC(height: String, weight: String): String {
 @Preview
 @Composable
 private fun CardioFormPreview() {
-    CardioForm(onNavigateToHome = {}, onBack = {}, questionsList = mockQuestions)
+    CardioForm(onNavigateToHome = {}, onBack = {}, questionsList = mockQuestions, modifier = Modifier)
 }
