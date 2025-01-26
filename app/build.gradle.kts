@@ -1,6 +1,8 @@
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
+    id("dagger.hilt.android.plugin")
+    id("org.jetbrains.kotlin.kapt")
 }
 
 android {
@@ -50,12 +52,23 @@ android {
 }
 
 dependencies {
-    // Core Android
-    implementation(libs.androidx.material3)
-    implementation("androidx.media:media:1.6.0")
 
+    // Retrofit
+    implementation("com.squareup.retrofit2:retrofit:2.9.0")
+    implementation("com.squareup.retrofit2:converter-gson:2.9.0")
+    implementation("androidx.lifecycle:lifecycle-viewmodel-compose:2.6.0")
+
+    // Coroutines
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.6.4")
+
+    // Hilt
+    implementation("com.google.dagger:hilt-android:2.45")
+    kapt("com.google.dagger:hilt-android-compiler:2.45")
+
+    implementation("androidx.navigation:navigation-compose:2.7.0")
+
+    // google maps
     implementation(libs.maps.compose)
-
     implementation ("com.google.accompanist:accompanist-permissions:0.37.0")
     implementation ("com.google.android.gms:play-services-location:21.3.0")
 
@@ -82,4 +95,8 @@ dependencies {
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
     implementation("androidx.work:work-runtime-ktx:2.8.1")
+}
+
+kapt {
+    correctErrorTypes = true
 }
