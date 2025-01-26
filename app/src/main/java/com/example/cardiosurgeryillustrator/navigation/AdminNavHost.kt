@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.Home
+import androidx.compose.material.icons.filled.Menu
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
@@ -41,6 +42,12 @@ sealed class BottomBarAdminAction(
         route = "home",
         icon = { androidx.compose.material3.Icon(Icons.Default.Home, contentDescription = "Home") },
         description = "Home"
+    )
+
+    object Quiz : BottomBarAdminAction(
+        route = "quiz",
+        icon = { androidx.compose.material3.Icon(Icons.Filled.Menu, contentDescription = "Quiz") },
+        description = "Quiz"
     )
 
     object Modules : BottomBarAdminAction(
@@ -126,6 +133,14 @@ fun AdminNavHost() {
             }
         }
 
+
+        composable(BottomBarAdminAction.Quiz.route) {
+            Scaffold(
+                bottomBar = { BottomBarAdmin(navController = adminNavController) }
+            ) { innerPadding ->
+              // tela de quiz
+        }
+            
         composable(BottomBarAdminAction.FAQ.route) {
             Scaffold(
                 bottomBar = { BottomBarAdmin(navController = adminNavController) },
@@ -140,7 +155,6 @@ fun AdminNavHost() {
                 FAQScreen (
                     modifier = Modifier.padding(innerPadding),
                 )
-            }
         }
     }
 }
