@@ -42,22 +42,22 @@ fun FAQScreen(
             .fillMaxSize()
             .padding(16.dp)
     ) {
-        Row (
+        Column (
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(8.dp),
-            verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.spacedBy(8.dp)
+            horizontalAlignment  = Alignment.End,
+            verticalArrangement = Arrangement.spacedBy(16.dp)
         ) {
+            SearchInput(query = query, onQueryChange = { query = it })
+
             StandardButton (
                 onClick = {
                     selectedFaq = null
                     showForm = true
                 },
-                iconRes = R.drawable.ic_plus
+                iconRes = R.drawable.ic_plus,
             )
-
-            SearchInput(query = query, onQueryChange = { query = it })
         }
 
         LazyColumn(modifier = Modifier.weight(1f)) {
