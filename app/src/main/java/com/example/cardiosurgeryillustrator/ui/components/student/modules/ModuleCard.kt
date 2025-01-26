@@ -87,6 +87,7 @@ fun ModuleCard(modifier: Modifier = Modifier, module: Module, onClick: (Module) 
                             .size(24.dp)
                             .clickable {
                                 isFavorite.value = !isFavorite.value
+                                module.isFavorite = isFavorite.value
                             }
                     )
                 }
