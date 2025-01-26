@@ -95,7 +95,6 @@ fun PatientNavHost() {
                 bottomBar = { BottomBarPacient(navController = pacientNavController) }
             ) { innerPadding ->
                 AssistantScreen(
-                    navController = pacientNavController,
                     modifier = Modifier.padding(innerPadding)
                 )
             }
