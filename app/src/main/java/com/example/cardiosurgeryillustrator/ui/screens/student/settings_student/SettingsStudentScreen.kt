@@ -20,7 +20,7 @@ import com.example.cardiosurgeryillustrator.navigation.SettingsAction
 import com.example.cardiosurgeryillustrator.ui.components.student.settings_student.SettingsOption
 import com.example.cardiosurgeryillustrator.ui.components.student.settings_student.SettingsOptionSwitch
 import com.example.cardiosurgeryillustrator.ui.components.student.settings_student.TopBarSettings
-import com.example.cardiosurgeryillustrator.ui.view_models.settings.SettingsViewModel
+import com.example.cardiosurgeryillustrator.ui.view_models.student.settings.SettingsViewModel
 
 @Composable
 @ExperimentalMaterial3Api

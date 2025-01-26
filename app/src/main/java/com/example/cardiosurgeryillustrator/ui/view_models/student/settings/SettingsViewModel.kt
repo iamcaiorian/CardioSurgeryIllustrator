@@ -1,4 +1,4 @@
-package com.example.cardiosurgeryillustrator.ui.view_models.settings
+package com.example.cardiosurgeryillustrator.ui.view_models.student.settings
 
 
 import android.content.Context
