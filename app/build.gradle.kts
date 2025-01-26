@@ -53,6 +53,7 @@ dependencies {
     // Core Android
     implementation(libs.androidx.material3)
     implementation("androidx.media:media:1.6.0")
+    implementation("com.squareup.okhttp3:okhttp:4.11.0")
 
     implementation(libs.maps.compose)
 
