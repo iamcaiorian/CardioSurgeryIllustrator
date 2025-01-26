@@ -1,4 +1,4 @@
-package com.example.cardiosurgeryillustrator.ui.screens.patient
+package com.example.cardiosurgeryillustrator.ui.screens.patient.assistant
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -18,32 +18,26 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
-import com.example.cardiosurgeryillustrator.models.chatbot.ChatMessage
-import com.example.cardiosurgeryillustrator.ui.screens.patient.chatbot.ChatBotApi
-import kotlinx.coroutines.launch
+import com.example.cardiosurgeryillustrator.repository.assistent.AssistentRepository
+import com.example.cardiosurgeryillustrator.ui.components.patient.assistent.AssistantMessageBubble
+import com.example.cardiosurgeryillustrator.ui.view_models.patient.assistent.AssistantViewModel
+import com.example.cardiosurgeryillustrator.ui.view_models.patient.assistent.AssistantViewModelFactory
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun AssistantScreen(
     modifier: Modifier = Modifier,
-    navController: NavController
+    viewModel: AssistantViewModel = viewModel(
+        factory = AssistantViewModelFactory(AssistentRepository())
+    )
 ) {
     val CustomBlue = Color(0xFF0074B7)
+    val messages by viewModel.messages.collectAsState()
     var messageText by remember { mutableStateOf(TextFieldValue()) }
-    val messages = remember { mutableStateListOf<ChatMessage>() }
     val listState = rememberLazyListState()
-    val coroutineScope = rememberCoroutineScope()
-
-    if (messages.isEmpty()) {
-        messages.add(
-            ChatMessage(
-                text = "Olá! Sou o assistente virtual. Fui desenvolvido para tirar dúvidas pontuais. Fique à vontade para perguntar!",
-                isUser = false
-            )
-        )
-    }
 
     LaunchedEffect(messages.size) {
         listState.animateScrollToItem(messages.size)
@@ -79,9 +73,9 @@ fun AssistantScreen(
             ) {
                 items(messages) { message ->
                     Spacer(modifier = Modifier.height(8.dp))
-                    MessageBubble(
-                        content = message.text,
-                        isUserMessage = message.isUser,
+                    AssistantMessageBubble(
+                        content = message.message,
+                        isUserMessage = message.sender == "user",
                         customBlue = CustomBlue
                     )
                 }
@@ -117,14 +111,7 @@ fun AssistantScreen(
                 IconButton(
                     onClick = {
                         if (messageText.text.isNotEmpty()) {
-                            val userMessage = ChatMessage(messageText.text, isUser = true)
-                            messages.add(userMessage)
-                            coroutineScope.launch {
-                                val response = ChatBotApi.sendMessage(userMessage.text)
-                                response?.let {
-                                    messages.add(ChatMessage(it, isUser = false))
-                                }
-                            }
+                            viewModel.sendMessage(messageText.text)
                             messageText = TextFieldValue("")
                         }
                     }
@@ -140,43 +127,11 @@ fun AssistantScreen(
     }
 }
 
-@Composable
-fun MessageBubble(content: String, isUserMessage: Boolean, customBlue: Color) {
-    Row(
-        modifier = Modifier.fillMaxWidth(),
-        horizontalArrangement = if (isUserMessage) Arrangement.End else Arrangement.Start
-    ) {
-        Box(
-            modifier = Modifier
-                .background(
-                    color = if (isUserMessage) {
-                        customBlue
-                    } else {
-                        MaterialTheme.colorScheme.secondary
-                    },
-                    shape = RoundedCornerShape(16.dp)
-                )
-                .padding(12.dp)
-                .widthIn(max = 250.dp)
-        ) {
-            Text(
-                text = content,
-                style = MaterialTheme.typography.bodyMedium,
-                color = if (isUserMessage) {
-                    Color.White
-                } else {
-                    MaterialTheme.colorScheme.onSecondary
-                }
-            )
-        }
-    }
-}
 
 @Preview
 @Composable
 private fun AssistantScreenPreview() {
     AssistantScreen(
         modifier = Modifier.fillMaxWidth(),
-        navController = rememberNavController()
     )
 }
