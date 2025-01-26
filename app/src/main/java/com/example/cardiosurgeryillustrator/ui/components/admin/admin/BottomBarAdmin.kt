@@ -15,7 +15,8 @@ fun BottomBarAdmin(navController: NavController) {
     val actions = listOf(
         BottomBarAdminAction.Home,
         BottomBarAdminAction.Modules,
-        BottomBarAdminAction.Quiz
+        BottomBarAdminAction.Quiz,
+        BottomBarAdminAction.FAQ
     )
 
     val currentDestination = navController.currentBackStackEntryAsState().value?.destination

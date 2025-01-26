@@ -24,6 +24,7 @@ import com.example.cardiosurgeryillustrator.ui.components.admin.admin.BottomBarA
 import com.example.cardiosurgeryillustrator.ui.components.student.student.BottomBarStudent
 import com.example.cardiosurgeryillustrator.ui.components.topBar.StandardTopBar
 import com.example.cardiosurgeryillustrator.ui.screens.admin.admin_modules.AdminModulesScreen
+import com.example.cardiosurgeryillustrator.ui.screens.admin.faq.FAQScreen
 import com.example.cardiosurgeryillustrator.ui.screens.admin.home.HomeAdminScreen
 import com.example.cardiosurgeryillustrator.ui.screens.admin.login.LoginAdminScreen
 import com.example.cardiosurgeryillustrator.ui.screens.student.student.HomeStudentScreen
@@ -64,6 +65,20 @@ sealed class BottomBarAdminAction(
         description = "Módulos"
     )
 
+    object FAQ : BottomBarAdminAction(
+        route = "faq",
+        icon = {
+            androidx.compose.material3.Icon(
+                painter = painterResource(R.drawable.ic_note),
+                contentDescription = "Subject",
+                modifier = Modifier
+                    .height(24.dp)
+                    .width(20.dp)
+                    .aspectRatio(1f)
+            )
+        },
+        description = "FAQ"
+    )
 }
 
 @Composable
@@ -118,12 +133,28 @@ fun AdminNavHost() {
             }
         }
 
+
         composable(BottomBarAdminAction.Quiz.route) {
             Scaffold(
                 bottomBar = { BottomBarAdmin(navController = adminNavController) }
             ) { innerPadding ->
-//                  tela de quiz
-            }
+              // tela de quiz
+        }
+            
+        composable(BottomBarAdminAction.FAQ.route) {
+            Scaffold(
+                bottomBar = { BottomBarAdmin(navController = adminNavController) },
+                topBar = {
+                    StandardTopBar(
+                        modifier = Modifier,
+                        onNavigateBack = { adminNavController.popBackStack() },
+                        title = "FAQ"
+                    )
+                }
+            ) { innerPadding ->
+                FAQScreen (
+                    modifier = Modifier.padding(innerPadding),
+                )
         }
     }
 }
