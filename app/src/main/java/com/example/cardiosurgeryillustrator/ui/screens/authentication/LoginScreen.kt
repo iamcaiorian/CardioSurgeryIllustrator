@@ -20,6 +20,8 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.cardiosurgeryillustrator.R
+import com.example.cardiosurgeryillustrator.ui.components.input.StandardTextArea
+import com.example.cardiosurgeryillustrator.ui.components.input.StandardTextField
 
 @OptIn(ExperimentalMaterial3Api::class)
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
@@ -27,7 +29,7 @@ import com.example.cardiosurgeryillustrator.R
 fun LoginScreen(
     onLoginClick: (String, String) -> Unit,
     onForgotPasswordClick: () -> Unit,
-    onRegisterClick: () -> Unit // Adicionado para redirecionar para tela de cadastro
+    onRegisterClick: () -> Unit
 ) {
     var email by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
@@ -118,17 +120,11 @@ fun LoginScreen(
                     color = Color.DarkGray,
                     modifier = Modifier.padding(start = 16.dp, bottom = 4.dp)
                 )
-                OutlinedTextField(
+
+                StandardTextField(
                     value = email,
-                    onValueChange = { email = it },
-                    placeholder = { Text("Digite seu email...") },
-                    modifier = Modifier.fillMaxWidth(),
-                    colors = OutlinedTextFieldDefaults.colors(
-                        focusedTextColor = Color.Black,
-                        unfocusedTextColor = Color.Gray,
-                        focusedBorderColor = Color(0xFF0D47A1),
-                        unfocusedBorderColor = Color.Gray
-                    )
+                    label = "Digite seu email",
+                    onValueChange = { email = it }
                 )
             }
 
@@ -143,19 +139,13 @@ fun LoginScreen(
                     color = Color.DarkGray,
                     modifier = Modifier.padding(start = 16.dp, bottom = 4.dp)
                 )
-                OutlinedTextField(
+
+                StandardTextField(
                     value = password,
-                    onValueChange = { password = it },
-                    placeholder = { Text("Digite sua senha...") },
-                    visualTransformation = PasswordVisualTransformation(),
-                    modifier = Modifier.fillMaxWidth(),
-                    colors = OutlinedTextFieldDefaults.colors(
-                        focusedTextColor = Color.Black,
-                        unfocusedTextColor = Color.Gray,
-                        focusedBorderColor = Color(0xFF0D47A1),
-                        unfocusedBorderColor = Color.Gray
-                    )
+                    label = "Digite sua senha",
+                    onValueChange = { password = it }
                 )
+
             }
 
             Spacer(modifier = Modifier.height(26.dp))
