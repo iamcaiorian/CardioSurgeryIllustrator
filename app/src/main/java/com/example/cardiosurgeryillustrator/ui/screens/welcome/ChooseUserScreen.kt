@@ -22,7 +22,12 @@ import com.example.cardiosurgeryillustrator.ui.components.welcome.WelcomeHeader
 import com.example.cardiosurgeryillustrator.ui.theme.Typography
 
 @Composable
-fun ChooseUserScreen(modifier: Modifier = Modifier, onNavigateToPatient: () -> Unit, onNavigateToStudent: () -> Unit) {
+fun ChooseUserScreen(
+    modifier: Modifier = Modifier,
+    onNavigateToPatient: () -> Unit,
+    onNavigateToStudent: () -> Unit,
+    onNavigateToAdmin: () -> Unit,
+) {
     Column(
         modifier = modifier
             .background(Color.White)
@@ -35,7 +40,7 @@ fun ChooseUserScreen(modifier: Modifier = Modifier, onNavigateToPatient: () -> U
         WelcomeHeader()
 
         Text(
-            text =  "Explore o passo a passo de cirurgias " +
+            text = "Explore o passo a passo de cirurgias " +
                     "cardiovasculares com ilustrações. Selecione " +
                     "abaixo se você é estudante ou paciente para começar.",
             style = Typography.bodyMedium,
@@ -60,6 +65,14 @@ fun ChooseUserScreen(modifier: Modifier = Modifier, onNavigateToPatient: () -> U
                 text = "Paciente",
                 onClick = onNavigateToPatient
             )
+
+            Text(text = "ou")
+
+            StandardButton(
+                modifier = Modifier.fillMaxWidth(),
+                text = "Administrador",
+                onClick = onNavigateToAdmin
+            )
         }
     }
 }
@@ -67,5 +80,5 @@ fun ChooseUserScreen(modifier: Modifier = Modifier, onNavigateToPatient: () -> U
 @Preview
 @Composable
 private fun ChooseUserScreenPreview() {
-    ChooseUserScreen(onNavigateToPatient = {}, onNavigateToStudent = {})
+    ChooseUserScreen(onNavigateToPatient = {}, onNavigateToStudent = {}, onNavigateToAdmin = {})
 }

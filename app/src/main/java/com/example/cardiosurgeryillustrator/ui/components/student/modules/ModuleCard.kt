@@ -20,6 +20,8 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -38,6 +40,9 @@ import com.example.cardiosurgeryillustrator.ui.theme.Zinc300
 
 @Composable
 fun ModuleCard(modifier: Modifier = Modifier, module: Module, onClick: (Module) -> Unit) {
+
+    val isFavorite = remember { mutableStateOf(module.isFavorite) }
+
     Card(
         modifier = modifier,
         onClick = { onClick(module) },
@@ -47,7 +52,7 @@ fun ModuleCard(modifier: Modifier = Modifier, module: Module, onClick: (Module) 
     ) {
         Row(
             modifier = modifier.fillMaxWidth(),
-            Arrangement.spacedBy(16.dp)
+            horizontalArrangement = Arrangement.spacedBy(16.dp)
         ) {
             Image(
                 painter = painterResource(id = R.drawable.module_anatomia_coracao),
@@ -57,17 +62,16 @@ fun ModuleCard(modifier: Modifier = Modifier, module: Module, onClick: (Module) 
                     .clip(RoundedCornerShape(16.dp)),
                 contentDescription = "Imagem do Local",
                 contentScale = ContentScale.Crop,
-
-                )
+            )
 
             Column(
                 modifier = modifier.fillMaxWidth(),
-                Arrangement.spacedBy(6.dp)
+                verticalArrangement = Arrangement.spacedBy(6.dp)
             ) {
                 Row(
                     horizontalArrangement = Arrangement.SpaceBetween,
                     verticalAlignment = Alignment.CenterVertically
-                ){
+                ) {
                     Text(
                         text = module.title,
                         style = Typography.headlineLarge,
@@ -76,18 +80,16 @@ fun ModuleCard(modifier: Modifier = Modifier, module: Module, onClick: (Module) 
                         overflow = TextOverflow.Ellipsis
                     )
                     Icon(
-                        imageVector = if (module.isFavorite.value) Icons.Default.Favorite else Icons.Default.FavoriteBorder,
+                        imageVector = if (isFavorite.value) Icons.Default.Favorite else Icons.Default.FavoriteBorder,
                         contentDescription = "Favorite",
                         tint = Blue700,
                         modifier = Modifier
                             .size(24.dp)
                             .clickable {
-                                module.isFavorite.value =
-                                    !module.isFavorite.value
+                                isFavorite.value = !isFavorite.value
                             }
                     )
                 }
-
 
                 Text(
                     text = module.description,
@@ -99,7 +101,7 @@ fun ModuleCard(modifier: Modifier = Modifier, module: Module, onClick: (Module) 
                 Spacer(modifier = Modifier.height(4.dp))
 
                 LinearProgressIndicator(
-                    progress = { module.progress },
+                    progress = module.progress,
                     modifier = Modifier
                         .fillMaxWidth()
                         .height(4.dp)
@@ -110,8 +112,8 @@ fun ModuleCard(modifier: Modifier = Modifier, module: Module, onClick: (Module) 
             }
         }
     }
-
 }
+
 
 @Preview
 @Composable
