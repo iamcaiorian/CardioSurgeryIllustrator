@@ -23,9 +23,7 @@ import com.example.cardiosurgeryillustrator.ui.components.faq.FaqItemRow
 
 @Composable
 fun FAQScreen(
-    onAddFaq: (String, String) -> Unit,
-    onEditFaq: (FaqItem) -> Unit,
-    onDeleteFaq: (FaqItem) -> Unit
+    modifier: Modifier = Modifier
 ) {
     var faqList by remember { mutableStateOf(mockFAQ.map { FaqItem(it.id.toInt(), it.question, it.answer) }) }
     var showForm by remember { mutableStateOf(false) }
@@ -52,7 +50,6 @@ fun FAQScreen(
                     },
                     onDeleteClick = {
                         faqList = faqList.filter { it.id != faq.id }
-                        onDeleteFaq(faq)
                     }
                 )
             }
@@ -77,12 +74,10 @@ fun FAQScreen(
                 if (selectedFaq == null) {
                     val newId = (faqList.maxOfOrNull { it.id } ?: 0) + 1
                     faqList = faqList + FaqItem(newId, question, answer)
-                    onAddFaq(question, answer)
                 } else {
                     faqList = faqList.map {
                         if (it.id == selectedFaq!!.id) it.copy(question = question, answer = answer) else it
                     }
-                    onEditFaq(selectedFaq!!.copy(question = question, answer = answer))
                 }
                 showForm = false
             },
@@ -96,10 +91,6 @@ data class FaqItem(val id: Int, val question: String, val answer: String)
 @Preview
 @Composable
 fun PreviewFAQScreen() {
-    FAQScreen(
-        onAddFaq = { question, answer -> },
-        onEditFaq = { },
-        onDeleteFaq = { }
-    )
+    FAQScreen()
 }
 
