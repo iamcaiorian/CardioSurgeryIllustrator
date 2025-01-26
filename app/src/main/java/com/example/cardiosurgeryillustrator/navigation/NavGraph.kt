@@ -143,7 +143,7 @@ fun NavGraph(
                 )
             }
 
-// Habit Detail Screen
+            // Habit Detail Screen
             composable(
                 route = "habit_detail/{title}/{description}",
                 arguments = listOf(

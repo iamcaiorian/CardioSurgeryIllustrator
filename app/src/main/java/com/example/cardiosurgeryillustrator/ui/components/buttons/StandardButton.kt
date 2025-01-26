@@ -31,8 +31,13 @@ fun StandardButton(
     onClick: () -> Unit,
     color: Color = Blue700
 ) {
+    val isIconOnly = text == null && iconRes != null
     Button(
-        modifier = modifier.heightIn(min = 40.dp),
+        modifier = modifier
+            .then(
+                if (isIconOnly) Modifier.size(40.dp)
+                else Modifier.heightIn(min = 40.dp)
+            ),
         shape = RoundedCornerShape(8.dp),
         contentPadding = if (text == null && iconRes != null) PaddingValues(0.dp) else ButtonDefaults.ContentPadding,
         colors = ButtonDefaults.buttonColors(containerColor = color),
