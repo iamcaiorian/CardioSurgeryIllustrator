@@ -3,6 +3,9 @@ package com.example.cardiosurgeryillustrator.ui.components.student.modules
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.animateColorAsState
 import androidx.compose.animation.core.animateFloatAsState
+import androidx.compose.animation.core.tween
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -136,7 +139,11 @@ fun AnimatedModuleCard(
         isVisible = true
     }
 
-    AnimatedVisibility(visible = isVisible) {
+    AnimatedVisibility(
+        visible = isVisible,
+        enter = fadeIn(animationSpec = tween(durationMillis = 2000)),
+        exit = fadeOut(animationSpec = tween(durationMillis = 2000))
+    ) {
         ModuleCard(
             modifier = modifier,
             module = module,
