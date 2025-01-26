@@ -19,9 +19,7 @@ import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
-import androidx.navigation.NavController
-import androidx.navigation.compose.rememberNavController
-import com.example.cardiosurgeryillustrator.repository.assistent.AssistentRepository
+import com.example.cardiosurgeryillustrator.repository.assistent.AssistantRepository
 import com.example.cardiosurgeryillustrator.ui.components.patient.assistent.AssistantMessageBubble
 import com.example.cardiosurgeryillustrator.ui.view_models.patient.assistent.AssistantViewModel
 import com.example.cardiosurgeryillustrator.ui.view_models.patient.assistent.AssistantViewModelFactory
@@ -31,7 +29,7 @@ import com.example.cardiosurgeryillustrator.ui.view_models.patient.assistent.Ass
 fun AssistantScreen(
     modifier: Modifier = Modifier,
     viewModel: AssistantViewModel = viewModel(
-        factory = AssistantViewModelFactory(AssistentRepository())
+        factory = AssistantViewModelFactory(AssistantRepository())
     )
 ) {
     val CustomBlue = Color(0xFF0074B7)

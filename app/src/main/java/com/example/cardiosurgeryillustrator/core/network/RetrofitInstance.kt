@@ -1,6 +1,6 @@
 package com.example.cardiosurgeryillustrator.core.network
 
-import com.example.cardiosurgeryillustrator.core.services.AssistentService
+import com.example.cardiosurgeryillustrator.core.services.AssistantService
 import com.example.cardiosurgeryillustrator.core.services.ModuleService
 import com.example.cardiosurgeryillustrator.core.services.SubjectService
 import retrofit2.Retrofit
@@ -27,11 +27,11 @@ object RetrofitInstance {
             .create(SubjectService::class.java)
     }
 
-    val assistentService: AssistentService by lazy {
+    val assistantService: AssistantService by lazy {
         Retrofit.Builder()
             .baseUrl(CHATBOT_URL)
             .addConverterFactory(GsonConverterFactory.create())
             .build()
-            .create(AssistentService::class.java)
+            .create(AssistantService::class.java)
     }
 }

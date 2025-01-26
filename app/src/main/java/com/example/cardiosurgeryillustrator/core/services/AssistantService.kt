@@ -5,7 +5,7 @@ import com.example.cardiosurgeryillustrator.models.chatbot.ChatMessageResponse
 import retrofit2.http.Body
 import retrofit2.http.POST
 
-interface AssistentService {
+interface AssistantService {
     @POST("/webhooks/rest/webhook")
     suspend fun sendMessage(@Body chatMessageRequest: ChatMessageRequest): List<ChatMessageResponse>
 }

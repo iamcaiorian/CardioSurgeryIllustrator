@@ -3,13 +3,13 @@ package com.example.cardiosurgeryillustrator.ui.view_models.patient.assistent
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.cardiosurgeryillustrator.models.chatbot.ChatMessageRequest
-import com.example.cardiosurgeryillustrator.repository.assistent.AssistentRepository
+import com.example.cardiosurgeryillustrator.repository.assistent.AssistantRepository
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 
 class AssistantViewModel(
-    private val assistentRepository: AssistentRepository
+    private val assistantRepository: AssistantRepository
 ) : ViewModel() {
 
     private val _messages = MutableStateFlow<List<ChatMessageRequest>>(listOf(
@@ -29,7 +29,7 @@ class AssistantViewModel(
 
         viewModelScope.launch {
             try {
-                val responses = assistentRepository.sendMessage(userChatMessageRequest)
+                val responses = assistantRepository.sendMessage(userChatMessageRequest)
 
 
                 val responseMessages = responses.map {
