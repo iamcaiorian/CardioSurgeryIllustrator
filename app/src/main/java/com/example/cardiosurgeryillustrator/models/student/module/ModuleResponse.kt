@@ -1,9 +1,6 @@
 package com.example.cardiosurgeryillustrator.models.student.module
 
-import androidx.compose.runtime.MutableState
-import androidx.compose.runtime.mutableStateOf
-
-data class Module(
+data class ModuleResponse(
     val id: String,
     val subjectId: String,
     val title: String,
@@ -11,5 +8,5 @@ data class Module(
     val cover: String,
     val progress: Float,
     val longDescription: String,
-    var isFavorite: MutableState<Boolean> = mutableStateOf(false)
+    var isFavorite: Boolean
 )

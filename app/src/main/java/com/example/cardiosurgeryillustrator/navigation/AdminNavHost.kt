@@ -46,7 +46,16 @@ sealed class BottomBarAdminAction(
 
     object Quiz : BottomBarAdminAction(
         route = "quiz",
-        icon = { androidx.compose.material3.Icon(Icons.Filled.Menu, contentDescription = "Quiz") },
+        icon = {
+            androidx.compose.material3.Icon(
+                painter = painterResource(R.drawable.ic_question),
+                contentDescription = "Subject",
+                modifier = Modifier
+                    .height(24.dp)
+                    .width(24.dp)
+                    .aspectRatio(1f)
+            )
+        },
         description = "Quiz"
     )
 

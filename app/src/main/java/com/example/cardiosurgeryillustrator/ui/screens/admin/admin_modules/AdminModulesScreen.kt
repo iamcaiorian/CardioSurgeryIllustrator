@@ -24,6 +24,7 @@ import com.example.cardiosurgeryillustrator.ui.components.admin.admin_modules.Ad
 import com.example.cardiosurgeryillustrator.ui.theme.Typography
 import com.example.cardiosurgeryillustrator.ui.view_models.admin.admin_modules.AdminModulesViewModel
 import com.example.cardiosurgeryillustrator.ui.view_models.admin.admin_modules.AdminModulesViewModelFactory
+import com.example.cardiosurgeryillustrator.utils.makeModuleEntityUtil
 
 @Composable
 fun AdminModulesScreen(
@@ -70,7 +71,7 @@ fun AdminModulesScreen(
 
                     items(items = subject.modules, key = { it.id }) { module ->
                         AdminModuleCard(
-                            module = module,
+                            module = makeModuleEntityUtil(module),
                             onClick = { },
                             modifier = Modifier.padding(vertical = 8.dp)
                         )
