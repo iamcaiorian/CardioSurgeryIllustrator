@@ -87,8 +87,9 @@ fun ForumTopBar(
                     modifier = Modifier
                         .size(32.dp)
                         .clip(CircleShape),
-                    iconRes = R.drawable.ic_arrow_left
-                ) {}
+                    iconRes = R.drawable.ic_arrow_left,
+                    onClick = {}
+                )
 
                 Column {
                     Text(
@@ -120,8 +121,9 @@ fun ForumTopBar(
                         modifier = Modifier
                             .size(28.dp)
                             .clip(CircleShape),
-                        iconRes = R.drawable.ic_arrow_left
-                    ) {}
+                        iconRes = R.drawable.ic_arrow_left,
+                        onClick = {}
+                    )
 
                     Text(
                         text = subtitle,

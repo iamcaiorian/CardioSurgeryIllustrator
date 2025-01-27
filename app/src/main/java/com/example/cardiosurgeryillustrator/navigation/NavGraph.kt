@@ -24,13 +24,14 @@ import com.example.cardiosurgeryillustrator.ui.screens.student.notification.Noti
 import com.example.cardiosurgeryillustrator.ui.screens.patient.form.CardioForm
 import com.example.cardiosurgeryillustrator.ui.screens.welcome.ChooseUserScreen
 import com.example.cardiosurgeryillustrator.ui.screens.welcome.WelcomeScreen
-import com.example.cardiosurgeryillustrator.ui.view_models.settings.SettingsViewModel
+import com.example.cardiosurgeryillustrator.ui.view_models.student.settings.SettingsViewModel
 
 sealed class AppScreen(val route: String) {
     object LoginFlow : AppScreen("login_flow_graph")
     object WelcomeFlow : AppScreen("welcome_flow_graph")
     object StudentFlow : AppScreen("student_flow_graph")
     object PatientFlow : AppScreen("patient_flow_graph")
+    object AdminFlow : AppScreen("admin_flow_graph")
 }
 
 sealed class LoginScreen(val route: String) {
@@ -92,6 +93,11 @@ fun NavGraph(
                             navController.navigate(FormScreen.Form.route) {
                                 popUpTo(WelcomeScreen.Welcome.route) { inclusive = true }
                             }
+                        },
+                        onNavigateToAdmin = {
+                            navController.navigate(AppScreen.AdminFlow.route) {
+                                popUpTo(WelcomeScreen.Welcome.route) { inclusive = true }
+                            }
                         }
                     )
                 }
@@ -147,7 +153,7 @@ fun NavGraph(
                 )
             }
 
-// Habit Detail Screen
+            // Habit Detail Screen
             composable(
                 route = "habit_detail/{title}/{description}",
                 arguments = listOf(
@@ -171,6 +177,10 @@ fun NavGraph(
             // Patient Flow
             composable(AppScreen.PatientFlow.route) {
                 PatientNavHost()
+            }
+
+            composable(AppScreen.AdminFlow.route) {
+                AdminNavHost()
             }
 
 

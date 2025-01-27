@@ -55,6 +55,11 @@ fun MoreScreen(modifier: Modifier = Modifier, navController: NavController) {
             onClickOption = { navController.navigate("nearby_clinics") },
             title = "Clínicas Próximas"
         )
+
+        SettingsOption(
+            onClickOption = { navController.navigate("faq") },
+            title = "Perguntas Frequentes"
+        )
     }
 }
 

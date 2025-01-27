@@ -38,8 +38,9 @@ fun ForumBottomBar(modifier: Modifier) {
             modifier = Modifier
                 .size(48.dp)
                 .clip(CircleShape),
-            iconRes = R.drawable.ic_send
-        ) { }
+            iconRes = R.drawable.ic_send,
+            onClick = {}
+        )
     }
 }
 

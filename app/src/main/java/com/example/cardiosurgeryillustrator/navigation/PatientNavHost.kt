@@ -23,12 +23,14 @@ import androidx.navigation.navArgument
 import com.example.cardiosurgeryillustrator.R
 import com.example.cardiosurgeryillustrator.models.mock.mockInfoText
 import com.example.cardiosurgeryillustrator.ui.components.patient.BottomBarPacient
-import com.example.cardiosurgeryillustrator.ui.screens.patient.AssistantScreen
+import com.example.cardiosurgeryillustrator.ui.components.topBar.StandardTopBar
+import com.example.cardiosurgeryillustrator.ui.screens.patient.home.ArteryDetailsScreen
+import com.example.cardiosurgeryillustrator.ui.screens.patient.assistant.AssistantScreen
+import com.example.cardiosurgeryillustrator.ui.screens.patient.home.HomePacientScreen
 import com.example.cardiosurgeryillustrator.ui.screens.patient.MoreScreen
 import com.example.cardiosurgeryillustrator.ui.screens.patient.community.CommunityScreen
 import com.example.cardiosurgeryillustrator.ui.screens.patient.community.ForumScreen
-import com.example.cardiosurgeryillustrator.ui.screens.patient.home.ArteryDetailsScreen
-import com.example.cardiosurgeryillustrator.ui.screens.patient.home.HomePacientScreen
+import com.example.cardiosurgeryillustrator.ui.screens.patient.faq.PatientFAQScreen
 import com.example.cardiosurgeryillustrator.ui.screens.patient.nearby_clinics.NearbyClinics
 
 
@@ -126,7 +128,7 @@ fun PatientNavHost() {
 
         // Tela Fórum
         composable("forum_screen") {
-            Scaffold( ) { innerPadding ->
+            Scaffold() { innerPadding ->
                 ForumScreen(
                     onSelectedCategoryChanged = { /* Ação ao selecionar */ },
                     userAvatar = R.drawable.avatar_1,
@@ -144,7 +146,6 @@ fun PatientNavHost() {
                 bottomBar = { BottomBarPacient(navController = pacientNavController) }
             ) { innerPadding ->
                 AssistantScreen(
-                    navController = pacientNavController,
                     modifier = Modifier.padding(innerPadding)
                 )
             }
@@ -168,7 +169,7 @@ fun PatientNavHost() {
             arguments = listOf(navArgument("arteryName") { type = NavType.StringType })
         ) { backStackEntry ->
             val arteryName = backStackEntry.arguments?.getString("arteryName") ?: ""
-            Scaffold( ) { innerPadding ->
+            Scaffold() { innerPadding ->
                 ArteryDetailsScreen(
                     navController = pacientNavController,
                     arteryName = arteryName,
@@ -179,6 +180,21 @@ fun PatientNavHost() {
 
         composable("nearby_clinics") {
             NearbyClinics(navController = pacientNavController)
+        }
+
+        composable("faq") {
+            Scaffold(
+                topBar = {
+                    StandardTopBar(
+                        onNavigateBack = { pacientNavController.popBackStack() },
+                        title = "Perguntas Frequentes"
+                    )
+                }
+            ) { innerPadding ->
+                PatientFAQScreen(
+                    modifier = Modifier.padding(innerPadding)
+                )
+            }
         }
     }
 }

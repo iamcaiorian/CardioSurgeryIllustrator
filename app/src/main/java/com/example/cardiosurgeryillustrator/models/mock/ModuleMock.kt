@@ -16,7 +16,7 @@ val mockModules = listOf(
             
             Além disso, o coração está conectado a grandes vasos, como a aorta e a artéria pulmonar, que transportam o sangue para e dos pulmões. Nervos simpáticos e parassimpáticos controlam o ritmo cardíaco, ajustando-o às necessidades do corpo durante o repouso e a atividade física.
         """.trimIndent(),
-        isFavorite = mutableStateOf(false)
+        isFavorite = false
     ),
     Module(
         id = "2",
@@ -30,7 +30,7 @@ val mockModules = listOf(
             
             Além disso, o ECG é utilizado em emergências para detectar infartos do miocárdio e monitorar a eficácia de tratamentos. É um exame simples, indolor e amplamente utilizado, tornando-se indispensável na prática clínica cardiovascular.
         """.trimIndent(),
-        isFavorite = mutableStateOf(false)
+        isFavorite = false
     ),
     Module(
         id = "3",
@@ -44,7 +44,7 @@ val mockModules = listOf(
             
             O diagnóstico é baseado em exames clínicos, laboratoriais e de imagem, como o ecocardiograma. As opções terapêuticas variam de medicamentos, como inibidores da ECA e betabloqueadores, a dispositivos, como marcapassos e transplante cardíaco em casos graves.
         """.trimIndent(),
-        isFavorite = mutableStateOf(false)
+        isFavorite = false
     ),
     Module(
         id = "4",
@@ -58,7 +58,7 @@ val mockModules = listOf(
             
             O manejo da hipertensão inclui mudanças no estilo de vida, como dieta balanceada e atividade física, além do uso de medicamentos, como diuréticos, bloqueadores dos canais de cálcio e inibidores da ECA. O controle adequado reduz significativamente o risco de complicações.
         """.trimIndent(),
-        isFavorite = mutableStateOf(false)
+        isFavorite = false
     ),
     Module(
         id = "5",
@@ -72,7 +72,7 @@ val mockModules = listOf(
             
             O diagnóstico é feito por meio de exames como o teste de esforço, angiografia coronariana e tomografia. O tratamento envolve mudanças no estilo de vida, medicamentos e, em casos graves, intervenções como angioplastia ou bypass coronariano.
         """.trimIndent(),
-        isFavorite = mutableStateOf(false)
+        isFavorite = false
     ),
     Module(
         id = "6",
@@ -86,7 +86,7 @@ val mockModules = listOf(
             
             Com avanços tecnológicos, como cirurgia robótica e técnicas minimamente invasivas, o risco de complicações foi reduzido, melhorando significativamente os resultados e a qualidade de vida dos pacientes.
         """.trimIndent(),
-        isFavorite = mutableStateOf(false)
+        isFavorite = false
     ),
     Module(
         id = "7",
@@ -100,7 +100,7 @@ val mockModules = listOf(
             
             Esses programas incluem avaliação inicial, monitoramento contínuo e planos individualizados que envolvem a equipe multidisciplinar, como cardiologistas, fisioterapeutas e nutricionistas.
         """.trimIndent(),
-        isFavorite = mutableStateOf(false)
+        isFavorite = false
     ),
     Module(
         id = "8",
@@ -114,6 +114,6 @@ val mockModules = listOf(
             
             O conhecimento dos mecanismos de ação e dos efeitos colaterais desses medicamentos é crucial para otimizar o tratamento e garantir a segurança do paciente.
         """.trimIndent(),
-        isFavorite = mutableStateOf(false)
+        isFavorite = false
     )
 )
