@@ -35,7 +35,7 @@ fun ModulesScreen(
         }
     ) { innerPadding ->
         ModuleCardList(
-            modifier = Modifier
+            modifier = modifier
                 .fillMaxSize()
                 .padding(innerPadding),
             modulesList = modulesList,

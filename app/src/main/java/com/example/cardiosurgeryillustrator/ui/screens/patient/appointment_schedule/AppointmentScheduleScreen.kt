@@ -43,7 +43,7 @@ fun AppointmentScheduleScreen(
 ) {
     val appointments by viewModel.appointments.collectAsState(initial = emptyList())
 
-    Column(modifier = Modifier.fillMaxSize()) {
+    Column(modifier = modifier.fillMaxSize()) {
         Row(
             modifier = Modifier
                 .fillMaxWidth()

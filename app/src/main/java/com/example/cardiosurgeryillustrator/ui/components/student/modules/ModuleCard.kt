@@ -48,9 +48,11 @@ import com.example.cardiosurgeryillustrator.ui.theme.Typography
 import com.example.cardiosurgeryillustrator.ui.theme.Zinc300
 
 @Composable
-fun ModuleCard(modifier: Modifier = Modifier, module: Module, onClick: (Module) -> Unit) {
-
-    val isFavorite = remember { mutableStateOf(module.isFavorite) }
+fun ModuleCard(
+    modifier: Modifier = Modifier,
+    module: Module,
+    onClick: (Module) -> Unit
+) {
 
     Card(
         modifier = modifier,
@@ -89,18 +91,19 @@ fun ModuleCard(modifier: Modifier = Modifier, module: Module, onClick: (Module) 
                         overflow = TextOverflow.Ellipsis
                     )
                     Icon(
-                        imageVector = if (isFavorite.value) Icons.Default.Favorite else Icons.Default.FavoriteBorder,
+                        imageVector = if (module.isFavorite.value) Icons.Default.Favorite else Icons.Default.FavoriteBorder,
                         contentDescription = "Favorite",
                         tint = animateColorAsState(
-                            targetValue = if (isFavorite.value) Blue700 else Color.Gray
+                            targetValue = if (module.isFavorite.value) Blue700 else Color.Gray
                         ).value,
                         modifier = Modifier
-                            .size(animateFloatAsState(
-                                targetValue = if (isFavorite.value) 28.dp.value else 24.dp.value
-                            ).value.dp)
+                            .size(
+                                animateFloatAsState(
+                                    targetValue = if (module.isFavorite.value) 28.dp.value else 24.dp.value
+                                ).value.dp
+                            )
                             .clickable {
-                                isFavorite.value = !isFavorite.value
-                                module.isFavorite = isFavorite.value
+                                module.isFavorite.value = !module.isFavorite.value
                             }
                     )
                 }
@@ -115,7 +118,7 @@ fun ModuleCard(modifier: Modifier = Modifier, module: Module, onClick: (Module) 
                 Spacer(modifier = Modifier.height(4.dp))
 
                 LinearProgressIndicator(
-                    progress = module.progress,
+                    progress = { module.progress },
                     modifier = Modifier
                         .fillMaxWidth()
                         .height(4.dp)
@@ -127,7 +130,6 @@ fun ModuleCard(modifier: Modifier = Modifier, module: Module, onClick: (Module) 
         }
     }
 }
-
 @Composable
 fun AnimatedModuleCard(
     modifier: Modifier = Modifier,
