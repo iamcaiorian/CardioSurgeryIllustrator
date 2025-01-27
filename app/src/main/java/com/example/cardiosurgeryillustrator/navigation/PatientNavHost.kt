@@ -21,6 +21,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import com.example.cardiosurgeryillustrator.R
+import com.example.cardiosurgeryillustrator.models.mock.mockClinics
 import com.example.cardiosurgeryillustrator.models.mock.mockInfoText
 import com.example.cardiosurgeryillustrator.ui.components.patient.BottomBarPacient
 import com.example.cardiosurgeryillustrator.ui.components.topBar.StandardTopBar
@@ -28,6 +29,8 @@ import com.example.cardiosurgeryillustrator.ui.screens.patient.home.ArteryDetail
 import com.example.cardiosurgeryillustrator.ui.screens.patient.assistant.AssistantScreen
 import com.example.cardiosurgeryillustrator.ui.screens.patient.home.HomePacientScreen
 import com.example.cardiosurgeryillustrator.ui.screens.patient.MoreScreen
+import com.example.cardiosurgeryillustrator.ui.screens.patient.appointment_schedule.AppointmentScheduleScreen
+import com.example.cardiosurgeryillustrator.ui.screens.patient.appointment_schedule.NewAppointmentScheduleScreen
 import com.example.cardiosurgeryillustrator.ui.screens.patient.community.CommunityScreen
 import com.example.cardiosurgeryillustrator.ui.screens.patient.community.ForumScreen
 import com.example.cardiosurgeryillustrator.ui.screens.patient.faq.PatientFAQScreen
@@ -179,7 +182,30 @@ fun PatientNavHost() {
         }
 
         composable("nearby_clinics") {
-            NearbyClinics(navController = pacientNavController)
+            Scaffold { innerPadding ->
+                NearbyClinics(
+                    navController = pacientNavController,
+                    modifier = Modifier.padding(innerPadding)
+                )
+            }
+        }
+
+        composable("appointment_schedule_screen") {
+            Scaffold { innerPadding ->
+                AppointmentScheduleScreen(
+                    navController = pacientNavController,
+                    modifier = Modifier.padding(innerPadding)
+                )
+            }
+        }
+        composable("new_appointment_screen") {
+            Scaffold { innerPadding ->
+                NewAppointmentScheduleScreen(
+                    navController = pacientNavController,
+                    mockClinics,
+                    modifier = Modifier.padding(innerPadding)
+                )
+            }
         }
 
         composable("faq") {

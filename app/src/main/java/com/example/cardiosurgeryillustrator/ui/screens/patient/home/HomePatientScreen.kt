@@ -70,7 +70,6 @@ fun HomePacientScreen(modifier: Modifier = Modifier, navController: NavControlle
         Text(
             text = "Meu coração",
             fontSize = 22.sp,
-            color = Color.Black
         )
 
         Box(modifier = Modifier.fillMaxWidth()) {
@@ -141,13 +140,11 @@ fun HomePacientScreen(modifier: Modifier = Modifier, navController: NavControlle
                         text = infoText.subtitle,
                         fontSize = 16.sp,
                         fontWeight = FontWeight.Medium,
-                        color = Color.Black,
                         modifier = Modifier.padding(bottom = 8.dp)
                     )
                     Text(
                         text = infoText.content,
                         fontSize = 14.sp,
-                        color = Color.Black
                     )
                 }
 

@@ -42,7 +42,6 @@ class HabitsNotificationWorker(
                 "A prática de exercícios físicos fortalece o coração, melhora a saúde mental e aumenta a resistência física. "
             )
         )
-
         val (title, description) = habits.random()
         sendNotification(title, description)
         return Result.success()
