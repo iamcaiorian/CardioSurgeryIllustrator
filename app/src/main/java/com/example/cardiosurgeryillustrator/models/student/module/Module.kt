@@ -11,5 +11,5 @@ data class Module(
     val cover: String,
     val progress: Float,
     val longDescription: String,
-    val isFavorite: Boolean = false
+    var isFavorite: Boolean = false
 )

@@ -138,9 +138,10 @@ fun AdminNavHost() {
             Scaffold(
                 bottomBar = { BottomBarAdmin(navController = adminNavController) }
             ) { innerPadding ->
-              // tela de quiz
+                // tela de quiz
+            }
         }
-            
+
         composable(BottomBarAdminAction.FAQ.route) {
             Scaffold(
                 bottomBar = { BottomBarAdmin(navController = adminNavController) },
@@ -152,9 +153,10 @@ fun AdminNavHost() {
                     )
                 }
             ) { innerPadding ->
-                FAQScreen (
+                FAQScreen(
                     modifier = Modifier.padding(innerPadding),
                 )
+            }
         }
     }
 }
