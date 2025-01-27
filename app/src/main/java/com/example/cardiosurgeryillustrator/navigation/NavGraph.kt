@@ -1,12 +1,15 @@
 package com.example.cardiosurgeryillustrator.navigation
 
+import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Scaffold
 import androidx.compose.material3.darkColorScheme
 import androidx.compose.material3.lightColorScheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
@@ -101,15 +104,18 @@ fun NavGraph(
 
             // Form Flow
             composable(FormScreen.Form.route) {
-                CardioForm(
-                    onNavigateToHome = {
-                        navController.navigate(AppScreen.PatientFlow.route) {
-                            popUpTo(WelcomeScreen.Welcome.route) { inclusive = true }
-                        }
-                    },
-                    onBack = { navController.navigate(WelcomeScreen.ChooseUser.route) },
-                    questionsList = mockQuestions
-                )
+                Scaffold { innerPadding ->
+                    CardioForm(
+                        onNavigateToHome = {
+                            navController.navigate(AppScreen.PatientFlow.route) {
+                                popUpTo(WelcomeScreen.Welcome.route) { inclusive = true }
+                            }
+                        },
+                        onBack = { navController.navigate(WelcomeScreen.ChooseUser.route) },
+                        questionsList = mockQuestions,
+                        modifier = Modifier.padding(innerPadding)
+                    )
+                }
             }
 
             // Login Flow
