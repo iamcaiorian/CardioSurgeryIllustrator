@@ -10,4 +10,9 @@ class QuizRepository() {
     suspend fun createQuiz(quiz: CreateQuizRequest): Response<Quiz> {
         return RetrofitInstance.quizService.createQuiz(quiz)
     }
+    suspend fun getQuizzes(): Response<List<Quiz>> {
+        val response = RetrofitInstance.quizService.getQuizzes()
+        println("Resposta da API getQuizzes: ${response.body()}")
+        return response
+    }
 }

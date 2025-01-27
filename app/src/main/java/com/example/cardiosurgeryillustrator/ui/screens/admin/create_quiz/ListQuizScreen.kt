@@ -20,6 +20,7 @@ fun ListQuizScreen(
     onCreateQuiz: () -> Unit,
     modifier: Modifier = Modifier
 ) {
+    println("Quizzes recebidos na tela: $quizzes")
     Column(
         modifier = modifier
             .fillMaxSize()

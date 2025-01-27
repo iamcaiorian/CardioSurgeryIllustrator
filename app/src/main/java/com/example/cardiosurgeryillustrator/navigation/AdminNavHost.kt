@@ -11,6 +11,9 @@ import androidx.compose.material.icons.filled.Menu
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.focusModifier
 import androidx.compose.ui.res.painterResource
@@ -21,6 +24,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.cardiosurgeryillustrator.R
 import com.example.cardiosurgeryillustrator.models.mock.mockModules
+import com.example.cardiosurgeryillustrator.repository.quiz.QuizRepository
 import com.example.cardiosurgeryillustrator.ui.components.admin.admin.BottomBarAdmin
 import com.example.cardiosurgeryillustrator.ui.components.student.student.BottomBarStudent
 import com.example.cardiosurgeryillustrator.ui.components.topBar.StandardTopBar
@@ -32,6 +36,9 @@ import com.example.cardiosurgeryillustrator.ui.screens.admin.home.HomeAdminScree
 import com.example.cardiosurgeryillustrator.ui.screens.admin.login.LoginAdminScreen
 import com.example.cardiosurgeryillustrator.ui.screens.student.student.HomeStudentScreen
 import com.example.cardiosurgeryillustrator.ui.view_models.admin.quiz_module.CreateQuizViewModel
+import com.example.cardiosurgeryillustrator.ui.view_models.admin.quiz_module.CreateQuizViewModelFactory
+import com.example.cardiosurgeryillustrator.ui.view_models.admin.quiz_module.QuizViewModel
+import com.example.cardiosurgeryillustrator.ui.view_models.admin.quiz_module.QuizViewModelFactory
 
 sealed class LoginAdminFlow(val route: String) {
     object Login : LoginAdminFlow("login_admin")
@@ -89,6 +96,13 @@ sealed class BottomBarAdminAction(
 @ExperimentalMaterial3Api
 fun AdminNavHost() {
     val adminNavController = rememberNavController()
+
+    val quizRepository = QuizRepository()
+    val quizViewModel = QuizViewModelFactory(quizRepository).create(QuizViewModel::class.java)
+
+    LaunchedEffect(Unit) {
+        quizViewModel.loadQuizzes()
+    }
 
     NavHost(
         navController = adminNavController,
@@ -149,8 +163,9 @@ fun AdminNavHost() {
                     )
                 }
             ) { innerPadding ->
+                val quizzes by quizViewModel.quizzes.collectAsState()
                 ListQuizScreen(
-                    quizzes = listOf(), // Mock ou integração futura
+                    quizzes = quizzes, // Mock ou integração futura
                     onEditQuiz = {}, // Placeholder para edição futura
                     onDeleteQuiz = {}, // Placeholder para exclusão futura
                     onCreateQuiz = {
@@ -172,9 +187,10 @@ fun AdminNavHost() {
             ) { innerPadding ->
                 AdminAddQuizScreen(
                     onQuizAdded = {
+                        quizViewModel.loadQuizzes()
                         adminNavController.popBackStack()
                     },
-                    modifier = Modifier.padding(innerPadding)
+                    modifier = Modifier.padding(innerPadding),
                 )
             }
         }

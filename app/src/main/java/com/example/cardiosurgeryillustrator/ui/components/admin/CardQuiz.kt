@@ -20,13 +20,11 @@ fun CardQuiz(
         modifier = modifier
             .fillMaxWidth()
             .padding(vertical = 8.dp),
-        colors = CardDefaults.cardColors(containerColor = Color(0xFFF5F5F5)), // Fundo neutro
-        elevation = CardDefaults.cardElevation(2.dp) // Sombra mais sutil
+        colors = CardDefaults.cardColors(containerColor = Color(0xFFF5F5F5)),
+        elevation = CardDefaults.cardElevation(2.dp)
     ) {
         Column(modifier = Modifier.padding(16.dp)) {
-            // Exibe o título do Quiz
             Text(quiz.title, style = MaterialTheme.typography.titleMedium)
-            // Substituído `subtitle` por `description` como exemplo
             Text(quiz.description ?: "Sem descrição", style = MaterialTheme.typography.bodyMedium)
 
             Spacer(modifier = Modifier.height(8.dp))
@@ -38,17 +36,23 @@ fun CardQuiz(
             ) {
                 Button(
                     onClick = { onEdit(quiz) },
-                    colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.primary),
-                    shape = MaterialTheme.shapes.medium // Botão mais arredondado
+                    colors = ButtonDefaults.buttonColors(
+                        containerColor = Color.Gray,
+                        contentColor = Color.White
+                    ),
+                    shape = MaterialTheme.shapes.medium
                 ) {
                     Text("Editar")
                 }
 
-                Spacer(modifier = Modifier.width(12.dp)) // Aumentei o espaçamento
+                Spacer(modifier = Modifier.width(12.dp))
 
                 Button(
                     onClick = { quiz.id?.let { onDelete(it) } },
-                    colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.error),
+                    colors = ButtonDefaults.buttonColors(
+                        containerColor = MaterialTheme.colorScheme.error,
+                        contentColor = Color.White
+                    ),
                     shape = MaterialTheme.shapes.medium
                 ) {
                     Text("Excluir")
