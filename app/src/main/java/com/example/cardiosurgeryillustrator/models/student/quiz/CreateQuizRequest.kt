@@ -1,14 +1,15 @@
 package com.example.cardiosurgeryillustrator.models.student.quiz
 
-data class Quiz(
-    val id: String? = null,
+import java.util.UUID
+
+data class CreateQuizRequest (
     val title: String,
     val description: String,
-    val questionEntityList: List<QuizQuestion>? = null
+    val questionEntityList: List<CreateQuizQuestionRequest>,
 )
 
-data class QuizQuestion(
-    val id: String,
+data class CreateQuizQuestionRequest(
+    val id: String= UUID.randomUUID().toString(),
     val problem: String,
     val alternativeA: String,
     val alternativeB: String,

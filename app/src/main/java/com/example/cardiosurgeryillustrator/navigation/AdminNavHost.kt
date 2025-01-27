@@ -15,6 +15,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.focusModifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
@@ -24,10 +25,13 @@ import com.example.cardiosurgeryillustrator.ui.components.admin.admin.BottomBarA
 import com.example.cardiosurgeryillustrator.ui.components.student.student.BottomBarStudent
 import com.example.cardiosurgeryillustrator.ui.components.topBar.StandardTopBar
 import com.example.cardiosurgeryillustrator.ui.screens.admin.admin_modules.AdminModulesScreen
+import com.example.cardiosurgeryillustrator.ui.screens.admin.create_quiz.AdminAddQuizScreen
+import com.example.cardiosurgeryillustrator.ui.screens.admin.create_quiz.ListQuizScreen
 import com.example.cardiosurgeryillustrator.ui.screens.admin.faq.FAQScreen
 import com.example.cardiosurgeryillustrator.ui.screens.admin.home.HomeAdminScreen
 import com.example.cardiosurgeryillustrator.ui.screens.admin.login.LoginAdminScreen
 import com.example.cardiosurgeryillustrator.ui.screens.student.student.HomeStudentScreen
+import com.example.cardiosurgeryillustrator.ui.view_models.admin.quiz_module.CreateQuizViewModel
 
 sealed class LoginAdminFlow(val route: String) {
     object Login : LoginAdminFlow("login_admin")
@@ -136,11 +140,45 @@ fun AdminNavHost() {
 
         composable(BottomBarAdminAction.Quiz.route) {
             Scaffold(
-                bottomBar = { BottomBarAdmin(navController = adminNavController) }
+                bottomBar = { BottomBarAdmin(navController = adminNavController) },
+                topBar = {
+                    StandardTopBar(
+                        modifier = Modifier,
+                        title = "Quizzes",
+                        onNavigateBack = { adminNavController.popBackStack() }
+                    )
+                }
             ) { innerPadding ->
-              // tela de quiz
+                ListQuizScreen(
+                    quizzes = listOf(), // Mock ou integração futura
+                    onEditQuiz = {}, // Placeholder para edição futura
+                    onDeleteQuiz = {}, // Placeholder para exclusão futura
+                    onCreateQuiz = {
+                        adminNavController.navigate("create_quiz")
+                    },
+                    modifier = Modifier.padding(innerPadding)
+                )
+            }
         }
-            
+
+        composable("create_quiz") {
+            Scaffold(
+                topBar = {
+                    StandardTopBar(
+                        title = "Criar Quiz",
+                        onNavigateBack = { adminNavController.popBackStack() }
+                    )
+                }
+            ) { innerPadding ->
+                AdminAddQuizScreen(
+                    onQuizAdded = {
+                        adminNavController.popBackStack()
+                    },
+                    modifier = Modifier.padding(innerPadding)
+                )
+            }
+        }
+
         composable(BottomBarAdminAction.FAQ.route) {
             Scaffold(
                 bottomBar = { BottomBarAdmin(navController = adminNavController) },
@@ -152,9 +190,10 @@ fun AdminNavHost() {
                     )
                 }
             ) { innerPadding ->
-                FAQScreen (
+                FAQScreen(
                     modifier = Modifier.padding(innerPadding),
                 )
+            }
         }
     }
 }

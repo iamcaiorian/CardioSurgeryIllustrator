@@ -14,6 +14,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import com.example.cardiosurgeryillustrator.R
 import com.example.cardiosurgeryillustrator.models.student.quiz.Quiz
+import com.example.cardiosurgeryillustrator.models.student.quiz.CreateQuizQuestionRequest
 import com.example.cardiosurgeryillustrator.ui.components.button.ConfirmationButton
 import com.example.cardiosurgeryillustrator.ui.components.button.QuestionsButton
 import com.example.cardiosurgeryillustrator.ui.components.student.quiz.TopBarQuiz
@@ -22,14 +23,15 @@ import com.example.cardiosurgeryillustrator.ui.components.student.quiz.TopBarQui
 @Composable
 fun SecondQuizScreen(
     quiz: Quiz,
+    question: CreateQuizQuestionRequest?,
     modifier: Modifier = Modifier,
     onBackClick: () -> Unit
 ) {
     Scaffold(
         topBar = {
             TopBarQuiz(
-                title = quiz.title,
-                subtitle = quiz.subtitle,
+                title = quiz.title ?: "Quiz sem título",
+                subtitle = "Detalhes do Quiz",
                 onBackClick = onBackClick,
                 onMenuOptionClick = {}
             )
@@ -53,7 +55,7 @@ fun SecondQuizScreen(
             )
 
             Text(
-                text = quiz.question,
+                text = question?.problem ?: "Pergunta não disponível.",
                 style = MaterialTheme.typography.titleLarge,
                 modifier = Modifier.align(Alignment.Start)
             )
@@ -64,22 +66,30 @@ fun SecondQuizScreen(
                     .padding(top = 16.dp),
                 verticalArrangement = Arrangement.spacedBy(8.dp)
             ) {
-                quiz.options?.forEach { option ->
+                listOf(
+                    question?.alternativeA ?: "",
+                    question?.alternativeB ?: "",
+                    question?.alternativeC ?: "",
+                    question?.alternativeD ?: ""
+                ).filter { it.isNotBlank() }.forEach { alternative ->
                     QuestionsButton(
-                        text = option,
+                        text = alternative,
                         isSelected = false,
-                        onClick = { }
+                        onClick = { /* Lógica de seleção */ }
                     )
-                }
+                } ?: Text(
+                    text = "Nenhuma opção disponível.",
+                    style = MaterialTheme.typography.bodyMedium,
+                    modifier = Modifier.align(Alignment.CenterHorizontally)
+                )
             }
 
             Spacer(modifier = Modifier.height(32.dp))
 
             ConfirmationButton(
                 text = "Confirmar",
-                onClick = { }
+                onClick = { /* Lógica de confirmação */ }
             )
         }
     }
 }
-

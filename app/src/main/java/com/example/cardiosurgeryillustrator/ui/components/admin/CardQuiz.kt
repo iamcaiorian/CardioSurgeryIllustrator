@@ -24,8 +24,10 @@ fun CardQuiz(
         elevation = CardDefaults.cardElevation(2.dp) // Sombra mais sutil
     ) {
         Column(modifier = Modifier.padding(16.dp)) {
+            // Exibe o título do Quiz
             Text(quiz.title, style = MaterialTheme.typography.titleMedium)
-            Text(quiz.subtitle, style = MaterialTheme.typography.bodyMedium)
+            // Substituído `subtitle` por `description` como exemplo
+            Text(quiz.description ?: "Sem descrição", style = MaterialTheme.typography.bodyMedium)
 
             Spacer(modifier = Modifier.height(8.dp))
 
@@ -45,7 +47,7 @@ fun CardQuiz(
                 Spacer(modifier = Modifier.width(12.dp)) // Aumentei o espaçamento
 
                 Button(
-                    onClick = { onDelete(quiz.id) },
+                    onClick = { quiz.id?.let { onDelete(it) } },
                     colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.error),
                     shape = MaterialTheme.shapes.medium
                 ) {

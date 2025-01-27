@@ -26,6 +26,7 @@ import com.example.cardiosurgeryillustrator.R
 import com.example.cardiosurgeryillustrator.models.mock.StudyMock
 import com.example.cardiosurgeryillustrator.models.mock.mockModules
 import com.example.cardiosurgeryillustrator.models.mock.mockQuizzes
+import com.example.cardiosurgeryillustrator.models.student.quiz.CreateQuizQuestionRequest
 import com.example.cardiosurgeryillustrator.ui.screens.student.modules.ModuleVideoScreen
 import com.example.cardiosurgeryillustrator.ui.screens.student.favorite.FavoriteScreen
 import com.example.cardiosurgeryillustrator.ui.screens.student.modules.ModulesScreen
@@ -267,7 +268,7 @@ fun StudentNavHost(
 
             Scaffold { innerPadding ->
                 module?.let {
-                    ModuleVideoScreen (
+                    ModuleVideoScreen(
                         module = module,
                         modifier = Modifier.padding(innerPadding),
                         onBackClick = { studentNavController.popBackStack() },
@@ -338,7 +339,8 @@ fun StudentNavHost(
             )
         ) { backStackEntry ->
             val title = backStackEntry.arguments?.getString("title") ?: "Detalhes"
-            val description = backStackEntry.arguments?.getString("description") ?: "Sem descrição disponível."
+            val description =
+                backStackEntry.arguments?.getString("description") ?: "Sem descrição disponível."
 
             HabitDetailScreen(
                 title = title,
@@ -356,8 +358,10 @@ fun StudentNavHost(
 
             Scaffold { innerPadding ->
                 quiz?.let {
+                    val question = it.questionEntityList?.firstOrNull() // Obtém a primeira questão
                     SecondQuizScreen(
                         quiz = it,
+                        question = question as? CreateQuizQuestionRequest,
                         modifier = Modifier.padding(innerPadding),
                         onBackClick = { studentNavController.popBackStack() }
                     )
@@ -366,4 +370,3 @@ fun StudentNavHost(
         }
     }
 }
-
