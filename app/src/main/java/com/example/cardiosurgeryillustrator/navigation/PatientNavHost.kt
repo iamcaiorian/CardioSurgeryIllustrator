@@ -23,14 +23,16 @@ import com.example.cardiosurgeryillustrator.R
 import com.example.cardiosurgeryillustrator.models.mock.mockClinics
 import com.example.cardiosurgeryillustrator.models.mock.mockInfoText
 import com.example.cardiosurgeryillustrator.ui.components.patient.BottomBarPacient
+import com.example.cardiosurgeryillustrator.ui.components.topBar.StandardTopBar
 import com.example.cardiosurgeryillustrator.ui.screens.patient.home.ArteryDetailsScreen
-import com.example.cardiosurgeryillustrator.ui.screens.patient.AssistantScreen
+import com.example.cardiosurgeryillustrator.ui.screens.patient.assistant.AssistantScreen
 import com.example.cardiosurgeryillustrator.ui.screens.patient.home.HomePacientScreen
 import com.example.cardiosurgeryillustrator.ui.screens.patient.MoreScreen
 import com.example.cardiosurgeryillustrator.ui.screens.patient.appointment_schedule.AppointmentScheduleScreen
 import com.example.cardiosurgeryillustrator.ui.screens.patient.appointment_schedule.NewAppointmentScheduleScreen
 import com.example.cardiosurgeryillustrator.ui.screens.patient.community.CommunityScreen
 import com.example.cardiosurgeryillustrator.ui.screens.patient.community.ForumScreen
+import com.example.cardiosurgeryillustrator.ui.screens.patient.faq.PatientFAQScreen
 import com.example.cardiosurgeryillustrator.ui.screens.patient.nearby_clinics.NearbyClinics
 
 
@@ -98,7 +100,6 @@ fun PatientNavHost() {
                 bottomBar = { BottomBarPacient(navController = pacientNavController) }
             ) { innerPadding ->
                 AssistantScreen(
-                    navController = pacientNavController,
                     modifier = Modifier.padding(innerPadding)
                 )
             }
@@ -153,6 +154,21 @@ fun PatientNavHost() {
                 NewAppointmentScheduleScreen(
                     navController = pacientNavController,
                     mockClinics,
+                    modifier = Modifier.padding(innerPadding)
+                )
+            }
+        }
+
+        composable("faq") {
+            Scaffold(
+                topBar = {
+                    StandardTopBar(
+                        onNavigateBack = { pacientNavController.popBackStack() },
+                        title = "Perguntas Frequentes"
+                    )
+                }
+            ) { innerPadding ->
+                PatientFAQScreen(
                     modifier = Modifier.padding(innerPadding)
                 )
             }

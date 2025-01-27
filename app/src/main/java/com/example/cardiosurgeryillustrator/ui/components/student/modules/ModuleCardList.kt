@@ -46,7 +46,7 @@ fun ModuleCardList(
             verticalArrangement = Arrangement.spacedBy(8.dp)
         ) {
             items(items = filteredModules, key = { it.id }) { module ->
-                ModuleCard(
+                AnimatedModuleCard(
                     module = module,
                     onClick = { onModuleClick(module) }
                 )

@@ -51,7 +51,6 @@ android {
 }
 
 dependencies {
-    // Core Android
     implementation(libs.androidx.material3)
     implementation("androidx.media:media:1.6.0")
 
@@ -60,8 +59,9 @@ dependencies {
     implementation ("com.google.accompanist:accompanist-permissions:0.37.0")
     implementation ("com.google.android.gms:play-services-location:21.3.0")
 
+    implementation("com.squareup.retrofit2:retrofit:2.9.0")
+    implementation("com.squareup.retrofit2:converter-gson:2.9.0")
 
-    // AndroidX Core
     implementation("androidx.core:core-ktx:1.12.0")
 
     implementation ("androidx.datastore:datastore-preferences:1.0.0")
@@ -85,4 +85,14 @@ dependencies {
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
     implementation("androidx.work:work-runtime-ktx:2.8.1")
+
+    implementation("com.squareup.okhttp3:okhttp:4.11.0")
+
+    implementation("com.squareup.okhttp3:logging-interceptor:4.11.0")
+
+    implementation("org.json:json:20210307")
+
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.7.1")
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.7.1")
+
 }

@@ -57,9 +57,15 @@ fun MoreScreen(modifier: Modifier = Modifier, navController: NavController) {
         )
 
         SettingsOption(
+            onClickOption = { navController.navigate("faq") },
+            title = "Perguntas Frequentes"
+        )
+        
+        SettingsOption(
             onClickOption = { navController.navigate("appointment_schedule_screen") },
             title = "Registrar Consulta"
         )
+           
     }
 }
 

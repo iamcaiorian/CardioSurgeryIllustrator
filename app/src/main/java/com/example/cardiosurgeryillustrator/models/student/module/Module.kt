@@ -11,5 +11,5 @@ data class Module(
     val cover: String,
     val progress: Float,
     val longDescription: String,
-    val isFavorite: MutableState<Boolean> = mutableStateOf(false)
+    val isFavorite: Boolean = false
 )
