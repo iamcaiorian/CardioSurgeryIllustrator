@@ -1,5 +1,8 @@
 package com.example.cardiosurgeryillustrator.navigation
 
+import androidx.compose.animation.core.tween
+import androidx.compose.animation.slideInHorizontally
+import androidx.compose.animation.slideOutHorizontally
 import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -141,9 +144,57 @@ fun StudentNavHost(
 ) {
     val studentNavController = rememberNavController()
 
+    val bottomBarRoutes = listOf(BottomBarStudentAction.Home.route, BottomBarStudentAction.Subject.route, BottomBarStudentAction.Favorites.route)
+
     NavHost(
         navController = studentNavController,
-        startDestination = BottomBarStudentAction.Home.route
+        startDestination = BottomBarStudentAction.Home.route,
+        enterTransition = {
+            val fromIndex = bottomBarRoutes.indexOf(initialState.destination.route)
+            val toIndex = bottomBarRoutes.indexOf(targetState.destination.route)
+            if (toIndex > fromIndex) {
+                // Navegação "para frente" (da direita para esquerda)
+                slideInHorizontally(
+                    initialOffsetX = { fullWidth -> fullWidth },
+                    animationSpec = tween(durationMillis = 300)
+                )
+            } else {
+                // Navegação "para trás" (da esquerda para direita)
+                slideInHorizontally(
+                    initialOffsetX = { fullWidth -> -fullWidth },
+                    animationSpec = tween(durationMillis = 300)
+                )
+            }
+        },
+        exitTransition = {
+            val fromIndex = bottomBarRoutes.indexOf(initialState.destination.route)
+            val toIndex = bottomBarRoutes.indexOf(targetState.destination.route)
+            if (toIndex > fromIndex) {
+                // Navegação "para frente" (saindo para a esquerda)
+                slideOutHorizontally(
+                    targetOffsetX = { fullWidth -> -fullWidth },
+                    animationSpec = tween(durationMillis = 300)
+                )
+            } else {
+                // Navegação "para trás" (saindo para a direita)
+                slideOutHorizontally(
+                    targetOffsetX = { fullWidth -> fullWidth },
+                    animationSpec = tween(durationMillis = 300)
+                )
+            }
+        },
+        popEnterTransition = {
+            slideInHorizontally(
+                initialOffsetX = { fullWidth -> -fullWidth },
+                animationSpec = tween(durationMillis = 300)
+            )
+        },
+        popExitTransition = {
+            slideOutHorizontally(
+                targetOffsetX = { fullWidth -> fullWidth },
+                animationSpec = tween(durationMillis = 300)
+            )
+        }
     ) {
         composable(TopBarStudentAction.Settings.route) {
             Scaffold(

@@ -1,5 +1,7 @@
 package com.example.cardiosurgeryillustrator.navigation
 
+import androidx.compose.animation.slideInHorizontally
+import androidx.compose.animation.slideOutHorizontally
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
@@ -67,7 +69,9 @@ fun NavGraph(
     ) {
         NavHost(
             navController = navController,
-            startDestination = startDestination
+            startDestination = startDestination,
+            enterTransition = { slideInHorizontally() },
+            exitTransition = { slideOutHorizontally() },
         ) {
             // Welcome Flow
             navigation(
