@@ -5,31 +5,25 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.Info
-import androidx.compose.material.icons.filled.Menu
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.focus.focusModifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.cardiosurgeryillustrator.R
-import com.example.cardiosurgeryillustrator.models.mock.mockModules
 import com.example.cardiosurgeryillustrator.ui.components.admin.admin.BottomBarAdmin
-import com.example.cardiosurgeryillustrator.ui.components.student.student.BottomBarStudent
 import com.example.cardiosurgeryillustrator.ui.components.topBar.StandardTopBar
 import com.example.cardiosurgeryillustrator.ui.screens.admin.admin_modules.AdminModulesScreen
 import com.example.cardiosurgeryillustrator.ui.screens.admin.create_module.CreateModuleScreen
 import com.example.cardiosurgeryillustrator.ui.screens.admin.faq.FAQScreen
 import com.example.cardiosurgeryillustrator.ui.screens.admin.home.HomeAdminScreen
 import com.example.cardiosurgeryillustrator.ui.screens.admin.login.LoginAdminScreen
-import com.example.cardiosurgeryillustrator.ui.screens.student.student.HomeStudentScreen
 
 sealed class LoginAdminFlow(val route: String) {
     object Login : LoginAdminFlow("login_admin")

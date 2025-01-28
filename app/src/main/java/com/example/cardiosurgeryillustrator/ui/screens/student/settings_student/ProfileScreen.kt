@@ -17,7 +17,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.cardiosurgeryillustrator.R
-import com.example.cardiosurgeryillustrator.ui.components.button.ConfirmationButton
+import com.example.cardiosurgeryillustrator.ui.components.buttons.ConfirmationButton
 import com.example.cardiosurgeryillustrator.ui.components.buttons.TransparentButton
 import com.example.cardiosurgeryillustrator.ui.components.patient.form.TextInputField
 import com.example.cardiosurgeryillustrator.ui.components.student.settings_student.TopBarSettings

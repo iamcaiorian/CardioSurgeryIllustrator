@@ -15,7 +15,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
-import com.example.cardiosurgeryillustrator.models.mock.mockClinics
+import com.example.cardiosurgeryillustrator.models.mock.patient.mockClinics
 import com.example.cardiosurgeryillustrator.models.patient.nearby_clinics.Clinic
 import com.example.cardiosurgeryillustrator.ui.theme.Blue600
 

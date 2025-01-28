@@ -19,10 +19,10 @@ import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
-import com.example.cardiosurgeryillustrator.repository.assistent.AssistantRepository
+import com.example.cardiosurgeryillustrator.repository.patient.assistent.AssistantRepository
 import com.example.cardiosurgeryillustrator.ui.components.patient.assistent.AssistantMessageBubble
-import com.example.cardiosurgeryillustrator.ui.view_models.patient.assistent.AssistantViewModel
-import com.example.cardiosurgeryillustrator.ui.view_models.patient.assistent.AssistantViewModelFactory
+import com.example.cardiosurgeryillustrator.view_models.patient.assistent.AssistantViewModel
+import com.example.cardiosurgeryillustrator.view_models.patient.assistent.AssistantViewModelFactory
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable

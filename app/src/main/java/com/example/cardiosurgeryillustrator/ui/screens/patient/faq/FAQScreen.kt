@@ -17,7 +17,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.example.cardiosurgeryillustrator.models.mock.mockFAQ
+import com.example.cardiosurgeryillustrator.models.mock.patient.mockFAQ
 import com.example.cardiosurgeryillustrator.ui.components.faq.FaqDisplayItem
 import com.example.cardiosurgeryillustrator.ui.components.input.SearchInput
 import com.example.cardiosurgeryillustrator.ui.screens.admin.faq.FaqItem

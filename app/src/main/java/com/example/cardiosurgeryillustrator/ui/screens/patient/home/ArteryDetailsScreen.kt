@@ -30,7 +30,7 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.example.cardiosurgeryillustrator.R
-import com.example.cardiosurgeryillustrator.models.mock.mockArtery
+import com.example.cardiosurgeryillustrator.models.mock.patient.mockArtery
 
 @ExperimentalMaterial3Api
 @Composable

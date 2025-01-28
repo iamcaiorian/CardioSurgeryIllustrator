@@ -1,7 +1,7 @@
 package com.example.cardiosurgeryillustrator.core.services
 
-import com.example.cardiosurgeryillustrator.models.chatbot.ChatMessageRequest
-import com.example.cardiosurgeryillustrator.models.chatbot.ChatMessageResponse
+import com.example.cardiosurgeryillustrator.models.patient.assistant.ChatMessageRequest
+import com.example.cardiosurgeryillustrator.models.patient.assistant.ChatMessageResponse
 import retrofit2.http.Body
 import retrofit2.http.POST
 

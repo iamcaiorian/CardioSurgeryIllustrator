@@ -15,7 +15,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.cardiosurgeryillustrator.R
-import com.example.cardiosurgeryillustrator.models.mock.StudyMock
+import com.example.cardiosurgeryillustrator.models.mock.student.StudyMock
 import com.example.cardiosurgeryillustrator.ui.components.button.SuccessButton
 import com.example.cardiosurgeryillustrator.ui.components.student.quiz.TopBarQuiz
 

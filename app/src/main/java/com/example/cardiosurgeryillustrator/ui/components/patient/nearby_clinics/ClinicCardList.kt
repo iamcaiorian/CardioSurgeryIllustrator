@@ -8,7 +8,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.cardiosurgeryillustrator.models.patient.nearby_clinics.Clinic
-import com.example.cardiosurgeryillustrator.models.mock.mockClinics
+import com.example.cardiosurgeryillustrator.models.mock.patient.mockClinics
 
 @Composable
 fun ClinicCardList(

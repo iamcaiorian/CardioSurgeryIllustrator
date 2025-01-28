@@ -24,7 +24,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.example.cardiosurgeryillustrator.models.mock.mockClinics
+import com.example.cardiosurgeryillustrator.models.mock.patient.mockClinics
 import com.example.cardiosurgeryillustrator.models.patient.appointment_schedule.Appointment
 import com.example.cardiosurgeryillustrator.ui.theme.Blue600
 import java.util.UUID

@@ -9,7 +9,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
-import com.example.cardiosurgeryillustrator.models.mock.mockSubjects
+import com.example.cardiosurgeryillustrator.models.mock.student.mockSubjects
 import com.example.cardiosurgeryillustrator.navigation.SubjectAction
 import com.example.cardiosurgeryillustrator.ui.components.student.modules.SubjectCardList
 import com.example.cardiosurgeryillustrator.ui.components.student.modules.TopBarModules

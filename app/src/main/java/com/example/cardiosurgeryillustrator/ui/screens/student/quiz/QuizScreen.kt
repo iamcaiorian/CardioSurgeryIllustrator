@@ -14,7 +14,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.cardiosurgeryillustrator.R
 import com.example.cardiosurgeryillustrator.models.student.quiz.Quiz
-import com.example.cardiosurgeryillustrator.models.mock.mockQuizzes
+import com.example.cardiosurgeryillustrator.models.mock.student.mockQuizzes
 import com.example.cardiosurgeryillustrator.ui.components.student.quiz.TopBarQuiz
 
 @OptIn(ExperimentalMaterial3Api::class)

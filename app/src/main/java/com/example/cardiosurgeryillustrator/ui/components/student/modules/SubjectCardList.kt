@@ -17,7 +17,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.cardiosurgeryillustrator.models.student.subject.Subject
-import com.example.cardiosurgeryillustrator.models.mock.mockSubjects
+import com.example.cardiosurgeryillustrator.models.mock.student.mockSubjects
 import com.example.cardiosurgeryillustrator.ui.components.input.SearchInput
 
 @Composable
