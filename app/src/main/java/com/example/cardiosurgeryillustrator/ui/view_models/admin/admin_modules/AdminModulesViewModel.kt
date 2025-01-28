@@ -23,7 +23,6 @@ class AdminModulesViewModel(
             } catch (e: Exception) {
                 e.printStackTrace()
             }
-
         }
     }
 }
