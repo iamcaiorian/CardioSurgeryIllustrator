@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.Home
+import androidx.compose.material.icons.filled.Info
 import androidx.compose.material.icons.filled.Menu
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Scaffold
@@ -24,6 +25,7 @@ import com.example.cardiosurgeryillustrator.ui.components.admin.admin.BottomBarA
 import com.example.cardiosurgeryillustrator.ui.components.student.student.BottomBarStudent
 import com.example.cardiosurgeryillustrator.ui.components.topBar.StandardTopBar
 import com.example.cardiosurgeryillustrator.ui.screens.admin.admin_modules.AdminModulesScreen
+import com.example.cardiosurgeryillustrator.ui.screens.admin.create_module.CreateModuleScreen
 import com.example.cardiosurgeryillustrator.ui.screens.admin.faq.FAQScreen
 import com.example.cardiosurgeryillustrator.ui.screens.admin.home.HomeAdminScreen
 import com.example.cardiosurgeryillustrator.ui.screens.admin.login.LoginAdminScreen
@@ -76,18 +78,14 @@ sealed class BottomBarAdminAction(
 
     object FAQ : BottomBarAdminAction(
         route = "faq",
-        icon = {
-            androidx.compose.material3.Icon(
-                painter = painterResource(R.drawable.ic_note),
-                contentDescription = "Subject",
-                modifier = Modifier
-                    .height(24.dp)
-                    .width(20.dp)
-                    .aspectRatio(1f)
-            )
-        },
+        icon = { androidx.compose.material3.Icon(Icons.Default.Info, contentDescription = "FAQ") },
+
         description = "FAQ"
     )
+}
+
+sealed class AdminAction(val route: String) {
+    data object CreateModule : AdminAction("create_module")
 }
 
 @Composable
@@ -138,10 +136,22 @@ fun AdminNavHost() {
             ) { innerPadding ->
                 AdminModulesScreen(
                     modifier = Modifier.padding(innerPadding),
+                    onNavigateToCreateModule = { adminNavController.navigate(AdminAction.CreateModule.route) }
                 )
             }
         }
 
+        composable(AdminAction.CreateModule.route) {
+            Scaffold(
+                bottomBar = { BottomBarAdmin(navController = adminNavController) }
+            ) { innerPadding ->
+                CreateModuleScreen(
+                    modifier = Modifier.padding(innerPadding),
+                    onNavigateBack = { adminNavController.popBackStack() },
+                    onNavigateToModules = { adminNavController.navigate(BottomBarAdminAction.Modules.route) }
+                )
+            }
+        }
 
         composable(BottomBarAdminAction.Quiz.route) {
             Scaffold(

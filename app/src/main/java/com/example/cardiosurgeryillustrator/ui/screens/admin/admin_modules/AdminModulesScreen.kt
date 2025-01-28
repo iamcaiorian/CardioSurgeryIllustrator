@@ -2,7 +2,10 @@ package com.example.cardiosurgeryillustrator.ui.screens.admin.admin_modules
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -19,8 +22,10 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
+import com.example.cardiosurgeryillustrator.R
 import com.example.cardiosurgeryillustrator.repository.subject.SubjectRepository
 import com.example.cardiosurgeryillustrator.ui.components.admin.admin_modules.AdminModuleCard
+import com.example.cardiosurgeryillustrator.ui.components.buttons.StandardButton
 import com.example.cardiosurgeryillustrator.ui.theme.Typography
 import com.example.cardiosurgeryillustrator.ui.view_models.admin.admin_modules.AdminModulesViewModel
 import com.example.cardiosurgeryillustrator.ui.view_models.admin.admin_modules.AdminModulesViewModelFactory
@@ -29,6 +34,7 @@ import com.example.cardiosurgeryillustrator.utils.makeModuleEntityUtil
 @Composable
 fun AdminModulesScreen(
     modifier: Modifier = Modifier,
+    onNavigateToCreateModule: () -> Unit
 ) {
     val subjectRepository = SubjectRepository()
     val viewModel: AdminModulesViewModel = viewModel(
@@ -56,28 +62,46 @@ fun AdminModulesScreen(
                 modifier = Modifier.align(Alignment.Center)
             )
         } else {
-            LazyColumn(
-                modifier = Modifier.fillMaxSize().padding(bottom = 12.dp),
-                verticalArrangement = Arrangement.spacedBy(8.dp)
-            ) {
-                subjects.forEach { subject ->
+            Column (
+                modifier = Modifier,
+                Arrangement.spacedBy(16.dp)
+            ){
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.End
+                ) {
+                    StandardButton(
+                        onClick = onNavigateToCreateModule,
+                        iconRes = R.drawable.ic_plus,
+                        text = "Adicionar módulo"
+                    )
+                }
 
-                    item {
-                        Text(
-                            text = subject.title,
-                            style = Typography.headlineLarge,
-                        )
-                    }
+                LazyColumn(
+                    modifier = Modifier.fillMaxSize().padding(bottom = 12.dp),
+                ) {
+                    subjects.forEach { subject ->
 
-                    items(items = subject.modules, key = { it.id }) { module ->
-                        AdminModuleCard(
-                            module = makeModuleEntityUtil(module),
-                            onClick = { },
-                            modifier = Modifier.padding(vertical = 8.dp)
-                        )
+                        item {
+                            Text(
+                                text = subject.title,
+                                style = Typography.headlineLarge,
+                            )
+                        }
+
+                        items(items = subject.modules, key = { it.id }) { module ->
+                            AdminModuleCard(
+                                module = makeModuleEntityUtil(module),
+                                onEditClick = { },
+                                onDeleteClick = { },
+                                modifier = Modifier.padding(vertical = 8.dp)
+                            )
+                        }
                     }
                 }
             }
+
+
         }
 
     }
@@ -87,5 +111,5 @@ fun AdminModulesScreen(
 @Preview
 @Composable
 private fun ModulesScreenPreview() {
-    AdminModulesScreen()
+    AdminModulesScreen(onNavigateToCreateModule = {})
 }
