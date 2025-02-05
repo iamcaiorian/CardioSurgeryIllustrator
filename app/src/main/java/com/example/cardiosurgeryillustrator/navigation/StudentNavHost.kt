@@ -29,6 +29,7 @@ import com.example.cardiosurgeryillustrator.R
 import com.example.cardiosurgeryillustrator.models.mock.student.StudyMock
 import com.example.cardiosurgeryillustrator.models.mock.student.mockModules
 import com.example.cardiosurgeryillustrator.models.mock.student.mockQuizzes
+import com.example.cardiosurgeryillustrator.models.student.quiz.CreateQuizQuestionRequest
 import com.example.cardiosurgeryillustrator.ui.screens.student.modules.ModuleVideoScreen
 import com.example.cardiosurgeryillustrator.ui.screens.student.favorite.FavoriteScreen
 import com.example.cardiosurgeryillustrator.ui.screens.student.modules.ModulesScreen
@@ -397,7 +398,6 @@ fun StudentNavHost(
                 onBackClick = { studentNavController.popBackStack() }
             )
         }
-
         composable(
             route = "${SubjectAction.SecondQuiz.route}/{moduleId}",
             arguments = listOf(navArgument("moduleId") { type = NavType.StringType })
@@ -407,8 +407,10 @@ fun StudentNavHost(
 
             Scaffold { innerPadding ->
                 quiz?.let {
+                    val question = it.questionEntityList?.firstOrNull() // Obtém a primeira questão
                     SecondQuizScreen(
                         quiz = it,
+                        question = question as? CreateQuizQuestionRequest,
                         modifier = Modifier.padding(innerPadding),
                         onBackClick = { studentNavController.popBackStack() }
                     )
@@ -417,4 +419,3 @@ fun StudentNavHost(
         }
     }
 }
-
