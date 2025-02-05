@@ -29,6 +29,8 @@ import com.example.cardiosurgeryillustrator.R
 import com.example.cardiosurgeryillustrator.models.mock.student.StudyMock
 import com.example.cardiosurgeryillustrator.models.mock.student.mockModules
 import com.example.cardiosurgeryillustrator.models.mock.student.mockQuizzes
+import com.example.cardiosurgeryillustrator.ui.screens.authentication.LoginScreen
+import com.example.cardiosurgeryillustrator.ui.screens.authentication.RegisterScreen
 import com.example.cardiosurgeryillustrator.ui.screens.student.modules.ModuleVideoScreen
 import com.example.cardiosurgeryillustrator.ui.screens.student.favorite.FavoriteScreen
 import com.example.cardiosurgeryillustrator.ui.screens.student.modules.ModulesScreen
@@ -121,6 +123,11 @@ sealed class BottomBarStudentAction(
     )
 }
 
+sealed class LoginFlow(val route: String) {
+    object Login : LoginFlow("login_screen")
+    object Register : LoginFlow("register_screen")
+}
+
 sealed class SubjectAction(val route: String) {
     object Modules : SubjectAction("modules")
     object ModulesVideo : SubjectAction("modulesVideo")
@@ -137,10 +144,11 @@ sealed class SettingsAction(val route: String) {
 }
 
 
+
+
 @Composable
 @ExperimentalMaterial3Api
 fun StudentNavHost(
-    onLogout: () -> Unit
 ) {
     val studentNavController = rememberNavController()
 
@@ -148,7 +156,7 @@ fun StudentNavHost(
 
     NavHost(
         navController = studentNavController,
-        startDestination = BottomBarStudentAction.Home.route,
+        startDestination = LoginFlow.Login.route,
         enterTransition = {
             val fromIndex = bottomBarRoutes.indexOf(initialState.destination.route)
             val toIndex = bottomBarRoutes.indexOf(targetState.destination.route)
@@ -196,6 +204,24 @@ fun StudentNavHost(
             )
         }
     ) {
+
+        composable(LoginFlow.Login.route) {
+            LoginScreen(
+                onNavigateToHome = { studentNavController.navigate(BottomBarStudentAction.Home.route)  },
+                onForgotPasswordClick = { },
+                onRegisterClick = { studentNavController.navigate(LoginFlow.Register.route) }
+            )
+        }
+        composable(LoginFlow.Register.route) {
+            RegisterScreen(
+                onRegisterClick = { _, _ ->
+                    studentNavController.navigate(LoginFlow.Login.route) {
+                        popUpTo(LoginFlow.Login.route)
+                    }
+                }
+            )
+        }
+
         composable(TopBarStudentAction.Settings.route) {
             Scaffold(
                 bottomBar = { BottomBarStudent(navController = studentNavController) }

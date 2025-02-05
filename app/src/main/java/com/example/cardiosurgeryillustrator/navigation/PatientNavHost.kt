@@ -23,6 +23,7 @@ import androidx.navigation.navArgument
 import com.example.cardiosurgeryillustrator.R
 import com.example.cardiosurgeryillustrator.models.mock.patient.mockClinics
 import com.example.cardiosurgeryillustrator.models.mock.patient.mockInfoText
+import com.example.cardiosurgeryillustrator.models.mock.student.mockQuestions
 import com.example.cardiosurgeryillustrator.ui.components.patient.BottomBarPacient
 import com.example.cardiosurgeryillustrator.ui.components.topBar.StandardTopBar
 import com.example.cardiosurgeryillustrator.ui.screens.patient.home.ArteryDetailsScreen
@@ -34,196 +35,9 @@ import com.example.cardiosurgeryillustrator.ui.screens.patient.appointment_sched
 import com.example.cardiosurgeryillustrator.ui.screens.patient.community.CommunityScreen
 import com.example.cardiosurgeryillustrator.ui.screens.patient.community.ForumScreen
 import com.example.cardiosurgeryillustrator.ui.screens.patient.faq.PatientFAQScreen
+import com.example.cardiosurgeryillustrator.ui.screens.patient.form.CardioForm
 import com.example.cardiosurgeryillustrator.ui.screens.patient.nearby_clinics.NearbyClinics
-
-
-@ExperimentalMaterial3Api
-@Composable
-fun PatientNavHost() {
-    val pacientNavController = rememberNavController()
-
-    val bottomBarRoutes = listOf(BottomBarPacientAction.HomePacient.route, BottomBarPacientAction.Community.route, BottomBarPacientAction.Assistant.route, BottomBarPacientAction.More.route)
-
-    NavHost(
-        navController = pacientNavController,
-        startDestination = BottomBarPacientAction.HomePacient.route,
-        modifier = Modifier,
-        enterTransition = {
-            val fromIndex = bottomBarRoutes.indexOf(initialState.destination.route)
-            val toIndex = bottomBarRoutes.indexOf(targetState.destination.route)
-            if (toIndex > fromIndex) {
-                // Navegação "para frente" (da direita para esquerda)
-                slideInHorizontally(
-                    initialOffsetX = { fullWidth -> fullWidth },
-                    animationSpec = tween(durationMillis = 300)
-                )
-            } else {
-                // Navegação "para trás" (da esquerda para direita)
-                slideInHorizontally(
-                    initialOffsetX = { fullWidth -> -fullWidth },
-                    animationSpec = tween(durationMillis = 300)
-                )
-            }
-        },
-        exitTransition = {
-            val fromIndex = bottomBarRoutes.indexOf(initialState.destination.route)
-            val toIndex = bottomBarRoutes.indexOf(targetState.destination.route)
-            if (toIndex > fromIndex) {
-                // Navegação "para frente" (saindo para a esquerda)
-                slideOutHorizontally(
-                    targetOffsetX = { fullWidth -> -fullWidth },
-                    animationSpec = tween(durationMillis = 300)
-                )
-            } else {
-                // Navegação "para trás" (saindo para a direita)
-                slideOutHorizontally(
-                    targetOffsetX = { fullWidth -> fullWidth },
-                    animationSpec = tween(durationMillis = 300)
-                )
-            }
-        },
-        popEnterTransition = {
-            slideInHorizontally(
-                initialOffsetX = { fullWidth -> -fullWidth },
-                animationSpec = tween(durationMillis = 300)
-            )
-        },
-        popExitTransition = {
-            slideOutHorizontally(
-                targetOffsetX = { fullWidth -> fullWidth },
-                animationSpec = tween(durationMillis = 300)
-            )
-        }
-    ) {
-        // Tela Home
-        composable(BottomBarPacientAction.HomePacient.route) {
-            Scaffold(
-                bottomBar = { BottomBarPacient(navController = pacientNavController) }
-            ) { innerPadding ->
-                HomePacientScreen(
-                    navController = pacientNavController,
-                    modifier = Modifier.padding(innerPadding),
-                    infoTextList = mockInfoText
-                )
-            }
-        }
-
-        // Tela Comunidade
-        composable(BottomBarPacientAction.Community.route) {
-            Scaffold(
-                bottomBar = { BottomBarPacient(navController = pacientNavController) }
-            ) { innerPadding ->
-                CommunityScreen(
-                    avatarPainter = painterResource(id = R.drawable.avatar_1),
-                    onSelectedCategoryChanged = { /* Ação ao selecionar */ },
-                    title = "Pós Operatório",
-                    subtitle = "Como foi seu pós operatório?",
-                    backgroundImageRes = R.drawable.img_defaul,
-                    userAvatar = R.drawable.avatar_1,
-                    message = "Lorem ipsum dolor sit amet, consectetur adipiscing elit...",
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(innerPadding),
-                    navController = pacientNavController
-                )
-            }
-        }
-
-        // Tela Fórum
-        composable("forum_screen") {
-            Scaffold() { innerPadding ->
-                ForumScreen(
-                    onSelectedCategoryChanged = { /* Ação ao selecionar */ },
-                    userAvatar = R.drawable.avatar_1,
-                    message = "Lorem ipsum dolor sit amet, consectetur adipiscing elit...",
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(innerPadding)
-                )
-            }
-        }
-
-        // Tela Assistente
-        composable(BottomBarPacientAction.Assistant.route) {
-            Scaffold(
-                bottomBar = { BottomBarPacient(navController = pacientNavController) }
-            ) { innerPadding ->
-                AssistantScreen(
-                    modifier = Modifier.padding(innerPadding)
-                )
-            }
-        }
-
-        // Tela Mais
-        composable(BottomBarPacientAction.More.route) {
-            Scaffold(
-                bottomBar = { BottomBarPacient(navController = pacientNavController) }
-            ) { innerPadding ->
-                MoreScreen(
-                    navController = pacientNavController,
-                    modifier = Modifier.padding(innerPadding)
-                )
-            }
-        }
-
-        // Detalhes da Artéria
-        composable(
-            route = "artery_details/{arteryName}",
-            arguments = listOf(navArgument("arteryName") { type = NavType.StringType })
-        ) { backStackEntry ->
-            val arteryName = backStackEntry.arguments?.getString("arteryName") ?: ""
-            Scaffold() { innerPadding ->
-                ArteryDetailsScreen(
-                    navController = pacientNavController,
-                    arteryName = arteryName,
-                    modifier = Modifier.padding(innerPadding)
-                )
-            }
-        }
-
-        composable("nearby_clinics") {
-            Scaffold { innerPadding ->
-                NearbyClinics(
-                    navController = pacientNavController,
-                    modifier = Modifier.padding(innerPadding)
-                )
-            }
-        }
-
-        composable("appointment_schedule_screen") {
-            Scaffold { innerPadding ->
-                AppointmentScheduleScreen(
-                    navController = pacientNavController,
-                    modifier = Modifier.padding(innerPadding)
-                )
-            }
-        }
-        composable("new_appointment_screen") {
-            Scaffold { innerPadding ->
-                NewAppointmentScheduleScreen(
-                    navController = pacientNavController,
-                    mockClinics,
-                    modifier = Modifier.padding(innerPadding)
-                )
-            }
-        }
-
-        composable("faq") {
-            Scaffold(
-                topBar = {
-                    StandardTopBar(
-                        onNavigateBack = { pacientNavController.popBackStack() },
-                        title = "Perguntas Frequentes"
-                    )
-                }
-            ) { innerPadding ->
-                PatientFAQScreen(
-                    modifier = Modifier.padding(innerPadding)
-                )
-            }
-        }
-    }
-}
+import com.example.cardiosurgeryillustrator.ui.screens.student.notification.HabitDetailScreen
 
 sealed class BottomBarPacientAction(
     val route: String,
@@ -276,3 +90,234 @@ sealed class BottomBarPacientAction(
         description = "Mais"
     )
 }
+
+sealed class FormFlow(val route: String) {
+    object Form : FormFlow("form_screen")
+}
+
+@ExperimentalMaterial3Api
+@Composable
+fun PatientNavHost() {
+    val patientNavController = rememberNavController()
+
+    val bottomBarRoutes = listOf(BottomBarPacientAction.HomePacient.route, BottomBarPacientAction.Community.route, BottomBarPacientAction.Assistant.route, BottomBarPacientAction.More.route)
+
+    NavHost(
+        navController = patientNavController,
+        startDestination = FormFlow.Form.route,
+        modifier = Modifier,
+        enterTransition = {
+            val fromIndex = bottomBarRoutes.indexOf(initialState.destination.route)
+            val toIndex = bottomBarRoutes.indexOf(targetState.destination.route)
+            if (toIndex > fromIndex) {
+                // Navegação "para frente" (da direita para esquerda)
+                slideInHorizontally(
+                    initialOffsetX = { fullWidth -> fullWidth },
+                    animationSpec = tween(durationMillis = 300)
+                )
+            } else {
+                // Navegação "para trás" (da esquerda para direita)
+                slideInHorizontally(
+                    initialOffsetX = { fullWidth -> -fullWidth },
+                    animationSpec = tween(durationMillis = 300)
+                )
+            }
+        },
+        exitTransition = {
+            val fromIndex = bottomBarRoutes.indexOf(initialState.destination.route)
+            val toIndex = bottomBarRoutes.indexOf(targetState.destination.route)
+            if (toIndex > fromIndex) {
+                // Navegação "para frente" (saindo para a esquerda)
+                slideOutHorizontally(
+                    targetOffsetX = { fullWidth -> -fullWidth },
+                    animationSpec = tween(durationMillis = 300)
+                )
+            } else {
+                // Navegação "para trás" (saindo para a direita)
+                slideOutHorizontally(
+                    targetOffsetX = { fullWidth -> fullWidth },
+                    animationSpec = tween(durationMillis = 300)
+                )
+            }
+        },
+        popEnterTransition = {
+            slideInHorizontally(
+                initialOffsetX = { fullWidth -> -fullWidth },
+                animationSpec = tween(durationMillis = 300)
+            )
+        },
+        popExitTransition = {
+            slideOutHorizontally(
+                targetOffsetX = { fullWidth -> fullWidth },
+                animationSpec = tween(durationMillis = 300)
+            )
+        }
+    ) {
+
+        // Form Flow
+        composable(FormFlow.Form.route) {
+            Scaffold { innerPadding ->
+                CardioForm(
+                    onNavigateToHome = {
+                        patientNavController.navigate(BottomBarPacientAction.HomePacient.route) {
+                            popUpTo(WelcomeFlow.Welcome.route) { inclusive = true }
+                        }
+                    },
+                    onBack = { patientNavController.navigate(WelcomeFlow.ChooseUser.route) },
+                    questionsList = mockQuestions,
+                    modifier = Modifier.padding(innerPadding)
+                )
+            }
+        }
+
+        composable(
+            route = "habit_detail/{title}/{description}",
+            arguments = listOf(
+                navArgument("title") { type = NavType.StringType },
+                navArgument("description") { type = NavType.StringType }
+            )
+        ) { backStackEntry ->
+            val title = backStackEntry.arguments?.getString("title") ?: "Detalhes"
+            val description = backStackEntry.arguments?.getString("description")
+                ?: "Sem descrição disponível."
+            HabitDetailScreen(
+                title = title,
+                description = description,
+                onBackClick = {
+                    patientNavController.navigate(AppFlow.StudentFlow.route) {
+                        popUpTo(AppFlow.StudentFlow.route) { inclusive = true }
+                    }
+                }
+            )
+        }
+
+        // Tela Home
+        composable(BottomBarPacientAction.HomePacient.route) {
+            Scaffold(
+                bottomBar = { BottomBarPacient(navController = patientNavController) }
+            ) { innerPadding ->
+                HomePacientScreen(
+                    navController = patientNavController,
+                    modifier = Modifier.padding(innerPadding),
+                    infoTextList = mockInfoText
+                )
+            }
+        }
+
+        // Tela Comunidade
+        composable(BottomBarPacientAction.Community.route) {
+            Scaffold(
+                bottomBar = { BottomBarPacient(navController = patientNavController) }
+            ) { innerPadding ->
+                CommunityScreen(
+                    avatarPainter = painterResource(id = R.drawable.avatar_1),
+                    onSelectedCategoryChanged = { /* Ação ao selecionar */ },
+                    title = "Pós Operatório",
+                    subtitle = "Como foi seu pós operatório?",
+                    backgroundImageRes = R.drawable.img_defaul,
+                    userAvatar = R.drawable.avatar_1,
+                    message = "Lorem ipsum dolor sit amet, consectetur adipiscing elit...",
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(innerPadding),
+                    navController = patientNavController
+                )
+            }
+        }
+
+        // Tela Fórum
+        composable("forum_screen") {
+            Scaffold() { innerPadding ->
+                ForumScreen(
+                    onSelectedCategoryChanged = { /* Ação ao selecionar */ },
+                    userAvatar = R.drawable.avatar_1,
+                    message = "Lorem ipsum dolor sit amet, consectetur adipiscing elit...",
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(innerPadding)
+                )
+            }
+        }
+
+        // Tela Assistente
+        composable(BottomBarPacientAction.Assistant.route) {
+            Scaffold(
+                bottomBar = { BottomBarPacient(navController = patientNavController) }
+            ) { innerPadding ->
+                AssistantScreen(
+                    modifier = Modifier.padding(innerPadding)
+                )
+            }
+        }
+
+        // Tela Mais
+        composable(BottomBarPacientAction.More.route) {
+            Scaffold(
+                bottomBar = { BottomBarPacient(navController = patientNavController) }
+            ) { innerPadding ->
+                MoreScreen(
+                    navController = patientNavController,
+                    modifier = Modifier.padding(innerPadding)
+                )
+            }
+        }
+
+        // Detalhes da Artéria
+        composable(
+            route = "artery_details/{arteryName}",
+            arguments = listOf(navArgument("arteryName") { type = NavType.StringType })
+        ) { backStackEntry ->
+            val arteryName = backStackEntry.arguments?.getString("arteryName") ?: ""
+            Scaffold() { innerPadding ->
+                ArteryDetailsScreen(
+                    navController = patientNavController,
+                    arteryName = arteryName,
+                    modifier = Modifier.padding(innerPadding)
+                )
+            }
+        }
+
+        composable("nearby_clinics") {
+            Scaffold { innerPadding ->
+                NearbyClinics(
+                    navController = patientNavController,
+                    modifier = Modifier.padding(innerPadding)
+                )
+            }
+        }
+
+        composable("appointment_schedule_screen") {
+            Scaffold { innerPadding ->
+                AppointmentScheduleScreen(
+                    navController = patientNavController,
+                    modifier = Modifier.padding(innerPadding)
+                )
+            }
+        }
+        composable("new_appointment_screen") {
+            Scaffold { innerPadding ->
+                NewAppointmentScheduleScreen(
+                    navController = patientNavController,
+                    mockClinics,
+                    modifier = Modifier.padding(innerPadding)
+                )
+            }
+        }
+
+        composable("faq") {
+            Scaffold(
+                topBar = {
+                    StandardTopBar(
+                        onNavigateBack = { patientNavController.popBackStack() },
+                        title = "Perguntas Frequentes"
+                    )
+                }
+            ) { innerPadding ->
+                PatientFAQScreen(
+                    modifier = Modifier.padding(innerPadding)
+                )
+            }
+        }
+    }
+}
+

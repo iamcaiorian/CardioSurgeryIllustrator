@@ -27,7 +27,7 @@ import com.example.cardiosurgeryillustrator.ui.components.input.StandardTextFiel
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
 fun LoginScreen(
-    onLoginClick: (String, String) -> Unit,
+    onNavigateToHome: () -> Unit,
     onForgotPasswordClick: () -> Unit,
     onRegisterClick: () -> Unit
 ) {
@@ -151,7 +151,7 @@ fun LoginScreen(
             Spacer(modifier = Modifier.height(26.dp))
 
             Button(
-                onClick = { onLoginClick(email, password) },
+                onClick = onNavigateToHome,
                 modifier = Modifier.fillMaxWidth(),
                 colors = ButtonDefaults.buttonColors(
                     containerColor = Color(0xFF0D47A1),
@@ -189,7 +189,7 @@ fun LoginScreen(
 @Composable
 fun PreviewLoginScreen() {
     LoginScreen(
-        onLoginClick = { _, _ -> },
+        onNavigateToHome = {},
         onForgotPasswordClick = {},
         onRegisterClick = {}
     )

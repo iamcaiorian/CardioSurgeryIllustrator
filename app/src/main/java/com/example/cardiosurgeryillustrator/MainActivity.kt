@@ -10,8 +10,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 
-import com.example.cardiosurgeryillustrator.navigation.AppScreen
-import com.example.cardiosurgeryillustrator.navigation.BottomBarStudentAction
+import com.example.cardiosurgeryillustrator.navigation.AppFlow
 import com.example.cardiosurgeryillustrator.navigation.NavGraph
 
 
@@ -32,13 +31,10 @@ class MainActivity : ComponentActivity() {
 
                     val startDestination = when (navigateTo) {
                         "habit_detail" -> "habit_detail/${habitTitle ?: "Detalhes"}/${habitDescription ?: "Aqui você sempre manterá bons hábitos!"}"
-                        else -> if (isAuthenticated) AppScreen.StudentFlow.route else AppScreen.WelcomeFlow.route
+                        else -> if (isAuthenticated) AppFlow.StudentFlow.route else AppFlow.WelcomeFlow.route
                     }
 
                     NavGraph(
-                        isAuthenticated = isAuthenticated,
-                        onLogin = { isAuthenticated = true },
-                        onLogout = { isAuthenticated = false },
                         startDestination = startDestination
                     )
                 }
