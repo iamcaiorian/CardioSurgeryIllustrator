@@ -25,9 +25,6 @@ fun SubjectsScreen(
         topBar = {
             TopBarModules(
                 title = "Assuntos",
-                navController = navController,
-                onHelpClick = { },
-                onSettingsClick = { },
                 onNavigateBack = onNavigateBack
             )
         }
