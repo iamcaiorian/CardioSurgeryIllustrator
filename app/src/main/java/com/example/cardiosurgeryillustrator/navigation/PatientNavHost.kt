@@ -100,7 +100,12 @@ sealed class FormFlow(val route: String) {
 fun PatientNavHost() {
     val patientNavController = rememberNavController()
 
-    val bottomBarRoutes = listOf(BottomBarPacientAction.HomePacient.route, BottomBarPacientAction.Community.route, BottomBarPacientAction.Assistant.route, BottomBarPacientAction.More.route)
+    val bottomBarRoutes = listOf(
+        BottomBarPacientAction.HomePacient.route,
+        BottomBarPacientAction.Community.route,
+        BottomBarPacientAction.Assistant.route,
+        BottomBarPacientAction.More.route
+    )
 
     NavHost(
         navController = patientNavController,

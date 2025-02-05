@@ -46,7 +46,7 @@ fun ValidateCodeScreen(
         )
     }) { innerPadding ->
         Box(
-            modifier = Modifier
+            modifier = modifier
                 .fillMaxSize()
                 .padding(innerPadding),
         ) {

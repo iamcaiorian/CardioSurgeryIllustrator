@@ -33,7 +33,7 @@ fun SubjectsScreen(
         }
     ) { innerPadding ->
         SubjectCardList(
-            modifier = Modifier
+            modifier = modifier
                 .fillMaxSize()
                 .padding(innerPadding),
             subjectList = mockSubjects,

@@ -39,7 +39,7 @@ fun ArteryDetailsScreen(navController: NavController, arteryName: String, modifi
     val artery = mockArtery.find { it.id == arteryName }
 
     Column(
-        modifier = Modifier
+        modifier = modifier
             .fillMaxSize()
             .padding(vertical = 16.dp),
         horizontalAlignment = Alignment.CenterHorizontally

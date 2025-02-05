@@ -27,7 +27,7 @@ fun ChangePasswordScreen(modifier: Modifier = Modifier, onNavigateBack: () -> Un
         )
     }) { innerPadding ->
         Box(
-            modifier = Modifier
+            modifier = modifier
                 .fillMaxSize()
                 .padding(innerPadding),
 

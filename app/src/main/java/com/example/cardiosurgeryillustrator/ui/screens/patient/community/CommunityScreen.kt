@@ -23,6 +23,7 @@ import com.example.cardiosurgeryillustrator.ui.components.patient.community.foru
 
 @Composable
 fun CommunityScreen(
+    modifier: Modifier = Modifier,
     avatarPainter: Painter? = null,
     onSelectedCategoryChanged: ((CommunityFilterChipView) -> Unit)? = null,
     title: String = "",
@@ -30,7 +31,6 @@ fun CommunityScreen(
     backgroundImageRes: Int? = null,
     userAvatar: Int? = null,
     message: String = "",
-    modifier: Modifier = Modifier,
     navController: NavController
 ) {
     Column(

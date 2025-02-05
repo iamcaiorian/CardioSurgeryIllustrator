@@ -27,7 +27,7 @@ fun TopBarSettings(modifier: Modifier = Modifier, onNavigateBack: () -> Unit, ti
     TopAppBar(
         title = {
             Row (
-                modifier = Modifier
+                modifier = modifier
                     .fillMaxWidth(),
                 verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = Arrangement.Start

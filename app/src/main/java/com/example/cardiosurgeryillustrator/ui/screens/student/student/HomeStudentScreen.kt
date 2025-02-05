@@ -23,7 +23,7 @@ fun HomeStudentScreen(navController: NavController, modifier: Modifier = Modifie
 
     Scaffold(topBar = { TopBarStudent(navController = navController) }) { innerPadding ->
         Column(
-            modifier = Modifier
+            modifier = modifier
                 .fillMaxSize()
                 .padding(innerPadding)
                 .padding(16.dp),

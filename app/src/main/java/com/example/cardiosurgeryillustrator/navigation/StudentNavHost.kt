@@ -251,17 +251,6 @@ fun StudentNavHost(
             }
         }
 
-        composable(BottomBarStudentAction.Home.route) {
-            Scaffold(
-                bottomBar = { BottomBarStudent(navController = studentNavController) }
-            ) { innerPadding ->
-                HomeStudentScreen(
-                    navController = studentNavController,
-                    modifier = Modifier.padding(innerPadding)
-                )
-            }
-        }
-
         composable(BottomBarStudentAction.Subject.route) {
             Scaffold(
                 bottomBar = { BottomBarStudent(navController = studentNavController) }
