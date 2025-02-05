@@ -25,13 +25,12 @@ fun QuizScreen(
     onBackClick: () -> Unit,
     onMenuOptionClick: (String) -> Unit,
     onAnswerClick: (Boolean) -> Unit,
-    onNavigateToSecondQuiz: (String) -> Unit
+    onNavigateToSecondQuiz: (String?) -> Unit
 ) {
     Scaffold(
         topBar = {
             TopBarQuiz(
-                title = quiz.title,
-                subtitle = quiz.subtitle,
+                title = quiz.title ?: "Quiz sem título",
                 onBackClick = onBackClick,
                 onMenuOptionClick = onMenuOptionClick
             )
@@ -57,13 +56,13 @@ fun QuizScreen(
             )
 
             Text(
-                text = quiz.question,
+                text = "Este é o conteúdo do quiz",
                 style = MaterialTheme.typography.titleLarge,
                 modifier = Modifier.align(Alignment.CenterHorizontally)
             )
 
             Text(
-                text = quiz.description,
+                text = quiz.description ?: "Descrição não fornecida",
                 style = MaterialTheme.typography.bodyMedium,
                 modifier = Modifier.align(Alignment.CenterHorizontally)
             )
@@ -95,7 +94,6 @@ fun QuizScreen(
     }
 }
 
-
 @Preview(showBackground = true, showSystemUi = true)
 @Composable
 fun QuizScreenMockPreview() {
@@ -104,6 +102,6 @@ fun QuizScreenMockPreview() {
         onBackClick = { println("Voltar clicado") },
         onMenuOptionClick = { option -> println("Menu clicado: $option") },
         onAnswerClick = { isCorrect -> println("Resposta clicada: $isCorrect") },
-        onNavigateToSecondQuiz = { println("Navegar para SecondQuizScreen") }
+        onNavigateToSecondQuiz = { println("Navegar para SecondQuizScreen com id $it") }
     )
 }

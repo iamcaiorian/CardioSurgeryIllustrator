@@ -64,6 +64,8 @@ dependencies {
     implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.6.0")
 
     implementation("androidx.core:core-ktx:1.12.0")
+// Kotlinx Serialization
+    implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.5.1")
 
     implementation ("androidx.datastore:datastore-preferences:1.0.0")
 

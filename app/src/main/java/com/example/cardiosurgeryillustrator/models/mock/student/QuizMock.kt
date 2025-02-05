@@ -1,108 +1,135 @@
 package com.example.cardiosurgeryillustrator.models.mock.student
 
 import com.example.cardiosurgeryillustrator.models.student.quiz.Quiz
+import com.example.cardiosurgeryillustrator.models.student.quiz.QuizQuestion
 
 val mockQuizzes = listOf(
     Quiz(
         id = "1",
         title = "Quiz 1",
-        subtitle = "Anatomia do Coração",
-        question = "Quantas câmaras o coração humano possui?",
         description = "Detalhes sobre a anatomia básica do coração humano.",
-        options = listOf("2", "3", "4", "5"),
-        correctAnswer = "4"
+        questionEntityList = listOf(
+            QuizQuestion(
+                id = "1",
+                problem = "Quantas câmaras o coração humano possui?",
+                alternativeA = "2",
+                alternativeB = "3",
+                alternativeC = "4",
+                alternativeD = "5",
+                answer = "4"
+            )
+        )
     ),
     Quiz(
         id = "2",
         title = "Quiz 2",
-        subtitle = "Eletrocardiograma (ECG)",
-        question = "O que o ECG mede?",
         description = "Explicação sobre o que o eletrocardiograma monitora.",
-        options = listOf(
-            "Pressão arterial",
-            "Atividade elétrica do coração",
-            "Quantidade de sangue bombeado",
-            "Níveis de oxigênio no sangue"
-        ),
-        correctAnswer = "Atividade elétrica do coração"
+        questionEntityList = listOf(
+            QuizQuestion(
+                id = "2",
+                problem = "O que o ECG mede?",
+                alternativeA = "Pressão arterial",
+                alternativeB = "Atividade elétrica do coração",
+                alternativeC = "Quantidade de sangue bombeado",
+                alternativeD = "Níveis de oxigênio no sangue",
+                answer = "Atividade elétrica do coração"
+            )
+        )
     ),
     Quiz(
         id = "3",
         title = "Quiz 3",
-        subtitle = "Insuficiência Cardíaca",
-        question = "Qual é um dos sintomas mais comuns da insuficiência cardíaca?",
         description = "Sobre os sinais de insuficiência cardíaca.",
-        options = listOf(
-            "Falta de ar ao realizar esforços",
-            "Dor intensa no peito",
-            "Desmaios frequentes",
-            "Palidez"
-        ),
-        correctAnswer = "Falta de ar ao realizar esforços"
+        questionEntityList = listOf(
+            QuizQuestion(
+                id = "3",
+                problem = "Qual é um dos sintomas mais comuns da insuficiência cardíaca?",
+                alternativeA = "Falta de ar ao realizar esforços",
+                alternativeB = "Dor intensa no peito",
+                alternativeC = "Desmaios frequentes",
+                alternativeD = "Palidez",
+                answer = "Falta de ar ao realizar esforços"
+            )
+        )
     ),
     Quiz(
         id = "4",
         title = "Quiz 4",
-        subtitle = "Hipertensão Arterial",
-        question = "O que caracteriza a hipertensão arterial?",
         description = "Compreensão dos níveis de pressão arterial.",
-        options = listOf(
-            "Pressão arterial abaixo de 120/80",
-            "Pressão arterial acima de 140/90",
-            "Redução no fluxo sanguíneo coronário",
-            "Pressão constante de 110/70"
-        ),
-        correctAnswer = "Pressão arterial acima de 140/90"
+        questionEntityList = listOf(
+            QuizQuestion(
+                id = "4",
+                problem = "O que caracteriza a hipertensão arterial?",
+                alternativeA = "Pressão arterial abaixo de 120/80",
+                alternativeB = "Pressão arterial acima de 140/90",
+                alternativeC = "Redução no fluxo sanguíneo coronário",
+                alternativeD = "Pressão constante de 110/70",
+                answer = "Pressão arterial acima de 140/90"
+            )
+        )
     ),
     Quiz(
         id = "5",
         title = "Quiz 5",
-        subtitle = "Doença Arterial Coronariana",
-        question = "O que causa a doença arterial coronariana?",
         description = "Causas comuns dessa condição cardíaca.",
-        options = listOf(
-            "Infecção viral no coração",
-            "Acúmulo de placas de gordura nas artérias coronárias",
-            "Ritmo cardíaco irregular",
-            "Anemia severa"
-        ),
-        correctAnswer = "Acúmulo de placas de gordura nas artérias coronárias"
+        questionEntityList = listOf(
+            QuizQuestion(
+                id = "5",
+                problem = "O que causa a doença arterial coronariana?",
+                alternativeA = "Infecção viral no coração",
+                alternativeB = "Acúmulo de placas de gordura nas artérias coronárias",
+                alternativeC = "Ritmo cardíaco irregular",
+                alternativeD = "Anemia severa",
+                answer = "Acúmulo de placas de gordura nas artérias coronárias"
+            )
+        )
     ),
     Quiz(
         id = "6",
         title = "Quiz 6",
-        subtitle = "Cirurgia Cardiovascular",
-        question = "Qual é o objetivo principal de uma cirurgia de bypass coronário?",
         description = "Sobre cirurgias cardiovasculares.",
-        options = listOf(
-            "Reduzir a pressão arterial",
-            "Substituir válvulas danificadas",
-            "Desviar o fluxo sanguíneo em torno de obstruções arteriais",
-            "Monitorar o ritmo cardíaco"
-        ),
-        correctAnswer = "Desviar o fluxo sanguíneo em torno de obstruções arteriais"
+        questionEntityList = listOf(
+            QuizQuestion(
+                id = "6",
+                problem = "Qual é o objetivo principal de uma cirurgia de bypass coronário?",
+                alternativeA = "Reduzir a pressão arterial",
+                alternativeB = "Substituir válvulas danificadas",
+                alternativeC = "Desviar o fluxo sanguíneo em torno de obstruções arteriais",
+                alternativeD = "Monitorar o ritmo cardíaco",
+                answer = "Desviar o fluxo sanguíneo em torno de obstruções arteriais"
+            )
+        )
     ),
     Quiz(
         id = "7",
         title = "Quiz 7",
-        subtitle = "Reabilitação Cardiovascular",
-        question = "Qual é um dos principais benefícios da reabilitação cardiovascular?",
         description = "Importância da reabilitação para pacientes cardíacos.",
-        options = listOf(
-            "Aumento da pressão arterial",
-            "Redução do colesterol LDL",
-            "Melhora da capacidade física e qualidade de vida",
-            "Substituição de válvulas cardíacas"
-        ),
-        correctAnswer = "Melhora da capacidade física e qualidade de vida"
+        questionEntityList = listOf(
+            QuizQuestion(
+                id = "7",
+                problem = "Qual é um dos principais benefícios da reabilitação cardiovascular?",
+                alternativeA = "Aumento da pressão arterial",
+                alternativeB = "Redução do colesterol LDL",
+                alternativeC = "Melhora da capacidade física e qualidade de vida",
+                alternativeD = "Substituição de válvulas cardíacas",
+                answer = "Melhora da capacidade física e qualidade de vida"
+            )
+        )
     ),
     Quiz(
         id = "8",
         title = "Quiz 8",
-        subtitle = "Farmacologia Cardiovascular",
-        question = "Qual medicamento é usado para evitar coágulos em pacientes cardíacos?",
         description = "Sobre os medicamentos cardiovasculares.",
-        options = listOf("Aspirina", "Paracetamol", "Ibuprofeno", "Antibióticos"),
-        correctAnswer = "Aspirina"
+        questionEntityList = listOf(
+            QuizQuestion(
+                id = "8",
+                problem = "Qual medicamento é usado para evitar coágulos em pacientes cardíacos?",
+                alternativeA = "Aspirina",
+                alternativeB = "Paracetamol",
+                alternativeC = "Ibuprofeno",
+                alternativeD = "Antibióticos",
+                answer = "Aspirina"
+            )
+        )
     )
 )
