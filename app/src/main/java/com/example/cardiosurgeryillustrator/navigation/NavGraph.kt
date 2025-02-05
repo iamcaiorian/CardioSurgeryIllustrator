@@ -2,13 +2,17 @@ package com.example.cardiosurgeryillustrator.navigation
 
 import androidx.compose.animation.slideInHorizontally
 import androidx.compose.animation.slideOutHorizontally
+import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Surface
 import androidx.compose.material3.darkColorScheme
 import androidx.compose.material3.lightColorScheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
@@ -60,30 +64,37 @@ fun NavGraph(
                 route = AppFlow.WelcomeFlow.route
             ) {
                 composable(WelcomeFlow.Welcome.route) {
-                    WelcomeScreen(
-                        onNavigateToChooseUser = {
-                            navController.navigate(WelcomeFlow.ChooseUser.route)
-                        }
-                    )
+                    Scaffold {innerPadding ->
+                        WelcomeScreen(
+                            modifier = Modifier.padding(innerPadding),
+                            onNavigateToChooseUser = {
+                                navController.navigate(WelcomeFlow.ChooseUser.route)
+                            }
+                        )
+                    }
+
                 }
                 composable(WelcomeFlow.ChooseUser.route) {
-                    ChooseUserScreen(
-                        onNavigateToStudent = {
-                            navController.navigate(AppFlow.StudentFlow.route) {
-                                popUpTo(WelcomeFlow.Welcome.route) { inclusive = true }
+                    Scaffold { innerPadding ->
+                        ChooseUserScreen(
+                            modifier = Modifier.padding(innerPadding),
+                            onNavigateToStudent = {
+                                navController.navigate(AppFlow.StudentFlow.route) {
+                                    popUpTo(WelcomeFlow.Welcome.route) { inclusive = true }
+                                }
+                            },
+                            onNavigateToPatient = {
+                                navController.navigate(AppFlow.PatientFlow.route) {
+                                    popUpTo(WelcomeFlow.Welcome.route) { inclusive = true }
+                                }
+                            },
+                            onNavigateToAdmin = {
+                                navController.navigate(AppFlow.AdminFlow.route) {
+                                    popUpTo(WelcomeFlow.Welcome.route) { inclusive = true }
+                                }
                             }
-                        },
-                        onNavigateToPatient = {
-                            navController.navigate(AppFlow.PatientFlow.route) {
-                                popUpTo(WelcomeFlow.Welcome.route) { inclusive = true }
-                            }
-                        },
-                        onNavigateToAdmin = {
-                            navController.navigate(AppFlow.AdminFlow.route) {
-                                popUpTo(WelcomeFlow.Welcome.route) { inclusive = true }
-                            }
-                        }
-                    )
+                        )
+                    }
                 }
             }
 

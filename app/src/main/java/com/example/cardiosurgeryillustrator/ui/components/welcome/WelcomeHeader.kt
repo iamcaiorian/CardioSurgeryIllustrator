@@ -23,7 +23,7 @@ fun WelcomeHeader(modifier: Modifier = Modifier) {
         verticalArrangement = Arrangement.spacedBy(16.dp),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        Text(text = "Seja bem-vindo ao", style = Typography.bodyLarge)
+        Text(text = "Seja bem-vindo ao", style = Typography.headlineMedium)
         Image(
             painter = painterResource(id = R.drawable.heart_icon),
             contentDescription = "CSI Logo",
