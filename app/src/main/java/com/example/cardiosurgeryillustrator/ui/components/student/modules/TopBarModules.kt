@@ -22,10 +22,7 @@ import com.example.cardiosurgeryillustrator.ui.theme.Zinc900
 @Composable
 fun TopBarModules(
     title: String,
-    onSettingsClick: () -> Unit,
-    onHelpClick: () -> Unit,
     onNavigateBack: () -> Unit,
-    navController: NavController
 ) {
     var expanded by remember { mutableStateOf(false) }
 
@@ -59,33 +56,6 @@ fun TopBarModules(
                 )
             }
         },
-        actions = {
-            IconButton(onClick = { expanded = true }) {
-                Icon(
-                    imageVector = Icons.Default.MoreVert,
-                    contentDescription = "Menu"
-                )
-            }
-            DropdownMenu(
-                expanded = expanded,
-                onDismissRequest = { expanded = false }
-            ) {
-                DropdownMenuItem(
-                    text = { Text("Configurações") },
-                    onClick = {
-                        expanded = false
-                        onSettingsClick()
-                    }
-                )
-                DropdownMenuItem(
-                    text = { Text("Ajuda") },
-                    onClick = {
-                        expanded = false
-                        onHelpClick()
-                    }
-                )
-            }
-        },
         colors = TopAppBarDefaults.topAppBarColors(
             containerColor = MaterialTheme.colorScheme.background,
             titleContentColor = MaterialTheme.colorScheme.onBackground,
@@ -100,8 +70,5 @@ fun TopBarModules(
 private fun TopBarModulesPreview() {
     TopBarModules(
         title = "Example",
-        navController = rememberNavController(),
-        onHelpClick = {},
-        onSettingsClick = {},
         onNavigateBack = {})
 }

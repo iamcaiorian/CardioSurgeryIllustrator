@@ -27,9 +27,6 @@ fun ModulesScreen(
         topBar = {
             TopBarModules(
                 title = "Módulos",
-                navController = navController,
-                onHelpClick = { },
-                onSettingsClick = { },
                 onNavigateBack = onNavigateBack
             )
         }
