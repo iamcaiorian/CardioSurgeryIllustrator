@@ -2,7 +2,6 @@ package com.example.cardiosurgeryillustrator.ui.screens.admin.faq
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -19,7 +18,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.cardiosurgeryillustrator.R
-import com.example.cardiosurgeryillustrator.models.mock.mockFAQ
+import com.example.cardiosurgeryillustrator.models.mock.patient.mockFAQ
 import com.example.cardiosurgeryillustrator.ui.components.buttons.StandardButton
 import com.example.cardiosurgeryillustrator.ui.components.faq.FaqForm
 import com.example.cardiosurgeryillustrator.ui.components.faq.FaqItemRow

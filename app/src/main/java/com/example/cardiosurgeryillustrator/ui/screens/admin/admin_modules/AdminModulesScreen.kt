@@ -23,12 +23,12 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.cardiosurgeryillustrator.R
-import com.example.cardiosurgeryillustrator.repository.subject.SubjectRepository
+import com.example.cardiosurgeryillustrator.repository.student.subject.SubjectRepository
 import com.example.cardiosurgeryillustrator.ui.components.admin.admin_modules.AdminModuleCard
 import com.example.cardiosurgeryillustrator.ui.components.buttons.StandardButton
 import com.example.cardiosurgeryillustrator.ui.theme.Typography
-import com.example.cardiosurgeryillustrator.ui.view_models.admin.admin_modules.AdminModulesViewModel
-import com.example.cardiosurgeryillustrator.ui.view_models.admin.admin_modules.AdminModulesViewModelFactory
+import com.example.cardiosurgeryillustrator.view_models.admin.admin_modules.AdminModulesViewModel
+import com.example.cardiosurgeryillustrator.view_models.admin.admin_modules.AdminModulesViewModelFactory
 import com.example.cardiosurgeryillustrator.utils.makeModuleEntityUtil
 
 @Composable

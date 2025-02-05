@@ -25,8 +25,8 @@ import com.example.cardiosurgeryillustrator.models.patient.nearby_clinics.Clinic
 import com.example.cardiosurgeryillustrator.models.student.module.Module
 import com.example.cardiosurgeryillustrator.models.student.module.ModuleCreateRequest
 import com.example.cardiosurgeryillustrator.models.student.subject.Subject
-import com.example.cardiosurgeryillustrator.repository.module.ModuleRepository
-import com.example.cardiosurgeryillustrator.repository.subject.SubjectRepository
+import com.example.cardiosurgeryillustrator.repository.student.module.ModuleRepository
+import com.example.cardiosurgeryillustrator.repository.student.subject.SubjectRepository
 import com.example.cardiosurgeryillustrator.ui.components.admin.create_module.SubjectDropdown
 import com.example.cardiosurgeryillustrator.ui.components.buttons.StandardButton
 import com.example.cardiosurgeryillustrator.ui.components.input.StandardTextArea
@@ -34,8 +34,8 @@ import com.example.cardiosurgeryillustrator.ui.components.input.StandardTextFiel
 import com.example.cardiosurgeryillustrator.ui.components.patient.appointment_schedule.ClinicDropdown
 import com.example.cardiosurgeryillustrator.ui.components.topBar.StandardTopBar
 import com.example.cardiosurgeryillustrator.ui.theme.Typography
-import com.example.cardiosurgeryillustrator.ui.view_models.admin.create_module.CreateModuleViewModel
-import com.example.cardiosurgeryillustrator.ui.view_models.admin.create_module.CreateModuleViewModelFactory
+import com.example.cardiosurgeryillustrator.view_models.admin.create_module.CreateModuleViewModel
+import com.example.cardiosurgeryillustrator.view_models.admin.create_module.CreateModuleViewModelFactory
 import java.util.UUID
 
 @OptIn(ExperimentalMaterial3Api::class)

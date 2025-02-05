@@ -1,4 +1,4 @@
-package com.example.cardiosurgeryillustrator.ui.components.button
+package com.example.cardiosurgeryillustrator.ui.components.buttons
 
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding

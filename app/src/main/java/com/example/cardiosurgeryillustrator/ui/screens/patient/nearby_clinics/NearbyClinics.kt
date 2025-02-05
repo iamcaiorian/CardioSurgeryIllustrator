@@ -30,7 +30,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
-import com.example.cardiosurgeryillustrator.models.mock.mockClinics
+import com.example.cardiosurgeryillustrator.models.mock.patient.mockClinics
 import com.example.cardiosurgeryillustrator.ui.components.patient.nearby_clinics.ClinicCardList
 import com.example.cardiosurgeryillustrator.ui.theme.Zinc100
 import com.google.accompanist.permissions.ExperimentalPermissionsApi

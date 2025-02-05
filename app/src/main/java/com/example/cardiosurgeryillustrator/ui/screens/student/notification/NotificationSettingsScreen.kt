@@ -13,7 +13,10 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.work.*
-import com.example.cardiosurgeryillustrator.ui.view_models.NotificationViewModelFactory
+import com.example.cardiosurgeryillustrator.utils.notification.HabitsNotificationWorker
+import com.example.cardiosurgeryillustrator.utils.notification.RiskNotificationWorker
+import com.example.cardiosurgeryillustrator.view_models.student.notification.NotificationViewModel
+import com.example.cardiosurgeryillustrator.view_models.student.notification.NotificationViewModelFactory
 import java.util.concurrent.TimeUnit
 
 @OptIn(ExperimentalMaterial3Api::class)

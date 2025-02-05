@@ -11,7 +11,6 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
-import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonColors
 import androidx.compose.material3.Icon
@@ -26,7 +25,6 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
@@ -37,7 +35,7 @@ import androidx.navigation.compose.rememberNavController
 import androidx.work.OneTimeWorkRequestBuilder
 import androidx.work.WorkManager
 import androidx.work.workDataOf
-import com.example.cardiosurgeryillustrator.models.mock.mockClinics
+import com.example.cardiosurgeryillustrator.models.mock.patient.mockClinics
 import com.example.cardiosurgeryillustrator.models.patient.appointment_schedule.Appointment
 import com.example.cardiosurgeryillustrator.models.patient.nearby_clinics.Clinic
 import com.example.cardiosurgeryillustrator.ui.components.patient.appointment_schedule.ClinicDropdown
@@ -47,7 +45,7 @@ import com.example.cardiosurgeryillustrator.ui.screens.patient.notification.Appo
 import com.example.cardiosurgeryillustrator.ui.theme.Blue600
 import com.example.cardiosurgeryillustrator.ui.theme.Zinc50
 import com.example.cardiosurgeryillustrator.ui.theme.Zinc500
-import com.example.cardiosurgeryillustrator.ui.view_models.patient.AppointmentScheduleViewModel
+import com.example.cardiosurgeryillustrator.view_models.patient.appointment.AppointmentScheduleViewModel
 import java.text.DateFormat
 import java.util.Date
 import java.util.concurrent.TimeUnit

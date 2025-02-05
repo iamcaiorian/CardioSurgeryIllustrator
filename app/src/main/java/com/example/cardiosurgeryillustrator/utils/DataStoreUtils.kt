@@ -42,10 +42,9 @@ object DataStoreUtils {
     }
 
     suspend fun deleteAppointment(context: Context, appointmentId: String) {
-        val currentAppointments = readAppointments(context).first() // Coleta o fluxo de appointments
-        val updatedAppointments = currentAppointments.filter { it.id != appointmentId } // Remove o agendamento
+        val currentAppointments = readAppointments(context).first()
+        val updatedAppointments = currentAppointments.filter { it.id != appointmentId }
 
-        // Salva a lista de agendamentos atualizada no DataStore
         saveAppointments(context, updatedAppointments)
     }
 }

@@ -21,14 +21,14 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import com.example.cardiosurgeryillustrator.R
-import com.example.cardiosurgeryillustrator.models.mock.mockClinics
-import com.example.cardiosurgeryillustrator.models.mock.mockInfoText
+import com.example.cardiosurgeryillustrator.models.mock.patient.mockClinics
+import com.example.cardiosurgeryillustrator.models.mock.patient.mockInfoText
 import com.example.cardiosurgeryillustrator.ui.components.patient.BottomBarPacient
 import com.example.cardiosurgeryillustrator.ui.components.topBar.StandardTopBar
 import com.example.cardiosurgeryillustrator.ui.screens.patient.home.ArteryDetailsScreen
 import com.example.cardiosurgeryillustrator.ui.screens.patient.assistant.AssistantScreen
 import com.example.cardiosurgeryillustrator.ui.screens.patient.home.HomePacientScreen
-import com.example.cardiosurgeryillustrator.ui.screens.patient.MoreScreen
+import com.example.cardiosurgeryillustrator.ui.screens.patient.more.MoreScreen
 import com.example.cardiosurgeryillustrator.ui.screens.patient.appointment_schedule.AppointmentScheduleScreen
 import com.example.cardiosurgeryillustrator.ui.screens.patient.appointment_schedule.NewAppointmentScheduleScreen
 import com.example.cardiosurgeryillustrator.ui.screens.patient.community.CommunityScreen

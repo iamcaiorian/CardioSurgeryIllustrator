@@ -26,9 +26,9 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import com.example.cardiosurgeryillustrator.R
-import com.example.cardiosurgeryillustrator.models.mock.StudyMock
-import com.example.cardiosurgeryillustrator.models.mock.mockModules
-import com.example.cardiosurgeryillustrator.models.mock.mockQuizzes
+import com.example.cardiosurgeryillustrator.models.mock.student.StudyMock
+import com.example.cardiosurgeryillustrator.models.mock.student.mockModules
+import com.example.cardiosurgeryillustrator.models.mock.student.mockQuizzes
 import com.example.cardiosurgeryillustrator.ui.screens.student.modules.ModuleVideoScreen
 import com.example.cardiosurgeryillustrator.ui.screens.student.favorite.FavoriteScreen
 import com.example.cardiosurgeryillustrator.ui.screens.student.modules.ModulesScreen

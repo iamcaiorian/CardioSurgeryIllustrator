@@ -31,7 +31,7 @@ import com.example.cardiosurgeryillustrator.ui.components.patient.appointment_sc
 import com.example.cardiosurgeryillustrator.ui.theme.Blue600
 import com.example.cardiosurgeryillustrator.ui.theme.Zinc50
 import com.example.cardiosurgeryillustrator.ui.theme.Zinc500
-import com.example.cardiosurgeryillustrator.ui.view_models.patient.AppointmentScheduleViewModel
+import com.example.cardiosurgeryillustrator.view_models.patient.appointment.AppointmentScheduleViewModel
 
 @Composable
 fun AppointmentScheduleScreen(
