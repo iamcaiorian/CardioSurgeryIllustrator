@@ -16,6 +16,7 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.example.cardiosurgeryillustrator.R
+import com.example.cardiosurgeryillustrator.ui.theme.Typography
 import com.example.cardiosurgeryillustrator.ui.theme.Zinc900
 
 @ExperimentalMaterial3Api
@@ -24,7 +25,6 @@ fun TopBarModules(
     title: String,
     onNavigateBack: () -> Unit,
 ) {
-    var expanded by remember { mutableStateOf(false) }
 
     TopAppBar(
         title = {
@@ -50,7 +50,7 @@ fun TopBarModules(
                 Spacer(modifier = Modifier.width(12.dp))
                 Text(
                     text = title,
-                    style = MaterialTheme.typography.titleLarge,
+                    style = Typography.headlineSmall,
                     maxLines = 1,
                     overflow = TextOverflow.Ellipsis
                 )
