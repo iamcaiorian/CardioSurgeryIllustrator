@@ -95,7 +95,7 @@ fun NearbyClinics(modifier: Modifier, navController: NavController) {
         },
         content = {
             Box(
-                modifier = Modifier
+                modifier = modifier
                     .fillMaxSize()
                     .padding(
                         bottom = it

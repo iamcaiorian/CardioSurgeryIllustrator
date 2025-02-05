@@ -49,7 +49,7 @@ fun CardioForm(
     var answers by remember { mutableStateOf(mutableMapOf<String, String>()) }
 
     LazyColumn(
-        modifier = Modifier
+        modifier = modifier
             .fillMaxSize()
             .padding(16.dp)
     ) {

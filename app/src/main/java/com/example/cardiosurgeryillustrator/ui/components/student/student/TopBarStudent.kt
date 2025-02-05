@@ -23,11 +23,8 @@ import com.example.cardiosurgeryillustrator.ui.theme.Zinc900
 fun TopBarStudent(navController: NavController) {
     val actions = listOf(
         TopBarStudentAction.Profile,
-        TopBarStudentAction.Search,
         TopBarStudentAction.Settings
     )
-
-    val currentDestination = navController.currentBackStackEntryAsState().value?.destination
 
     TopAppBar(
         title = {

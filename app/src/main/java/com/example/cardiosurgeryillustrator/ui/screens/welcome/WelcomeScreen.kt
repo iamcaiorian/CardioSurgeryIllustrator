@@ -2,6 +2,7 @@ package com.example.cardiosurgeryillustrator.ui.screens.welcome
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -22,32 +23,36 @@ import com.example.cardiosurgeryillustrator.ui.theme.Typography
 
 @Composable
 fun WelcomeScreen(modifier: Modifier = Modifier, onNavigateToChooseUser: () -> Unit) {
-    Column(
+    Box(
         modifier = modifier
-            .background(Color.White)
             .fillMaxSize()
-            .padding(horizontal = 32.dp, vertical = 96.dp)
-            .verticalScroll(state = rememberScrollState()),
-        verticalArrangement = Arrangement.spacedBy(80.dp, Alignment.Bottom),
-        horizontalAlignment = Alignment.CenterHorizontally
+            .padding(32.dp),
     ) {
-        WelcomeHeader()
-        Text(
-            text =  "Este aplicativo foi criado para pacientes e " +
-                    "estudantes de medicina que desejam entender melhor " +
-                    "os procedimentos cardiovasculares. Aqui, você encontrará " +
-                    "ilustrações detalhadas de cirurgias cardíacas, " +
-                    "explicando cada etapa de forma acessível e visual.\n" +
-                    "Explore e aprenda mais sobre o coração!",
-            style = Typography.bodyMedium,
-            textAlign = TextAlign.Center,
-            modifier = Modifier.fillMaxWidth()
-        )
-        StandardButton(
-            modifier = Modifier.fillMaxWidth(),
-            text = "Começar",
-            onClick = onNavigateToChooseUser
-        )
+        Column(
+            modifier = modifier
+                .verticalScroll(state = rememberScrollState())
+                .align(Alignment.BottomCenter),
+            verticalArrangement = Arrangement.spacedBy(80.dp, Alignment.Bottom),
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            WelcomeHeader()
+            Text(
+                text = "Este aplicativo foi criado para pacientes e " +
+                        "estudantes de medicina que desejam entender melhor " +
+                        "os procedimentos cardiovasculares. Aqui, você encontrará " +
+                        "ilustrações detalhadas de cirurgias cardíacas, " +
+                        "explicando cada etapa de forma acessível e visual.\n" +
+                        "Explore e aprenda mais sobre o coração!",
+                style = Typography.bodyLarge,
+                textAlign = TextAlign.Center,
+                modifier = Modifier.fillMaxWidth()
+            )
+            StandardButton(
+                modifier = Modifier.fillMaxWidth(),
+                text = "Começar",
+                onClick = onNavigateToChooseUser
+            )
+        }
     }
 }
 

@@ -25,15 +25,12 @@ fun SubjectsScreen(
         topBar = {
             TopBarModules(
                 title = "Assuntos",
-                navController = navController,
-                onHelpClick = { },
-                onSettingsClick = { },
                 onNavigateBack = onNavigateBack
             )
         }
     ) { innerPadding ->
         SubjectCardList(
-            modifier = Modifier
+            modifier = modifier
                 .fillMaxSize()
                 .padding(innerPadding),
             subjectList = mockSubjects,

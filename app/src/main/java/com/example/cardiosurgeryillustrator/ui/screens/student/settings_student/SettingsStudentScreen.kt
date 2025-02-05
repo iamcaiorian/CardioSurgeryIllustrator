@@ -40,7 +40,7 @@ fun SettingsStudentScreen(
         )
     }) { innerPadding ->
         Column(
-            modifier = Modifier
+            modifier = modifier
                 .fillMaxSize()
                 .padding(innerPadding),
         ) {

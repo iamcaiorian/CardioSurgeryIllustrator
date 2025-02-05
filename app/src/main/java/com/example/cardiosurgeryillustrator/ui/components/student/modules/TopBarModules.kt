@@ -16,18 +16,15 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.example.cardiosurgeryillustrator.R
+import com.example.cardiosurgeryillustrator.ui.theme.Typography
 import com.example.cardiosurgeryillustrator.ui.theme.Zinc900
 
 @ExperimentalMaterial3Api
 @Composable
 fun TopBarModules(
     title: String,
-    onSettingsClick: () -> Unit,
-    onHelpClick: () -> Unit,
     onNavigateBack: () -> Unit,
-    navController: NavController
 ) {
-    var expanded by remember { mutableStateOf(false) }
 
     TopAppBar(
         title = {
@@ -53,36 +50,9 @@ fun TopBarModules(
                 Spacer(modifier = Modifier.width(12.dp))
                 Text(
                     text = title,
-                    style = MaterialTheme.typography.titleLarge,
+                    style = Typography.headlineSmall,
                     maxLines = 1,
                     overflow = TextOverflow.Ellipsis
-                )
-            }
-        },
-        actions = {
-            IconButton(onClick = { expanded = true }) {
-                Icon(
-                    imageVector = Icons.Default.MoreVert,
-                    contentDescription = "Menu"
-                )
-            }
-            DropdownMenu(
-                expanded = expanded,
-                onDismissRequest = { expanded = false }
-            ) {
-                DropdownMenuItem(
-                    text = { Text("Configurações") },
-                    onClick = {
-                        expanded = false
-                        onSettingsClick()
-                    }
-                )
-                DropdownMenuItem(
-                    text = { Text("Ajuda") },
-                    onClick = {
-                        expanded = false
-                        onHelpClick()
-                    }
                 )
             }
         },
@@ -100,8 +70,5 @@ fun TopBarModules(
 private fun TopBarModulesPreview() {
     TopBarModules(
         title = "Example",
-        navController = rememberNavController(),
-        onHelpClick = {},
-        onSettingsClick = {},
         onNavigateBack = {})
 }

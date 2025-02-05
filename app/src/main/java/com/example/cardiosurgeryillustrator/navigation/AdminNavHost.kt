@@ -37,7 +37,7 @@ import com.example.cardiosurgeryillustrator.view_models.admin.quiz_modules.QuizV
 import com.example.cardiosurgeryillustrator.view_models.admin.quiz_modules.QuizViewModelFactory
 
 sealed class LoginAdminFlow(val route: String) {
-    object Login : LoginAdminFlow("login_admin")
+    object LoginAdmin : LoginAdminFlow("login_admin")
 }
 
 sealed class BottomBarAdminAction(
@@ -102,15 +102,15 @@ fun AdminNavHost() {
 
     NavHost(
         navController = adminNavController,
-        startDestination = LoginAdminFlow.Login.route
+        startDestination = LoginAdminFlow.LoginAdmin.route
     ) {
-        composable(LoginAdminFlow.Login.route) {
+        composable(LoginAdminFlow.LoginAdmin.route) {
             Scaffold { innerPadding ->
                 LoginAdminScreen(
                     modifier = Modifier.padding(innerPadding),
                     onLoginClick = { _, _ ->
                         adminNavController.navigate(BottomBarAdminAction.Home.route) {
-                            popUpTo(AppScreen.LoginFlow.route) { inclusive = true }
+                            popUpTo(LoginAdminFlow.LoginAdmin.route) { inclusive = true }
                         }
                     },
                     onForgotPasswordClick = { },

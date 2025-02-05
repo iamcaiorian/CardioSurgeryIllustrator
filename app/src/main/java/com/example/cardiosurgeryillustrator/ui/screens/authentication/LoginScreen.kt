@@ -1,33 +1,50 @@
 package com.example.cardiosurgeryillustrator.ui.screens.authentication
 
-import android.annotation.SuppressLint
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.text.ClickableText
-import androidx.compose.material3.*
-import androidx.compose.runtime.*
+import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.LocalTextStyle
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.cardiosurgeryillustrator.R
-import com.example.cardiosurgeryillustrator.ui.components.input.StandardTextArea
 import com.example.cardiosurgeryillustrator.ui.components.input.StandardTextField
+import com.example.cardiosurgeryillustrator.ui.theme.Blue700
+import com.example.cardiosurgeryillustrator.ui.theme.Typography
+import com.example.cardiosurgeryillustrator.ui.theme.Zinc500
 
-@OptIn(ExperimentalMaterial3Api::class)
-@SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
 fun LoginScreen(
-    onLoginClick: (String, String) -> Unit,
+    onNavigateToHome: () -> Unit,
     onForgotPasswordClick: () -> Unit,
     onRegisterClick: () -> Unit
 ) {
@@ -35,10 +52,11 @@ fun LoginScreen(
     var password by remember { mutableStateOf("") }
     var selectedTab by remember { mutableStateOf(0) }
 
-    Scaffold {
+    Scaffold {innerPadding ->
         Column(
             modifier = Modifier
                 .fillMaxSize()
+                .padding(innerPadding)
                 .padding(16.dp),
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.Center
@@ -56,14 +74,14 @@ fun LoginScreen(
             ) {
                 Text(
                     text = "Cardio Surgery",
-                    fontSize = 20.sp,
-                    color = Color(0xFF0D47A1),
+                    style = Typography.headlineMedium,
+                    color = Blue700,
                     fontWeight = FontWeight.Bold
                 )
                 Text(
                     text = "Illustrator",
-                    fontSize = 20.sp,
-                    color = Color(0xFF0D47A1),
+                    style = Typography.headlineMedium,
+                    color = Blue700,
                     fontWeight = FontWeight.Bold
                 )
             }
@@ -116,7 +134,7 @@ fun LoginScreen(
             ) {
                 Text(
                     text = "Usuário",
-                    fontSize = 12.sp,
+                    style = Typography.labelMedium,
                     color = Color.DarkGray,
                     modifier = Modifier.padding(start = 16.dp, bottom = 4.dp)
                 )
@@ -135,7 +153,7 @@ fun LoginScreen(
             ) {
                 Text(
                     text = "Senha",
-                    fontSize = 12.sp,
+                    style = Typography.labelMedium,
                     color = Color.DarkGray,
                     modifier = Modifier.padding(start = 16.dp, bottom = 4.dp)
                 )
@@ -151,10 +169,10 @@ fun LoginScreen(
             Spacer(modifier = Modifier.height(26.dp))
 
             Button(
-                onClick = { onLoginClick(email, password) },
+                onClick = onNavigateToHome,
                 modifier = Modifier.fillMaxWidth(),
                 colors = ButtonDefaults.buttonColors(
-                    containerColor = Color(0xFF0D47A1),
+                    containerColor = Blue700,
                     contentColor = Color.White
                 ),
                 shape = MaterialTheme.shapes.small
@@ -170,16 +188,17 @@ fun LoginScreen(
                     .padding(top = 8.dp),
                 contentAlignment = Alignment.Center
             ) {
-                ClickableText(
-                    text = AnnotatedString("Esqueci minha senha"),
-                    onClick = { onForgotPasswordClick() },
-                    modifier = Modifier.padding(bottom = 8.dp),
-                    style = LocalTextStyle.current.copy(
-                        textDecoration = TextDecoration.Underline,
-                        color = Color.Gray,
-                        fontSize = 14.sp
+                TextButton(
+                    onClick = { onForgotPasswordClick() }
+                ) {
+                    Text(
+                        text = "Esqueci minha senha",
+                        color = Zinc500,
+                        style = Typography.labelMedium.copy(
+                            textDecoration = TextDecoration.Underline
+                        )
                     )
-                )
+                }
             }
         }
     }
@@ -189,7 +208,7 @@ fun LoginScreen(
 @Composable
 fun PreviewLoginScreen() {
     LoginScreen(
-        onLoginClick = { _, _ -> },
+        onNavigateToHome = {},
         onForgotPasswordClick = {},
         onRegisterClick = {}
     )

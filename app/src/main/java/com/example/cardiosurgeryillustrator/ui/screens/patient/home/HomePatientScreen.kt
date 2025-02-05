@@ -39,7 +39,7 @@ import com.example.cardiosurgeryillustrator.ui.modals.feedback.FeedbackModal
 @Composable
 fun HomePacientScreen(modifier: Modifier = Modifier, navController: NavController, infoTextList: List<InfoText>) {
     Column(
-        modifier = Modifier
+        modifier = modifier
             .fillMaxSize()
             .padding(16.dp),
         horizontalAlignment = Alignment.CenterHorizontally
