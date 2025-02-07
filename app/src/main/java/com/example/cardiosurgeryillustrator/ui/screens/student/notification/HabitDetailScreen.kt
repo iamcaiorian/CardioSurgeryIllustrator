@@ -15,6 +15,7 @@ import androidx.datastore.preferences.core.booleanPreferencesKey
 import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.longPreferencesKey
 import androidx.datastore.preferences.preferencesDataStore
+import com.example.cardiosurgeryillustrator.ui.theme.Blue700
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 
@@ -114,8 +115,12 @@ fun HabitDetailScreen(
                     ) {
                         Checkbox(
                             checked = state.value,
-                            onCheckedChange = { toggleHabit(index, it) }
+                            onCheckedChange = { toggleHabit(index, it) },
+                            colors = CheckboxDefaults.colors(
+                                checkedColor = Blue700,
+                            )
                         )
+
                         Text(text = labels[index], style = MaterialTheme.typography.bodyLarge)
                     }
                 }

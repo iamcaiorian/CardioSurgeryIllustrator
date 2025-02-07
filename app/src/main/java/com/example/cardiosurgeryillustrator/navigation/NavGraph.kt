@@ -74,6 +74,7 @@ fun NavGraph(
                     }
 
                 }
+
                 composable(WelcomeFlow.ChooseUser.route) {
                     Scaffold { innerPadding ->
                         ChooseUserScreen(
@@ -98,7 +99,6 @@ fun NavGraph(
                 }
             }
 
-
             composable(AppFlow.StudentFlow.route) {
                 StudentNavHost()
             }
@@ -111,11 +111,24 @@ fun NavGraph(
                 AdminNavHost()
             }
 
-
-            // Notifications
-            composable("notifications") {
-                NotificationSettingsScreen(
-                    onBackClick = { navController.popBackStack() }
+            composable(
+                route = "habit_detail/{title}/{description}",
+                arguments = listOf(
+                    navArgument("title") { type = NavType.StringType },
+                    navArgument("description") { type = NavType.StringType }
+                )
+            ) { backStackEntry ->
+                val title = backStackEntry.arguments?.getString("title") ?: "Detalhes"
+                val description = backStackEntry.arguments?.getString("description")
+                    ?: "Sem descrição disponível."
+                HabitDetailScreen(
+                    title = title,
+                    description = description,
+                    onBackClick = {
+                        navController.navigate(AppFlow.StudentFlow.route) {
+                            popUpTo(AppFlow.StudentFlow.route) { inclusive = true }
+                        }
+                    }
                 )
             }
         }
