@@ -311,15 +311,14 @@ fun StudentNavHost(
             arguments = listOf(navArgument("subjectId") { type = NavType.StringType })
         ) { backStackEntry ->
             val subjectId = backStackEntry.arguments?.getString("subjectId")
-            val filteredModules = mockModules.filter { it.subjectId == subjectId }
 
             Scaffold(
                 bottomBar = { BottomBarStudent(navController = studentNavController) }
             ) { innerPadding ->
                 ModulesScreen(
                     navController = studentNavController,
-                    modulesList = filteredModules,
                     modifier = Modifier.padding(innerPadding),
+                    subjectId = subjectId ?: "unknown_id",
                     onNavigateBack = { studentNavController.popBackStack() }
                 )
             }
