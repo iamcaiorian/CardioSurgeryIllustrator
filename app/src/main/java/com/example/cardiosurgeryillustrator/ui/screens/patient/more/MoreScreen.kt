@@ -22,6 +22,8 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.example.cardiosurgeryillustrator.R
+import com.example.cardiosurgeryillustrator.navigation.MoreActionsFlow
+import com.example.cardiosurgeryillustrator.ui.components.patient.more.MoreOption
 import com.example.cardiosurgeryillustrator.ui.components.student.settings_student.SettingsOption
 
 @Composable
@@ -51,19 +53,24 @@ fun MoreScreen(modifier: Modifier = Modifier, navController: NavController) {
 
         Spacer(modifier = Modifier.height(24.dp))
 
-        SettingsOption(
+        MoreOption(
             onClickOption = { navController.navigate("nearby_clinics") },
             title = "Clínicas Próximas"
         )
 
-        SettingsOption(
+        MoreOption(
             onClickOption = { navController.navigate("faq") },
             title = "Perguntas Frequentes"
         )
-        
-        SettingsOption(
+
+        MoreOption(
             onClickOption = { navController.navigate("appointment_schedule_screen") },
             title = "Registrar Consulta"
+        )
+
+        MoreOption(
+            onClickOption = { navController.navigate(MoreActionsFlow.Settings.route) },
+            title = "Configurações"
         )
            
     }
