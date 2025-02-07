@@ -6,6 +6,7 @@ import com.example.cardiosurgeryillustrator.models.student.module.ModuleResponse
 import retrofit2.http.Body
 import retrofit2.http.GET
 import retrofit2.http.POST
+import retrofit2.http.Path
 
 interface ModuleService {
     @POST("/module/")
@@ -13,4 +14,7 @@ interface ModuleService {
 
     @GET("/module/")
     suspend fun getAllModules(): List<ModuleResponse>
+
+    @GET("/module/by-subject/{subject_id}")
+    suspend fun getAllModulesBySubjectId(@Path("subject_id") subjectId: String): List<ModuleResponse>
 }
