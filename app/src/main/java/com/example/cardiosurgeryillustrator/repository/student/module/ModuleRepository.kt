@@ -14,4 +14,8 @@ class ModuleRepository() {
     suspend fun getAllModules(): List<ModuleResponse> {
         return RetrofitInstance.moduleService.getAllModules()
     }
+
+    suspend fun getAllModulesBySubjectId(subjectId: String): List<ModuleResponse> {
+        return RetrofitInstance.moduleService.getAllModulesBySubjectId(subjectId)
+    }
 }
