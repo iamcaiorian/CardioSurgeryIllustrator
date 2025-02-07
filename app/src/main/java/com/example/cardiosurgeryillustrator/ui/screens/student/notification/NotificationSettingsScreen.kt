@@ -13,6 +13,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.work.*
+import com.example.cardiosurgeryillustrator.ui.components.topBar.StandardTopBar
 import com.example.cardiosurgeryillustrator.utils.notification.HabitsNotificationWorker
 import com.example.cardiosurgeryillustrator.utils.notification.RiskNotificationWorker
 import com.example.cardiosurgeryillustrator.view_models.student.notification.NotificationViewModel
@@ -33,16 +34,7 @@ fun NotificationSettingsScreen(
     val habitsNotificationEnabled by viewModel.habitsNotificationEnabled.collectAsState(initial = false)
 
     Scaffold(
-        topBar = {
-            TopAppBar(
-                title = { Text("Notificações") },
-                navigationIcon = {
-                    IconButton(onClick = onBackClick) {
-                        Icon(Icons.Default.ArrowBack, contentDescription = "Voltar")
-                    }
-                }
-            )
-        }
+        topBar = { StandardTopBar(onNavigateBack = onBackClick, title = "Notificações") }
     ) { innerPadding ->
         Column(
             modifier = Modifier

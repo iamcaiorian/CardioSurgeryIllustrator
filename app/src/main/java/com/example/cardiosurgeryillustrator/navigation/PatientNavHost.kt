@@ -37,7 +37,9 @@ import com.example.cardiosurgeryillustrator.ui.screens.patient.community.ForumSc
 import com.example.cardiosurgeryillustrator.ui.screens.patient.faq.PatientFAQScreen
 import com.example.cardiosurgeryillustrator.ui.screens.patient.form.CardioForm
 import com.example.cardiosurgeryillustrator.ui.screens.patient.nearby_clinics.NearbyClinics
+import com.example.cardiosurgeryillustrator.ui.screens.patient.settings.PatientSettingsScreen
 import com.example.cardiosurgeryillustrator.ui.screens.student.notification.HabitDetailScreen
+import com.example.cardiosurgeryillustrator.ui.screens.student.notification.NotificationSettingsScreen
 
 sealed class BottomBarPacientAction(
     val route: String,
@@ -93,6 +95,10 @@ sealed class BottomBarPacientAction(
 
 sealed class FormFlow(val route: String) {
     object Form : FormFlow("form_screen")
+}
+
+sealed class MoreActionsFlow(val route: String) {
+    object Settings : MoreActionsFlow("settings_patient")
 }
 
 @ExperimentalMaterial3Api
@@ -175,27 +181,6 @@ fun PatientNavHost() {
             }
         }
 
-        composable(
-            route = "habit_detail/{title}/{description}",
-            arguments = listOf(
-                navArgument("title") { type = NavType.StringType },
-                navArgument("description") { type = NavType.StringType }
-            )
-        ) { backStackEntry ->
-            val title = backStackEntry.arguments?.getString("title") ?: "Detalhes"
-            val description = backStackEntry.arguments?.getString("description")
-                ?: "Sem descrição disponível."
-            HabitDetailScreen(
-                title = title,
-                description = description,
-                onBackClick = {
-                    patientNavController.navigate(AppFlow.StudentFlow.route) {
-                        popUpTo(AppFlow.StudentFlow.route) { inclusive = true }
-                    }
-                }
-            )
-        }
-
         // Tela Home
         composable(BottomBarPacientAction.HomePacient.route) {
             Scaffold(
@@ -273,7 +258,7 @@ fun PatientNavHost() {
             arguments = listOf(navArgument("arteryName") { type = NavType.StringType })
         ) { backStackEntry ->
             val arteryName = backStackEntry.arguments?.getString("arteryName") ?: ""
-            Scaffold() { innerPadding ->
+            Scaffold { innerPadding ->
                 ArteryDetailsScreen(
                     navController = patientNavController,
                     arteryName = arteryName,
@@ -299,6 +284,7 @@ fun PatientNavHost() {
                 )
             }
         }
+
         composable("new_appointment_screen") {
             Scaffold { innerPadding ->
                 NewAppointmentScheduleScreen(
@@ -308,6 +294,24 @@ fun PatientNavHost() {
                 )
             }
         }
+
+        composable(MoreActionsFlow.Settings.route) {
+            Scaffold { innerPadding ->
+                PatientSettingsScreen(
+                    navController = patientNavController,
+                    modifier = Modifier.padding(innerPadding),
+                    onNavigateBack = { patientNavController.popBackStack() }
+                )
+            }
+        }
+
+        // Notifications
+        composable("notifications") {
+            NotificationSettingsScreen(
+                onBackClick = { patientNavController.popBackStack() }
+            )
+        }
+
 
         composable("faq") {
             Scaffold(
