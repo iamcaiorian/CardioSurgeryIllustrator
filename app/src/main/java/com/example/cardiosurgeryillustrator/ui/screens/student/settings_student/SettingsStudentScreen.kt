@@ -44,14 +44,6 @@ fun SettingsStudentScreen(
                 .fillMaxSize()
                 .padding(innerPadding),
         ) {
-
-            SettingsOption(
-                title = "Notificações",
-                onClickOption = {
-                    navController.navigate("notifications")
-                }
-            )
-
             SettingsOptionSwitch(
                 title = "Modo escuro",
                 isChecked = isDarkThemeEnabled,
