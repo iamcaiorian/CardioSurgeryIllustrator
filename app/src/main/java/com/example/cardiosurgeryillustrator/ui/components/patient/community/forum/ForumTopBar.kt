@@ -5,7 +5,6 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
@@ -25,11 +24,9 @@ import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.cardiosurgeryillustrator.R
 import com.example.cardiosurgeryillustrator.ui.components.buttons.StandardButton
-import com.example.cardiosurgeryillustrator.ui.theme.Blue700
 import com.example.cardiosurgeryillustrator.ui.theme.Typography
 import com.example.cardiosurgeryillustrator.ui.theme.Zinc100
 import com.example.cardiosurgeryillustrator.ui.theme.Zinc300
@@ -106,42 +103,5 @@ fun ForumTopBar(
                 }
             }
         }
-
-        Column(modifier = Modifier.fillMaxSize()) {
-            repeat(1) {
-                Row(
-                    modifier = Modifier
-                        .background(color = Blue700)
-                        .padding(horizontal = 16.dp, vertical = 16.dp)
-                        .fillMaxSize(),
-                    verticalAlignment = Alignment.CenterVertically,
-                    horizontalArrangement = Arrangement.spacedBy(12.dp)
-                ) {
-                    StandardButton(
-                        modifier = Modifier
-                            .size(28.dp)
-                            .clip(CircleShape),
-                        iconRes = R.drawable.ic_arrow_left,
-                        onClick = {}
-                    )
-
-                    Text(
-                        text = subtitle,
-                        style = Typography.headlineMedium,
-                        color = Zinc100
-                    )
-                }
-            }
-        }
     }
-}
-
-@Preview
-@Composable
-private fun ForumTopBarPreview() {
-    ForumTopBar(
-        title = "Pós Operatório",
-        subtitle = "Como foi seu pós operatório?",
-        backgroundImageRes = R.drawable.img_defaul
-    )
 }
