@@ -1,38 +1,47 @@
 package com.example.cardiosurgeryillustrator.ui.screens.patient.community
 
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxHeight
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.runtime.Composable
+import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
+import androidx.compose.material3.HorizontalDivider
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
-import androidx.navigation.compose.rememberNavController
 import com.example.cardiosurgeryillustrator.R
 import com.example.cardiosurgeryillustrator.ui.components.patient.community.CommunityTopBar
 import com.example.cardiosurgeryillustrator.ui.components.patient.community.filter.CommunityCategoryFilterChipList
-import com.example.cardiosurgeryillustrator.ui.components.patient.community.filter.CommunityFilterChipView
 import com.example.cardiosurgeryillustrator.ui.components.patient.community.forum.ForumItem
+import com.example.cardiosurgeryillustrator.ui.components.patient.community.filter.CommunityFilterChipView
+import com.example.cardiosurgeryillustrator.ui.theme.Zinc300
+import com.example.cardiosurgeryillustrator.view_models.patient.community.CommunityViewModel
 
 @Composable
 fun CommunityScreen(
     modifier: Modifier = Modifier,
-    avatarPainter: Painter? = null,
-    onSelectedCategoryChanged: ((CommunityFilterChipView) -> Unit)? = null,
-    title: String = "",
-    subtitle: String = "",
-    backgroundImageRes: Int? = null,
-    userAvatar: Int? = null,
-    message: String = "",
-    navController: NavController
+    navController: NavController,
+    viewModel: CommunityViewModel = viewModel()
 ) {
+    var searchText by remember { mutableStateOf("") }
+    var selectedFilter by remember { mutableStateOf(CommunityFilterChipView.POPULARES) }
+    val allTopics by viewModel.topics.collectAsState(emptyList())
+    val currentUser by viewModel.currentUser.collectAsState()
+
+    val filteredTopics = remember(selectedFilter, allTopics, currentUser.savedTopics, searchText) {
+        when (selectedFilter) {
+            CommunityFilterChipView.POPULARES -> allTopics.sortedByDescending { it.likes }
+            CommunityFilterChipView.SALVOS -> allTopics.filter { it.id in currentUser.savedTopics }
+        }.filter { topic ->
+            topic.title.contains(searchText, ignoreCase = true) ||
+                    topic.theme.contains(searchText, ignoreCase = true)
+        }
+    }
+
     Column(
         modifier = modifier
             .background(Color.White)
@@ -41,42 +50,34 @@ fun CommunityScreen(
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.spacedBy(12.dp)
     ) {
-
-        avatarPainter?.let{
-            CommunityTopBar(
-                avatarPainter = avatarPainter
-            )
-        }
-
-
-        onSelectedCategoryChanged?.let { callback ->
-            CommunityCategoryFilterChipList(onSelectedCategoryChanged = callback)
-        }
-
-        // Verificar null para backgroundImageRes e userAvatar dentro do ForumItem
-        ForumItem(
-            title = title,
-            subtitle = subtitle,
-            backgroundImageRes = backgroundImageRes ?: R.drawable.img_defaul,
-            userAvatar = userAvatar ?: R.drawable.avatar_1,
-            navController = navController,
-            message = message
+        CommunityTopBar(
+            avatarPainter = painterResource(id = R.drawable.avatar_1),
+            searchQuery = searchText,
+            onSearchQueryChanged = { searchText = it }
         )
-    }
-}
 
-@Preview
-@Composable
-private fun CommunityScreenPreview() {
-    CommunityScreen(
-        avatarPainter = painterResource(id = R.drawable.avatar_1),
-        onSelectedCategoryChanged = { /* Ação ao selecionar */ },
-        title = "Pós Operatório",
-        subtitle = "Como foi seu pós operatório?",
-        backgroundImageRes = R.drawable.img_defaul,
-        userAvatar = R.drawable.avatar_1,
-        message = "Lorem ipsum dolor sit amet, consectetur adipiscing elit...",
-        modifier = Modifier.fillMaxWidth(),
-        navController = rememberNavController()
-    )
+        CommunityCategoryFilterChipList(
+            onSelectedCategoryChanged = { category ->
+                selectedFilter = category
+            }
+        )
+
+        LazyColumn(
+            modifier = Modifier.fillMaxWidth().weight(1f),
+            verticalArrangement = Arrangement.spacedBy(8.dp)
+        ) {
+            items(filteredTopics) { topic ->
+                ForumItem(
+                    topic = topic,
+                    navController = navController,
+                    modifier = Modifier.padding(8.dp)
+                )
+
+                HorizontalDivider(
+                    color = Zinc300,
+                    thickness = 1.dp
+                )
+            }
+        }
+    }
 }

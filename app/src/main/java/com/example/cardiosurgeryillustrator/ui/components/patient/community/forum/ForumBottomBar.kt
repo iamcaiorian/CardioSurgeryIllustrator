@@ -8,14 +8,11 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.material3.Icon
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.cardiosurgeryillustrator.R
 import com.example.cardiosurgeryillustrator.ui.components.buttons.StandardButton
@@ -42,10 +39,4 @@ fun ForumBottomBar(modifier: Modifier) {
             onClick = {}
         )
     }
-}
-
-@Preview
-@Composable
-private fun ForumBottomBarPreview() {
-    ForumBottomBar(modifier = Modifier)
 }

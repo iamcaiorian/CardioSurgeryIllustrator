@@ -1,5 +1,6 @@
 package com.example.cardiosurgeryillustrator.navigation
 
+import android.util.Log
 import androidx.compose.animation.core.tween
 import androidx.compose.animation.slideInHorizontally
 import androidx.compose.animation.slideOutHorizontally
@@ -15,6 +16,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -40,6 +42,7 @@ import com.example.cardiosurgeryillustrator.ui.screens.patient.nearby_clinics.Ne
 import com.example.cardiosurgeryillustrator.ui.screens.patient.settings.PatientSettingsScreen
 import com.example.cardiosurgeryillustrator.ui.screens.student.notification.HabitDetailScreen
 import com.example.cardiosurgeryillustrator.ui.screens.student.notification.NotificationSettingsScreen
+import com.example.cardiosurgeryillustrator.view_models.patient.community.CommunityViewModel
 
 sealed class BottomBarPacientAction(
     val route: String,
@@ -200,13 +203,6 @@ fun PatientNavHost() {
                 bottomBar = { BottomBarPacient(navController = patientNavController) }
             ) { innerPadding ->
                 CommunityScreen(
-                    avatarPainter = painterResource(id = R.drawable.avatar_1),
-                    onSelectedCategoryChanged = { /* Ação ao selecionar */ },
-                    title = "Pós Operatório",
-                    subtitle = "Como foi seu pós operatório?",
-                    backgroundImageRes = R.drawable.img_defaul,
-                    userAvatar = R.drawable.avatar_1,
-                    message = "Lorem ipsum dolor sit amet, consectetur adipiscing elit...",
                     modifier = Modifier
                         .fillMaxWidth()
                         .padding(innerPadding),
@@ -216,18 +212,27 @@ fun PatientNavHost() {
         }
 
         // Tela Fórum
-        composable("forum_screen") {
-            Scaffold() { innerPadding ->
-                ForumScreen(
-                    onSelectedCategoryChanged = { /* Ação ao selecionar */ },
-                    userAvatar = R.drawable.avatar_1,
-                    message = "Lorem ipsum dolor sit amet, consectetur adipiscing elit...",
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(innerPadding)
-                )
+        composable(
+            route = "forum_screen/{topicId}",
+            arguments = listOf(navArgument("topicId") { type = NavType.StringType })
+        ) { backStackEntry ->
+            val topicId = backStackEntry.arguments?.getString("topicId")
+
+            if (!topicId.isNullOrEmpty()) {
+                val viewModel: CommunityViewModel = viewModel()
+
+                Scaffold { innerPadding ->
+                    ForumScreen(
+                        viewModel = viewModel,
+                        topicId = topicId,
+                        modifier = Modifier.padding(innerPadding)
+                    )
+                }
+            } else {
+                Log.e("Navigation", "Erro ao abrir a tela do fórum: ID do tópico vazio")
             }
         }
+
 
         // Tela Assistente
         composable(BottomBarPacientAction.Assistant.route) {
