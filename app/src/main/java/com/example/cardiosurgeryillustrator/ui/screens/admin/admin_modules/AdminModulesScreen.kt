@@ -29,7 +29,7 @@ import com.example.cardiosurgeryillustrator.ui.components.buttons.StandardButton
 import com.example.cardiosurgeryillustrator.ui.theme.Typography
 import com.example.cardiosurgeryillustrator.view_models.admin.admin_modules.AdminModulesViewModel
 import com.example.cardiosurgeryillustrator.view_models.admin.admin_modules.AdminModulesViewModelFactory
-import com.example.cardiosurgeryillustrator.utils.makeModuleEntityUtil
+import com.example.cardiosurgeryillustrator.utils.module.makeModuleEntityUtil
 
 @Composable
 fun AdminModulesScreen(
