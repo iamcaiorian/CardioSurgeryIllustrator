@@ -35,8 +35,8 @@ fun StandardButton(
     Button(
         modifier = modifier
             .then(
-                if (isIconOnly) Modifier.size(40.dp)
-                else Modifier.heightIn(min = 40.dp)
+                if (isIconOnly) Modifier.size(48.dp)
+                else Modifier.heightIn(min = 48.dp)
             ),
         shape = RoundedCornerShape(8.dp),
         contentPadding = if (text == null && iconRes != null) PaddingValues(0.dp) else ButtonDefaults.ContentPadding,

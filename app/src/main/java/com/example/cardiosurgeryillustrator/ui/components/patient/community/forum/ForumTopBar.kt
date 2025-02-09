@@ -2,16 +2,7 @@ package com.example.cardiosurgeryillustrator.ui.components.patient.community.for
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxHeight
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.verticalScroll
@@ -26,6 +17,7 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import com.example.cardiosurgeryillustrator.R
+import com.example.cardiosurgeryillustrator.models.patient.community.Topic
 import com.example.cardiosurgeryillustrator.ui.components.buttons.StandardButton
 import com.example.cardiosurgeryillustrator.ui.theme.Typography
 import com.example.cardiosurgeryillustrator.ui.theme.Zinc100
@@ -33,16 +25,18 @@ import com.example.cardiosurgeryillustrator.ui.theme.Zinc300
 
 @Composable
 fun ForumTopBar(
-    title: String,
-    subtitle: String,
+    topic: Topic,
     backgroundImageRes: Int,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    isTopicSaved: Boolean,
+    onSaveToggle: (Boolean) -> Unit,
+    onBackClick: () -> Unit
 ) {
     val scrollState = rememberScrollState()
 
     Column(
-        modifier = Modifier
-            .verticalScroll(scrollState)
+        modifier = Modifier.verticalScroll(scrollState),
+        verticalArrangement = Arrangement.spacedBy(8.dp)
     ) {
         Box(
             modifier = modifier
@@ -71,9 +65,8 @@ fun ForumTopBar(
                     )
             )
 
-
             Column(
-                modifier = modifier
+                modifier = Modifier
                     .fillMaxWidth()
                     .fillMaxHeight()
                     .padding(16.dp),
@@ -85,23 +78,29 @@ fun ForumTopBar(
                         .size(32.dp)
                         .clip(CircleShape),
                     iconRes = R.drawable.ic_arrow_left,
-                    onClick = {}
+                    onClick = onBackClick
                 )
 
                 Column {
                     Text(
-                        text = subtitle,
+                        text = topic.title,
                         style = Typography.headlineLarge,
                         color = Zinc100
                     )
                     Spacer(modifier = Modifier.height(4.dp))
                     Text(
-                        text = title,
+                        text = topic.theme,
                         style = Typography.bodyLarge,
                         color = Zinc300
                     )
                 }
             }
         }
+
+        ForumInteractions(
+            topic = topic,
+            isTopicSaved = isTopicSaved,
+            onSaveToggle = { topicId, newState -> onSaveToggle(newState) }
+        )
     }
 }

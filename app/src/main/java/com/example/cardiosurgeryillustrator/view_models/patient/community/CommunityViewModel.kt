@@ -6,7 +6,6 @@ import com.example.cardiosurgeryillustrator.models.mock.patient.CommunityMock
 import com.example.cardiosurgeryillustrator.models.patient.community.Comment
 import com.example.cardiosurgeryillustrator.models.patient.community.Topic
 import com.example.cardiosurgeryillustrator.models.patient.community.User
-import com.example.cardiosurgeryillustrator.ui.components.patient.community.filter.CommunityFilterChipView
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
@@ -39,6 +38,31 @@ class CommunityViewModel : ViewModel() {
         }
 
         return messages
+    }
+
+    fun sendMessageToTopic(topicId: String, messageContent: String) {
+        viewModelScope.launch {
+            val currentComments = CommunityMock.getMockComments().toMutableList()
+
+            val newComment = Comment(
+                id = (currentComments.size + 1).toString(),
+                topicId = topicId,
+                commentId = "",
+                userId = _currentUser.value.id,
+                content = messageContent,
+                likes = 0,
+                isCommentable = true,
+                timestamp = System.currentTimeMillis()
+            )
+
+            currentComments.add(newComment)
+
+            _topics.value = _topics.value.map { topic ->
+                if (topic.id == topicId) {
+                    topic.copy(comments = topic.comments + 1)
+                } else topic
+            }
+        }
     }
 
 }

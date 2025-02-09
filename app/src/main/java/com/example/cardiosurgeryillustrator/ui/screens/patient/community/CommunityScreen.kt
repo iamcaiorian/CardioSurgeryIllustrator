@@ -14,10 +14,11 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import com.example.cardiosurgeryillustrator.R
+import com.example.cardiosurgeryillustrator.ui.components.buttons.StandardButton
 import com.example.cardiosurgeryillustrator.ui.components.patient.community.CommunityTopBar
 import com.example.cardiosurgeryillustrator.ui.components.patient.community.filter.CommunityCategoryFilterChipList
-import com.example.cardiosurgeryillustrator.ui.components.patient.community.forum.ForumItem
 import com.example.cardiosurgeryillustrator.ui.components.patient.community.filter.CommunityFilterChipView
+import com.example.cardiosurgeryillustrator.ui.components.patient.community.forum.ForumItem
 import com.example.cardiosurgeryillustrator.ui.theme.Zinc300
 import com.example.cardiosurgeryillustrator.view_models.patient.community.CommunityViewModel
 
@@ -48,7 +49,7 @@ fun CommunityScreen(
             .fillMaxHeight()
             .fillMaxWidth(),
         horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.spacedBy(12.dp)
+        verticalArrangement = Arrangement.spacedBy(8.dp)
     ) {
         CommunityTopBar(
             avatarPainter = painterResource(id = R.drawable.avatar_1),
@@ -63,21 +64,33 @@ fun CommunityScreen(
         )
 
         LazyColumn(
-            modifier = Modifier.fillMaxWidth().weight(1f),
+            modifier = Modifier
+                .fillMaxWidth()
+                .weight(1f),
             verticalArrangement = Arrangement.spacedBy(8.dp)
         ) {
             items(filteredTopics) { topic ->
                 ForumItem(
                     topic = topic,
                     navController = navController,
-                    modifier = Modifier.padding(8.dp)
+                    modifier = Modifier.padding(horizontal = 8.dp, vertical = 4.dp)
                 )
 
                 HorizontalDivider(
                     color = Zinc300,
-                    thickness = 1.dp
+                    thickness = 1.dp,
+                    modifier = Modifier.padding(horizontal = 16.dp)
                 )
             }
         }
+
+        StandardButton(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 16.dp, vertical = 4.dp),
+            onClick = { },
+            text = "Novo Fórum",
+            iconRes = R.drawable.ic_plus
+        )
     }
 }

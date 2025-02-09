@@ -19,7 +19,7 @@ import com.example.cardiosurgeryillustrator.ui.components.buttons.StandardButton
 import com.example.cardiosurgeryillustrator.ui.components.input.TextInput
 
 @Composable
-fun ForumBottomBar(modifier: Modifier) {
+fun ForumBottomBar() {
     Row(
         modifier = Modifier
             .background(color = Color.White)

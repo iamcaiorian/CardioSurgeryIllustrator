@@ -219,20 +219,15 @@ fun PatientNavHost() {
             val topicId = backStackEntry.arguments?.getString("topicId")
 
             if (!topicId.isNullOrEmpty()) {
-                val viewModel: CommunityViewModel = viewModel()
-
-                Scaffold { innerPadding ->
-                    ForumScreen(
-                        viewModel = viewModel,
-                        topicId = topicId,
-                        modifier = Modifier.padding(innerPadding)
-                    )
-                }
+                ForumScreen(
+                    navController = patientNavController,
+                    viewModel = viewModel(),
+                    topicId = topicId
+                )
             } else {
                 Log.e("Navigation", "Erro ao abrir a tela do fórum: ID do tópico vazio")
             }
         }
-
 
         // Tela Assistente
         composable(BottomBarPacientAction.Assistant.route) {
