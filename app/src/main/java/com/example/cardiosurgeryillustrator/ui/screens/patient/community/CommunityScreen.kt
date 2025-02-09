@@ -19,6 +19,7 @@ import com.example.cardiosurgeryillustrator.ui.components.patient.community.Comm
 import com.example.cardiosurgeryillustrator.ui.components.patient.community.filter.CommunityCategoryFilterChipList
 import com.example.cardiosurgeryillustrator.ui.components.patient.community.filter.CommunityFilterChipView
 import com.example.cardiosurgeryillustrator.ui.components.patient.community.forum.ForumItem
+import com.example.cardiosurgeryillustrator.ui.components.patient.community.forum.NewForumDialog
 import com.example.cardiosurgeryillustrator.ui.theme.Zinc300
 import com.example.cardiosurgeryillustrator.view_models.patient.community.CommunityViewModel
 
@@ -30,6 +31,7 @@ fun CommunityScreen(
 ) {
     var searchText by remember { mutableStateOf("") }
     var selectedFilter by remember { mutableStateOf(CommunityFilterChipView.POPULARES) }
+    var showNewForumDialog by remember { mutableStateOf(false) }
     val allTopics by viewModel.topics.collectAsState(emptyList())
     val currentUser by viewModel.currentUser.collectAsState()
 
@@ -88,9 +90,20 @@ fun CommunityScreen(
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(horizontal = 16.dp, vertical = 4.dp),
-            onClick = { },
+            onClick = { showNewForumDialog = true },
             text = "Novo Fórum",
             iconRes = R.drawable.ic_plus
         )
     }
+
+    if (showNewForumDialog) {
+        NewForumDialog(
+            onDismiss = { showNewForumDialog = false },
+            onConfirm = { theme, title ->
+                viewModel.createNewForum(theme, title)
+                showNewForumDialog = false
+            }
+        )
+    }
 }
+

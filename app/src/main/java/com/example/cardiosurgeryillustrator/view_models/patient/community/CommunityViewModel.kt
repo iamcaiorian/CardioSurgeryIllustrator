@@ -65,4 +65,18 @@ class CommunityViewModel : ViewModel() {
         }
     }
 
+    fun createNewForum(theme: String, title: String) {
+        viewModelScope.launch {
+            val newTopic = Topic(
+                id = (_topics.value.size + 1).toString(),
+                user = _currentUser.value,
+                theme = theme,
+                title = title,
+                likes = 0,
+                comments = 0,
+                timestamp = System.currentTimeMillis()
+            )
+            _topics.value = _topics.value + newTopic
+        }
+    }
 }
