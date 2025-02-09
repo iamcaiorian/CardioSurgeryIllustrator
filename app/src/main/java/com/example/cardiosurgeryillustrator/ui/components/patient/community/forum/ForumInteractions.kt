@@ -24,13 +24,12 @@ fun ForumInteractions(
     modifier: Modifier = Modifier
 ) {
     var likes by remember { mutableStateOf(topic.likes) }
-    var comments by remember { mutableStateOf(topic.comments) }
     var isLiked by remember { mutableStateOf(false) }
     var isSaved by remember { mutableStateOf(isTopicSaved) }
 
     fun toggleLike() {
         isLiked = !isLiked
-        likes = if (isLiked) likes + 1 else likes - 1
+        likes += if (isLiked) 1 else -1
     }
 
     fun toggleSave() {
@@ -62,7 +61,7 @@ fun ForumInteractions(
                         contentDescription = "Comentar"
                     )
                 }
-                Text(text = comments.toString(), style = Typography.bodySmall)
+                Text(text = topic.comments.toString(), style = Typography.bodySmall) // Mantendo os comentários fixos
             }
         }
 
@@ -74,3 +73,4 @@ fun ForumInteractions(
         }
     }
 }
+

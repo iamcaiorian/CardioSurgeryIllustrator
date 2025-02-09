@@ -9,6 +9,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.unit.dp
+import com.example.cardiosurgeryillustrator.ui.components.input.SearchInput
 
 @Composable
 fun CommunityTopBar(
@@ -32,10 +33,10 @@ fun CommunityTopBar(
 
         Spacer(modifier = Modifier.width(12.dp))
 
-        SearchInputCommunity(
+        SearchInput(
             modifier = Modifier.weight(1f),
-            searchQuery = searchQuery,
-            onSearchQueryChanged = onSearchQueryChanged
+            query = searchQuery,
+            onQueryChange = onSearchQueryChanged
         )
     }
 }
