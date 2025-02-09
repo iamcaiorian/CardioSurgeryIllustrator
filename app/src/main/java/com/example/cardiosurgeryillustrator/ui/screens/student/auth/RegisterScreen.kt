@@ -1,4 +1,4 @@
-package com.example.cardiosurgeryillustrator.ui.screens.authentication
+package com.example.cardiosurgeryillustrator.ui.screens.student.auth
 
 import android.annotation.SuppressLint
 import androidx.compose.foundation.Image
