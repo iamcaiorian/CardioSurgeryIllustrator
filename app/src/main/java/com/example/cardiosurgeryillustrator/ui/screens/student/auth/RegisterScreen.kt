@@ -1,6 +1,5 @@
 package com.example.cardiosurgeryillustrator.ui.screens.student.auth
 
-import android.annotation.SuppressLint
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
 import androidx.compose.material3.*
@@ -8,27 +7,44 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.cardiosurgeryillustrator.R
+import com.example.cardiosurgeryillustrator.models.student.auth.CreateStudentRequest
+import com.example.cardiosurgeryillustrator.models.student.auth.Role
+import com.example.cardiosurgeryillustrator.repository.student.auth.AuthRepository
+import com.example.cardiosurgeryillustrator.view_models.student.auth.AuthViewModel
+import com.example.cardiosurgeryillustrator.view_models.student.auth.AuthViewModelFactory
 
-@OptIn(ExperimentalMaterial3Api::class)
-@SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
 fun RegisterScreen(
-    onRegisterClick: (String, String) -> Unit
+    authViewModel: AuthViewModel = viewModel(
+        factory = AuthViewModelFactory(
+            AuthRepository(),
+            LocalContext.current
+        )
+    ),
+    onRegisterSuccess: () -> Unit
 ) {
+    var name by remember { mutableStateOf("") }
     var email by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
+    var phone by remember { mutableStateOf("") }
+    var isLoading by remember { mutableStateOf(false) }
+    var errorMessage by remember { mutableStateOf<String?>(null) }
 
-    Scaffold {
+
+    Scaffold { innerPadding ->
         Column(
             modifier = Modifier
                 .fillMaxSize()
+                .padding(innerPadding)
                 .padding(16.dp),
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.Center
@@ -59,6 +75,21 @@ fun RegisterScreen(
             Spacer(modifier = Modifier.height(16.dp))
 
             OutlinedTextField(
+                value = name,
+                onValueChange = { name = it },
+                placeholder = { Text("Digite seu nome...") },
+                modifier = Modifier.fillMaxWidth(),
+                colors = OutlinedTextFieldDefaults.colors(
+                    focusedTextColor = Color.Black,
+                    unfocusedTextColor = Color.Gray,
+                    focusedBorderColor = Color(0xFF0D47A1),
+                    unfocusedBorderColor = Color.Gray
+                )
+            )
+
+            Spacer(modifier = Modifier.height(16.dp))
+
+            OutlinedTextField(
                 value = email,
                 onValueChange = { email = it },
                 placeholder = { Text("Digite seu email...") },
@@ -71,7 +102,22 @@ fun RegisterScreen(
                 )
             )
 
-            Spacer(modifier = Modifier.height(22.dp))
+            Spacer(modifier = Modifier.height(16.dp))
+
+            OutlinedTextField(
+                value = phone,
+                onValueChange = { phone = it },
+                placeholder = { Text("Digite seu telefone...") },
+                modifier = Modifier.fillMaxWidth(),
+                colors = OutlinedTextFieldDefaults.colors(
+                    focusedTextColor = Color.Black,
+                    unfocusedTextColor = Color.Gray,
+                    focusedBorderColor = Color(0xFF0D47A1),
+                    unfocusedBorderColor = Color.Gray
+                )
+            )
+
+            Spacer(modifier = Modifier.height(16.dp))
 
             OutlinedTextField(
                 value = password,
@@ -89,16 +135,43 @@ fun RegisterScreen(
 
             Spacer(modifier = Modifier.height(26.dp))
 
-            Button(
-                onClick = { onRegisterClick(email, password) },
-                modifier = Modifier.fillMaxWidth(),
-                colors = ButtonDefaults.buttonColors(
-                    containerColor = Color(0xFF0D47A1),
-                    contentColor = Color.White
-                ),
-                shape = MaterialTheme.shapes.small
-            ) {
-                Text("Cadastre-se")
+            if (isLoading) {
+                CircularProgressIndicator()
+            } else {
+                Button(
+                    onClick = {
+                        isLoading = true
+                        val request = CreateStudentRequest(
+                            name = name,
+                            email = email,
+                            password = password,
+                            phone = phone,
+                            role = Role.USER
+                        )
+
+                        authViewModel.registerUser(request) { response ->
+                            isLoading = false
+                            if (response != null) {
+                                onRegisterSuccess()
+                            } else {
+                                errorMessage = "Erro ao registrar usuário"
+                            }
+                        }
+                    },
+                    modifier = Modifier.fillMaxWidth(),
+                    colors = ButtonDefaults.buttonColors(
+                        containerColor = Color(0xFF0D47A1),
+                        contentColor = Color.White
+                    ),
+                    shape = MaterialTheme.shapes.small
+                ) {
+                    Text("Cadastre-se")
+                }
+            }
+
+            errorMessage?.let {
+                Spacer(modifier = Modifier.height(16.dp))
+                Text(text = it, color = Color.Red, fontSize = 14.sp)
             }
         }
     }
@@ -108,6 +181,6 @@ fun RegisterScreen(
 @Composable
 fun PreviewRegisterScreen() {
     RegisterScreen(
-        onRegisterClick = { _, _ -> }
+        onRegisterSuccess = {}
     )
 }

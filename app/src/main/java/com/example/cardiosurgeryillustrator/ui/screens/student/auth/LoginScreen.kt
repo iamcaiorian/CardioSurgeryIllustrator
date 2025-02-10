@@ -1,31 +1,15 @@
 package com.example.cardiosurgeryillustrator.ui.screens.student.auth
 
+import android.widget.Toast
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
-import androidx.compose.material3.Button
-import androidx.compose.material3.ButtonDefaults
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Text
-import androidx.compose.material3.TextButton
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
+import androidx.compose.foundation.layout.*
+import androidx.compose.material3.*
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
@@ -33,23 +17,37 @@ import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.cardiosurgeryillustrator.R
+import com.example.cardiosurgeryillustrator.models.student.auth.AuthUserRequest
+import com.example.cardiosurgeryillustrator.repository.student.auth.AuthRepository
 import com.example.cardiosurgeryillustrator.ui.components.input.StandardTextField
 import com.example.cardiosurgeryillustrator.ui.theme.Blue700
 import com.example.cardiosurgeryillustrator.ui.theme.Typography
 import com.example.cardiosurgeryillustrator.ui.theme.Zinc500
+import com.example.cardiosurgeryillustrator.view_models.student.auth.AuthViewModel
+import com.example.cardiosurgeryillustrator.view_models.student.auth.AuthViewModelFactory
 
 @Composable
 fun LoginScreen(
+    authViewModel: AuthViewModel = viewModel(
+        factory = AuthViewModelFactory(
+            AuthRepository(),
+            LocalContext.current
+        )
+    ),
     onNavigateToHome: () -> Unit,
     onForgotPasswordClick: () -> Unit,
     onRegisterClick: () -> Unit
 ) {
     var email by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
-    var selectedTab by remember { mutableStateOf(0) }
+    var isLoading by remember { mutableStateOf(false) }
+    var errorMessage by remember { mutableStateOf<String?>(null) }
 
-    Scaffold {innerPadding ->
+    val context = LocalContext.current
+
+    Scaffold { innerPadding ->
         Column(
             modifier = Modifier
                 .fillMaxSize()
@@ -66,9 +64,7 @@ fun LoginScreen(
 
             Spacer(modifier = Modifier.height(16.dp))
 
-            Column(
-                horizontalAlignment = Alignment.CenterHorizontally
-            ) {
+            Column(horizontalAlignment = Alignment.CenterHorizontally) {
                 Text(
                     text = "Cardio Surgery",
                     style = Typography.headlineMedium,
@@ -85,96 +81,77 @@ fun LoginScreen(
 
             Spacer(modifier = Modifier.height(16.dp))
 
-            Row(
+            Text(
+                text = "Usuário",
+                style = Typography.labelLarge,
+                color = Color.DarkGray,
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(start = 8.dp),
-                horizontalArrangement = Arrangement.Start,
-                verticalAlignment = Alignment.CenterVertically,
-            ) {
-                Text(
-                    text = "Entrar",
-                    color = if (selectedTab == 0) Color.DarkGray else Color.Gray,
-                    modifier = Modifier
-                        .padding(horizontal = 8.dp)
-                        .clickable { selectedTab = 0 },
-                    fontSize = 16.sp
-                )
+                    .padding(start = 16.dp, bottom = 4.dp),
+                textAlign = TextAlign.Start
+            )
 
-                Text(
-                    text = "|",
-                    color = Color.Gray,
-                    modifier = Modifier.padding(horizontal = 4.dp),
-                    fontSize = 16.sp,
-                    textAlign = TextAlign.Center
-                )
+            StandardTextField(
+                value = email,
+                label = "Digite seu email",
+                onValueChange = { email = it }
+            )
 
-                Text(
-                    text = "Cadastre-se",
-                    color = if (selectedTab == 1) Color.DarkGray else Color.Gray,
-                    modifier = Modifier
-                        .padding(horizontal = 8.dp)
-                        .clickable {
-                            selectedTab = 1
-                            onRegisterClick() // Navegar para a tela de cadastro
-                        },
-                    fontSize = 16.sp
-                )
-            }
+            Spacer(modifier = Modifier.height(8.dp))
 
-            Spacer(modifier = Modifier.height(16.dp))
-
-            Column(
+            Text(
+                text = "Senha",
+                style = Typography.labelLarge,
+                color = Color.DarkGray,
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(vertical = 8.dp)
-            ) {
-                Text(
-                    text = "Usuário",
-                    style = Typography.labelMedium,
-                    color = Color.DarkGray,
-                    modifier = Modifier.padding(start = 16.dp, bottom = 4.dp)
-                )
+                    .padding(start = 16.dp, bottom = 4.dp),
+                textAlign = TextAlign.Start
+            )
 
-                StandardTextField(
-                    value = email,
-                    label = "Digite seu email",
-                    onValueChange = { email = it }
-                )
-            }
 
-            Column(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(vertical = 8.dp)
-            ) {
-                Text(
-                    text = "Senha",
-                    style = Typography.labelMedium,
-                    color = Color.DarkGray,
-                    modifier = Modifier.padding(start = 16.dp, bottom = 4.dp)
-                )
-
-                StandardTextField(
-                    value = password,
-                    label = "Digite sua senha",
-                    onValueChange = { password = it }
-                )
-
-            }
+            StandardTextField(
+                value = password,
+                label = "Digite sua senha",
+                onValueChange = { password = it },
+                isPassword = true
+            )
 
             Spacer(modifier = Modifier.height(26.dp))
 
-            Button(
-                onClick = onNavigateToHome,
-                modifier = Modifier.fillMaxWidth(),
-                colors = ButtonDefaults.buttonColors(
-                    containerColor = Blue700,
-                    contentColor = Color.White
-                ),
-                shape = MaterialTheme.shapes.small
-            ) {
-                Text("Entrar")
+            if (isLoading) {
+                CircularProgressIndicator()
+            } else {
+                Button(
+                    onClick = {
+                        isLoading = true
+                        val request = AuthUserRequest(email, password)
+
+                        authViewModel.authUser(request) { success ->
+                            isLoading = false
+                            if (success) {
+                                Toast.makeText(context, "Login bem-sucedido!", Toast.LENGTH_SHORT)
+                                    .show()
+                                onNavigateToHome()
+                            } else {
+                                errorMessage = "Falha ao autenticar. Verifique suas credenciais."
+                            }
+                        }
+                    },
+                    modifier = Modifier.fillMaxWidth(),
+                    colors = ButtonDefaults.buttonColors(
+                        containerColor = Blue700,
+                        contentColor = Color.White
+                    ),
+                    shape = MaterialTheme.shapes.small
+                ) {
+                    Text("Entrar")
+                }
+            }
+
+            errorMessage?.let {
+                Spacer(modifier = Modifier.height(16.dp))
+                Text(text = it, color = Color.Red, fontSize = 14.sp)
             }
 
             Spacer(modifier = Modifier.height(16.dp))
@@ -196,6 +173,33 @@ fun LoginScreen(
                         )
                     )
                 }
+            }
+
+            Spacer(modifier = Modifier.height(8.dp))
+
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(start = 8.dp),
+                horizontalArrangement = Arrangement.Center
+            ) {
+                Text(
+                    text = "Não tem uma conta?",
+                    color = Color.Gray,
+                    fontSize = 14.sp
+                )
+
+                Spacer(modifier = Modifier.width(4.dp))
+
+                Text(
+                    text = "Cadastre-se",
+                    color = Blue700,
+                    fontWeight = FontWeight.Bold,
+                    modifier = Modifier
+                        .clickable { onRegisterClick() }
+                        .padding(horizontal = 4.dp),
+                    fontSize = 14.sp
+                )
             }
         }
     }
