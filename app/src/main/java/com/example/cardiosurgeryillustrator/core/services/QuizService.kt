@@ -6,6 +6,7 @@ import retrofit2.Response
 import retrofit2.http.Body
 import retrofit2.http.GET
 import retrofit2.http.POST
+import retrofit2.http.Path
 
 interface QuizService {
     @POST("/quiz/create")
@@ -13,4 +14,7 @@ interface QuizService {
 
     @GET("/quiz/get-all")
     suspend fun getQuizzes(): Response<List<Quiz>>
+
+    @GET("quiz/{quizId}")
+    suspend fun getQuiz(@Path("quizId") quizId: String): Response<Quiz>
 }

@@ -1,38 +1,48 @@
 package com.example.cardiosurgeryillustrator.ui.screens.student.quiz
 
-import ErrorButton
-import com.example.cardiosurgeryillustrator.ui.components.button.SuccessButton
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
 import androidx.compose.material3.*
-import androidx.compose.runtime.Composable
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.cardiosurgeryillustrator.R
 import com.example.cardiosurgeryillustrator.models.student.quiz.Quiz
-import com.example.cardiosurgeryillustrator.models.mock.student.mockQuizzes
+import com.example.cardiosurgeryillustrator.ui.components.buttons.QuestionsButton
 import com.example.cardiosurgeryillustrator.ui.components.student.quiz.TopBarQuiz
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun QuizScreen(
     quiz: Quiz,
-    modifier: Modifier = Modifier,
     onBackClick: () -> Unit,
-    onMenuOptionClick: (String) -> Unit,
-    onAnswerClick: (Boolean) -> Unit,
-    onNavigateToSecondQuiz: (String?) -> Unit
+    onQuizFinish: () -> Unit
 ) {
+    var currentQuestionIndex by remember { mutableStateOf(0) }
+    val currentQuestion = quiz.questionEntityList.getOrNull(currentQuestionIndex)
+    var showFeedback by remember { mutableStateOf(false) }
+    var isCorrectAnswer by remember { mutableStateOf(false) }
+
+    if (currentQuestion == null) {
+        Text(
+            text = "Você completou o quiz! Parabéns!",
+            modifier = Modifier
+                .fillMaxSize()
+                .wrapContentSize(Alignment.Center),
+            style = MaterialTheme.typography.titleLarge
+        )
+        return
+    }
+
     Scaffold(
         topBar = {
             TopBarQuiz(
-                title = quiz.title ?: "Quiz sem título",
+                title = quiz.title,
                 onBackClick = onBackClick,
-                onMenuOptionClick = onMenuOptionClick
+                onMenuOptionClick = {}
             )
         }
     ) { innerPadding ->
@@ -56,52 +66,60 @@ fun QuizScreen(
             )
 
             Text(
-                text = "Este é o conteúdo do quiz",
+                text = currentQuestion.problem,
                 style = MaterialTheme.typography.titleLarge,
                 modifier = Modifier.align(Alignment.CenterHorizontally)
             )
 
-            Text(
-                text = quiz.description ?: "Descrição não fornecida",
-                style = MaterialTheme.typography.bodyMedium,
-                modifier = Modifier.align(Alignment.CenterHorizontally)
-            )
-
-            Spacer(modifier = Modifier.height(32.dp))
-
-            Row(
+            Column(
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(top = 16.dp),
-                horizontalArrangement = Arrangement.SpaceEvenly
+                verticalArrangement = Arrangement.spacedBy(8.dp)
             ) {
-                ErrorButton(
-                    text = "Errado",
-                    onClick = {
-                        onAnswerClick(false)
-                        onNavigateToSecondQuiz(quiz.id)
-                    }
+                listOf(
+                    currentQuestion.alternativeA,
+                    currentQuestion.alternativeB,
+                    currentQuestion.alternativeC,
+                    currentQuestion.alternativeD
+                ).forEach { alternative ->
+                    QuestionsButton(
+                        text = alternative,
+                        isSelected = false,
+                        onClick = {
+                            isCorrectAnswer = (alternative == currentQuestion.answer)
+                            showFeedback = true
+                        }
+                    )
+                }
+            }
+
+            Spacer(modifier = Modifier.height(32.dp))
+
+            if (showFeedback) {
+                Text(
+                    text = if (isCorrectAnswer) "Correto! Você acertou!" else "Errado! A resposta correta era: ${currentQuestion.answer}",
+                    style = MaterialTheme.typography.bodyMedium,
+                    color = if (isCorrectAnswer) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.error,
+                    modifier = Modifier.align(Alignment.Start)
                 )
-                SuccessButton(
-                    text = "Certo",
+
+                Spacer(modifier = Modifier.height(16.dp))
+
+                Button(
                     onClick = {
-                        onAnswerClick(true)
-                        onNavigateToSecondQuiz(quiz.id)
-                    }
-                )
+                        showFeedback = false
+                        if (currentQuestionIndex < quiz.questionEntityList.size - 1) {
+                            currentQuestionIndex++
+                        } else {
+                            onQuizFinish()
+                        }
+                    },
+                    modifier = Modifier.align(Alignment.CenterHorizontally)
+                ) {
+                    Text("Próxima Pergunta")
+                }
             }
         }
     }
-}
-
-@Preview(showBackground = true, showSystemUi = true)
-@Composable
-fun QuizScreenMockPreview() {
-    QuizScreen(
-        quiz = mockQuizzes[0],
-        onBackClick = { println("Voltar clicado") },
-        onMenuOptionClick = { option -> println("Menu clicado: $option") },
-        onAnswerClick = { isCorrect -> println("Resposta clicada: $isCorrect") },
-        onNavigateToSecondQuiz = { println("Navegar para SecondQuizScreen com id $it") }
-    )
 }

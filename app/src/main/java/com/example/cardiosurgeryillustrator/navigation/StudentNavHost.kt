@@ -145,7 +145,11 @@ fun StudentNavHost(
 ) {
     val studentNavController = rememberNavController()
 
-    val bottomBarRoutes = listOf(BottomBarStudentAction.Home.route, BottomBarStudentAction.Subject.route, BottomBarStudentAction.Favorites.route)
+    val bottomBarRoutes = listOf(
+        BottomBarStudentAction.Home.route,
+        BottomBarStudentAction.Subject.route,
+        BottomBarStudentAction.Favorites.route
+    )
 
     NavHost(
         navController = studentNavController,
@@ -319,7 +323,7 @@ fun StudentNavHost(
 
             Scaffold { innerPadding ->
                 module?.let {
-                    ModuleVideoScreen (
+                    ModuleVideoScreen(
                         module = module,
                         modifier = Modifier.padding(innerPadding),
                         onBackClick = { studentNavController.popBackStack() },
@@ -365,21 +369,14 @@ fun StudentNavHost(
             val moduleId = backStackEntry.arguments?.getString("moduleId")
             val quiz = mockQuizzes.find { it.id == moduleId }
 
-            Scaffold { innerPadding ->
-                quiz?.let {
-                    QuizScreen(
-                        quiz = it,
-                        modifier = Modifier.padding(innerPadding),
-                        onBackClick = { studentNavController.popBackStack() },
-                        onMenuOptionClick = { println("Menu clicado") },
-                        onAnswerClick = { isCorrect ->
-                            println("Resposta clicada: $isCorrect")
-                        },
-                        onNavigateToSecondQuiz = {
-                            studentNavController.navigate("${SubjectAction.SecondQuiz.route}/$moduleId")
-                        }
-                    )
-                }
+            quiz?.let {
+                QuizScreen(
+                    quiz = it,
+                    onBackClick = { studentNavController.popBackStack() },
+                    onQuizFinish = {
+                        println("Quiz finalizado")
+                    }
+                )
             }
         }
         composable(
@@ -390,7 +387,8 @@ fun StudentNavHost(
             )
         ) { backStackEntry ->
             val title = backStackEntry.arguments?.getString("title") ?: "Detalhes"
-            val description = backStackEntry.arguments?.getString("description") ?: "Sem descrição disponível."
+            val description =
+                backStackEntry.arguments?.getString("description") ?: "Sem descrição disponível."
 
             HabitDetailScreen(
                 title = title,
@@ -405,16 +403,21 @@ fun StudentNavHost(
             val moduleId = backStackEntry.arguments?.getString("moduleId")
             val quiz = mockQuizzes.find { it.id == moduleId }
 
-            Scaffold { innerPadding ->
-                quiz?.let {
-                    val question = it.questionEntityList?.firstOrNull() // Obtém a primeira questão
-                    SecondQuizScreen(
-                        quiz = it,
-                        question = question as? CreateQuizQuestionRequest,
-                        modifier = Modifier.padding(innerPadding),
-                        onBackClick = { studentNavController.popBackStack() }
-                    )
-                }
+            quiz?.let {
+                SecondQuizScreen(
+                    quiz = it,
+                    questionIndex = 0,
+                    onBackClick = { studentNavController.popBackStack() },
+                    onNextQuestion = {
+                        val nextIndex =
+                            it.questionEntityList.indexOfFirst { question -> question.id == moduleId } + 1
+                        if (nextIndex < it.questionEntityList.size) {
+                            studentNavController.navigate("${SubjectAction.SecondQuiz.route}/${moduleId}?index=$nextIndex")
+                        } else {
+                            println("Fim do quiz!")
+                        }
+                    }
+                )
             }
         }
     }

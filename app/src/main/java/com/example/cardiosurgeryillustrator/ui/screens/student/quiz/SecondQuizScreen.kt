@@ -1,21 +1,14 @@
 package com.example.cardiosurgeryillustrator.ui.screens.student.quiz
 
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
-import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Text
+import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
-import com.example.cardiosurgeryillustrator.R
 import com.example.cardiosurgeryillustrator.models.student.quiz.CreateQuizQuestionRequest
 import com.example.cardiosurgeryillustrator.models.student.quiz.Quiz
-import com.example.cardiosurgeryillustrator.ui.components.button.QuestionsButton
+import com.example.cardiosurgeryillustrator.ui.components.buttons.QuestionsButton
 import com.example.cardiosurgeryillustrator.ui.components.buttons.ConfirmationButton
 import com.example.cardiosurgeryillustrator.ui.components.student.quiz.TopBarQuiz
 
@@ -23,15 +16,21 @@ import com.example.cardiosurgeryillustrator.ui.components.student.quiz.TopBarQui
 @Composable
 fun SecondQuizScreen(
     quiz: Quiz,
-    question: CreateQuizQuestionRequest?,
-    modifier: Modifier = Modifier,
-    onBackClick: () -> Unit
+    questionIndex: Int,
+    onBackClick: () -> Unit,
+    onNextQuestion: () -> Unit
 ) {
+    val question = quiz.questionEntityList[questionIndex]
+
+    var selectedAnswer by remember { mutableStateOf<String?>(null) }
+    var showFeedback by remember { mutableStateOf(false) }
+    var isCorrect by remember { mutableStateOf(false) }
+
     Scaffold(
         topBar = {
             TopBarQuiz(
-                title = quiz.title ?: "Quiz sem título",
-                subtitle = "Detalhes do Quiz",
+                title = quiz.title,
+                subtitle = "Pergunta ${questionIndex + 1} de ${quiz.questionEntityList.size}",
                 onBackClick = onBackClick,
                 onMenuOptionClick = {}
             )
@@ -45,17 +44,8 @@ fun SecondQuizScreen(
             verticalArrangement = Arrangement.spacedBy(16.dp),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            Image(
-                painter = painterResource(id = R.drawable.coracao_icon),
-                contentDescription = "Imagem do coração",
-                modifier = Modifier
-                    .size(150.dp)
-                    .padding(8.dp),
-                contentScale = ContentScale.Crop
-            )
-
             Text(
-                text = question?.problem ?: "Pergunta não disponível.",
+                text = question.problem,
                 style = MaterialTheme.typography.titleLarge,
                 modifier = Modifier.align(Alignment.Start)
             )
@@ -67,28 +57,50 @@ fun SecondQuizScreen(
                 verticalArrangement = Arrangement.spacedBy(8.dp)
             ) {
                 listOf(
-                    question?.alternativeA ?: "",
-                    question?.alternativeB ?: "",
-                    question?.alternativeC ?: "",
-                    question?.alternativeD ?: ""
-                ).filter { it.isNotBlank() }.forEach { alternative ->
+                    question.alternativeA,
+                    question.alternativeB,
+                    question.alternativeC,
+                    question.alternativeD
+                ).forEach { alternative ->
                     QuestionsButton(
                         text = alternative,
-                        isSelected = false,
-                        onClick = { /* Lógica de seleção */ }
+                        isSelected = alternative == selectedAnswer,
+                        onClick = {
+                            selectedAnswer = alternative
+                        }
                     )
-                } ?: Text(
-                    text = "Nenhuma opção disponível.",
+                }
+            }
+
+            Spacer(modifier = Modifier.height(16.dp))
+
+            if (showFeedback) {
+                Text(
+                    text = if (isCorrect) {
+                        "Correto! A resposta é ${question.answer}."
+                    } else {
+                        "Errado! A resposta correta é ${question.answer}."
+                    },
                     style = MaterialTheme.typography.bodyMedium,
-                    modifier = Modifier.align(Alignment.CenterHorizontally)
+                    color = if (isCorrect) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.error,
+                    modifier = Modifier.align(Alignment.Start)
                 )
             }
 
-            Spacer(modifier = Modifier.height(32.dp))
+            Spacer(modifier = Modifier.height(16.dp))
 
             ConfirmationButton(
-                text = "Confirmar",
-                onClick = { /* Lógica de confirmação */ }
+                text = if (showFeedback) "Próxima" else "Confirmar",
+                onClick = {
+                    if (showFeedback) {
+                        onNextQuestion()
+                        showFeedback = false
+                        selectedAnswer = null
+                    } else {
+                        isCorrect = (selectedAnswer ?: "") == question.answer
+                        showFeedback = true
+                    }
+                }
             )
         }
     }

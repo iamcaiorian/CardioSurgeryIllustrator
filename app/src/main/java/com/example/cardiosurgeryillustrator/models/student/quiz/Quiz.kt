@@ -4,7 +4,7 @@ data class Quiz(
     val id: String? = null,
     val title: String,
     val description: String,
-    val questionEntityList: List<QuizQuestion>? = null
+    val questionEntityList: List<QuizQuestion> = emptyList()
 )
 
 data class QuizQuestion(
