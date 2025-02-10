@@ -29,9 +29,9 @@ import com.example.cardiosurgeryillustrator.R
 import com.example.cardiosurgeryillustrator.models.mock.student.StudyMock
 import com.example.cardiosurgeryillustrator.models.mock.student.mockModules
 import com.example.cardiosurgeryillustrator.models.mock.student.mockQuizzes
+import com.example.cardiosurgeryillustrator.models.student.quiz.question.QuestionResponse
 import com.example.cardiosurgeryillustrator.ui.screens.authentication.LoginScreen
 import com.example.cardiosurgeryillustrator.ui.screens.authentication.RegisterScreen
-import com.example.cardiosurgeryillustrator.models.student.quiz.CreateQuizQuestionRequest
 import com.example.cardiosurgeryillustrator.ui.screens.student.modules.ModuleVideoScreen
 import com.example.cardiosurgeryillustrator.ui.screens.student.favorite.FavoriteScreen
 import com.example.cardiosurgeryillustrator.ui.screens.student.modules.ModulesScreen
@@ -145,15 +145,17 @@ sealed class SettingsAction(val route: String) {
 }
 
 
-
-
 @Composable
 @ExperimentalMaterial3Api
 fun StudentNavHost(
 ) {
     val studentNavController = rememberNavController()
 
-    val bottomBarRoutes = listOf(BottomBarStudentAction.Home.route, BottomBarStudentAction.Subject.route, BottomBarStudentAction.Favorites.route)
+    val bottomBarRoutes = listOf(
+        BottomBarStudentAction.Home.route,
+        BottomBarStudentAction.Subject.route,
+        BottomBarStudentAction.Favorites.route
+    )
 
     NavHost(
         navController = studentNavController,
@@ -208,7 +210,7 @@ fun StudentNavHost(
 
         composable(LoginFlow.Login.route) {
             LoginScreen(
-                onNavigateToHome = { studentNavController.navigate(BottomBarStudentAction.Home.route)  },
+                onNavigateToHome = { studentNavController.navigate(BottomBarStudentAction.Home.route) },
                 onForgotPasswordClick = { },
                 onRegisterClick = { studentNavController.navigate(LoginFlow.Register.route) }
             )
@@ -333,7 +335,7 @@ fun StudentNavHost(
 
             Scaffold { innerPadding ->
                 module?.let {
-                    ModuleVideoScreen (
+                    ModuleVideoScreen(
                         module = module,
                         modifier = Modifier.padding(innerPadding),
                         onBackClick = { studentNavController.popBackStack() },
@@ -404,7 +406,8 @@ fun StudentNavHost(
             )
         ) { backStackEntry ->
             val title = backStackEntry.arguments?.getString("title") ?: "Detalhes"
-            val description = backStackEntry.arguments?.getString("description") ?: "Sem descrição disponível."
+            val description =
+                backStackEntry.arguments?.getString("description") ?: "Sem descrição disponível."
 
             HabitDetailScreen(
                 title = title,
@@ -424,7 +427,7 @@ fun StudentNavHost(
                     val question = it.questionEntityList?.firstOrNull() // Obtém a primeira questão
                     SecondQuizScreen(
                         quiz = it,
-                        question = question as? CreateQuizQuestionRequest,
+                        question = question as? QuestionResponse,
                         modifier = Modifier.padding(innerPadding),
                         onBackClick = { studentNavController.popBackStack() }
                     )
