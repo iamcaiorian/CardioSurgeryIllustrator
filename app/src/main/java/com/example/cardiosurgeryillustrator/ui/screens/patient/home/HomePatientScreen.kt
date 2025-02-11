@@ -13,7 +13,6 @@ import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
@@ -24,20 +23,24 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.example.cardiosurgeryillustrator.R
-import com.example.cardiosurgeryillustrator.models.patient.home.InfoText
-import com.example.cardiosurgeryillustrator.models.mock.patient.mockInfoText
+import com.example.cardiosurgeryillustrator.models.mock.patient.diseases
 import com.example.cardiosurgeryillustrator.ui.components.buttons.StandardButton
 import com.example.cardiosurgeryillustrator.ui.modals.feedback.FeedbackModal
 
 @Composable
-fun HomePacientScreen(modifier: Modifier = Modifier, navController: NavController, infoTextList: List<InfoText>) {
+fun HomePacientScreen(
+    modifier: Modifier = Modifier,
+    navController: NavController,
+) {
+
+    val selectedDisease = diseases[0]
+
     Column(
         modifier = modifier
             .fillMaxSize()
@@ -65,15 +68,13 @@ fun HomePacientScreen(modifier: Modifier = Modifier, navController: NavControlle
 
         Spacer(modifier = Modifier.height(24.dp))
 
-
         Text(
             text = "Meu coração",
             fontSize = 22.sp,
         )
 
         Box(modifier = Modifier.fillMaxWidth()) {
-            val heartImage: Painter =
-                painterResource(id = R.drawable.heart_image)
+            val heartImage: Painter = painterResource(id = R.drawable.heart_image)
             Image(
                 painter = heartImage,
                 contentDescription = "Heart illustration",
@@ -83,37 +84,24 @@ fun HomePacientScreen(modifier: Modifier = Modifier, navController: NavControlle
                     .size(300.dp)
             )
 
-
-            Box(
-                modifier = Modifier
-                    .size(24.dp)
-                    .offset(x = 130.dp, y = 80.dp)
-                    .clickable { navController.navigate("artery_details/right_coronary") }
-            ) {
-                Image(
-                    painter = painterResource(id = R.drawable.point_icon), // Ícone do ponto
-                    contentDescription = "Clickable artery",
-                    modifier = Modifier.fillMaxSize()
-                )
-            }
-
-            Box(
-                modifier = Modifier
-                    .size(24.dp)
-                    .offset(x = 250.dp, y = 115.dp)
-                    .clickable { navController.navigate("artery_details/left_coronary") }
-            ) {
-                Image(
-                    painter = painterResource(id = R.drawable.point_icon),
-                    contentDescription = "Clickable artery 2",
-                    modifier = Modifier.fillMaxSize()
-                )
+            selectedDisease.points.forEach { point ->
+                Box(
+                    modifier = Modifier
+                        .size(24.dp)
+                        .offset(x = point.xOffset, y = point.yOffset)
+                        .clickable { navController.navigate(point.route) }
+                ) {
+                    Image(
+                        painter = painterResource(id = R.drawable.point_icon), // Ícone do ponto
+                        contentDescription = "Clickable artery",
+                        modifier = Modifier.fillMaxSize()
+                    )
+                }
             }
         }
 
         Spacer(modifier = Modifier.height(16.dp))
 
-        // Botão para abrir o modal
         StandardButton(
             onClick = { showBottomSheet.value = true },
             text = "Abrir Feedback",
@@ -122,38 +110,12 @@ fun HomePacientScreen(modifier: Modifier = Modifier, navController: NavControlle
 
         Spacer(modifier = Modifier.height(16.dp))
 
-        LazyColumn(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(16.dp),
-            horizontalAlignment = Alignment.Start
-        ) {
-            infoTextList.forEach { infoText ->
-                item {
-                    Text(
-                        text = infoText.title,
-                        fontSize = 22.sp,
-                        modifier = Modifier.padding(bottom = 12.dp)
-                    )
-                    Text(
-                        text = infoText.subtitle,
-                        fontSize = 16.sp,
-                        fontWeight = FontWeight.Medium,
-                        modifier = Modifier.padding(bottom = 8.dp)
-                    )
-                    Text(
-                        text = infoText.content,
-                        fontSize = 14.sp,
-                    )
-                }
+        StandardButton(
+            onClick = { navController.navigate("life_Style") },
+            text = "Ver Estilo de Vida",
+            modifier = Modifier.fillMaxWidth()
+        )
 
-                item {
-                    Spacer(modifier = Modifier.height(56.dp))
-                }
-            }
-        }
-
-        // Exibe o modal se `showBottomSheet` for true
         if (showBottomSheet.value) {
             FeedbackModal(
                 onDismiss = { showBottomSheet.value = false }
@@ -162,9 +124,8 @@ fun HomePacientScreen(modifier: Modifier = Modifier, navController: NavControlle
     }
 }
 
-
 @Preview
 @Composable
 private fun HomePacientScreenPreview() {
-    HomePacientScreen(modifier = Modifier.fillMaxWidth(), navController = rememberNavController(), infoTextList = mockInfoText)
+    HomePacientScreen(modifier = Modifier.fillMaxWidth(), navController = rememberNavController())
 }

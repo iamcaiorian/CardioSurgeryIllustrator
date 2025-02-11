@@ -14,8 +14,10 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
@@ -24,8 +26,7 @@ import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import com.example.cardiosurgeryillustrator.R
 import com.example.cardiosurgeryillustrator.models.mock.patient.mockClinics
-import com.example.cardiosurgeryillustrator.models.mock.patient.mockInfoText
-import com.example.cardiosurgeryillustrator.models.mock.student.mockQuestions
+import com.example.cardiosurgeryillustrator.models.mock.patient.mockQuestions
 import com.example.cardiosurgeryillustrator.ui.components.patient.BottomBarPacient
 import com.example.cardiosurgeryillustrator.ui.components.topBar.StandardTopBar
 import com.example.cardiosurgeryillustrator.ui.screens.patient.home.ArteryDetailsScreen
@@ -40,9 +41,11 @@ import com.example.cardiosurgeryillustrator.ui.screens.patient.faq.PatientFAQScr
 import com.example.cardiosurgeryillustrator.ui.screens.patient.form.CardioForm
 import com.example.cardiosurgeryillustrator.ui.screens.patient.nearby_clinics.NearbyClinics
 import com.example.cardiosurgeryillustrator.ui.screens.patient.settings.PatientSettingsScreen
-import com.example.cardiosurgeryillustrator.ui.screens.student.notification.HabitDetailScreen
 import com.example.cardiosurgeryillustrator.ui.screens.student.notification.NotificationSettingsScreen
-import com.example.cardiosurgeryillustrator.view_models.patient.community.CommunityViewModel
+import com.example.cardiosurgeryillustrator.utils.DataStoreUtils
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.example.cardiosurgeryillustrator.ui.screens.patient.home.LifeStyleScreen
+
 
 sealed class BottomBarPacientAction(
     val route: String,
@@ -109,6 +112,14 @@ sealed class MoreActionsFlow(val route: String) {
 fun PatientNavHost() {
     val patientNavController = rememberNavController()
 
+
+    val uuidFlow = DataStoreUtils.readPatientUUID(LocalContext.current)
+    val uuid = uuidFlow.collectAsStateWithLifecycle(initialValue = null)
+
+    val startDestination = uuid.value?.let {
+        BottomBarPacientAction.HomePacient.route
+    } ?: FormFlow.Form.route
+
     val bottomBarRoutes = listOf(
         BottomBarPacientAction.HomePacient.route,
         BottomBarPacientAction.Community.route,
@@ -118,7 +129,7 @@ fun PatientNavHost() {
 
     NavHost(
         navController = patientNavController,
-        startDestination = FormFlow.Form.route,
+        startDestination = startDestination,
         modifier = Modifier,
         enterTransition = {
             val fromIndex = bottomBarRoutes.indexOf(initialState.destination.route)
@@ -172,15 +183,11 @@ fun PatientNavHost() {
         composable(FormFlow.Form.route) {
             Scaffold { innerPadding ->
                 CardioForm(
-                    onNavigateToHome = {
-                        patientNavController.navigate(BottomBarPacientAction.HomePacient.route) {
-                            popUpTo(WelcomeFlow.Welcome.route) { inclusive = true }
-                        }
-                    },
-                    onBack = { patientNavController.navigate(WelcomeFlow.ChooseUser.route) },
+                    navController = patientNavController,
                     questionsList = mockQuestions,
-                    modifier = Modifier.padding(innerPadding)
-                )
+                    modifier = Modifier.padding(innerPadding),
+
+                    )
             }
         }
 
@@ -191,8 +198,7 @@ fun PatientNavHost() {
             ) { innerPadding ->
                 HomePacientScreen(
                     navController = patientNavController,
-                    modifier = Modifier.padding(innerPadding),
-                    infoTextList = mockInfoText
+                    modifier = Modifier.padding(innerPadding)
                 )
             }
         }
@@ -267,6 +273,17 @@ fun PatientNavHost() {
             }
         }
 
+        composable("life_style") {
+            Scaffold { innerPadding ->
+                LifeStyleScreen(
+                    navController = patientNavController,
+                    modifier = Modifier.padding(innerPadding),
+                    imc = 30f
+                )
+            }
+        }
+
+        //Clínicas próximas
         composable("nearby_clinics") {
             Scaffold { innerPadding ->
                 NearbyClinics(
@@ -276,6 +293,7 @@ fun PatientNavHost() {
             }
         }
 
+        //Agendamento de consultas
         composable("appointment_schedule_screen") {
             Scaffold { innerPadding ->
                 AppointmentScheduleScreen(
@@ -285,6 +303,7 @@ fun PatientNavHost() {
             }
         }
 
+        //Novo agendamento
         composable("new_appointment_screen") {
             Scaffold { innerPadding ->
                 NewAppointmentScheduleScreen(
@@ -295,6 +314,7 @@ fun PatientNavHost() {
             }
         }
 
+        //Configurações
         composable(MoreActionsFlow.Settings.route) {
             Scaffold { innerPadding ->
                 PatientSettingsScreen(
@@ -312,7 +332,7 @@ fun PatientNavHost() {
             )
         }
 
-
+        //FAQ
         composable("faq") {
             Scaffold(
                 topBar = {

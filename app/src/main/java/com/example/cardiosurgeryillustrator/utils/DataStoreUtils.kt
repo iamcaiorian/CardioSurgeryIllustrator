@@ -17,6 +17,9 @@ val Context.dataStore by preferencesDataStore(name = "user_prefs")
 object DataStoreUtils {
     private val THEME_KEY = booleanPreferencesKey("is_dark_theme")
     private val APPOINTMENT_KEY = stringPreferencesKey("appointment")
+    private val PATIENT_UUID_KEY = stringPreferencesKey("patient_uuid")
+    private val IMC_KEY = stringPreferencesKey("imc")
+    private val QUESTION_14_KEY = stringPreferencesKey("question_14")
 
     suspend fun saveTheme(context: Context, isDark: Boolean) {
         context.dataStore.edit { prefs ->
@@ -35,11 +38,12 @@ object DataStoreUtils {
         }
     }
 
-    fun readAppointments(context: Context): Flow<List<Appointment>> = context.dataStore.data.map { prefs ->
-        prefs[APPOINTMENT_KEY]?.let { jsonString ->
-            Json.decodeFromString<List<Appointment>>(jsonString)
-        } ?: emptyList()
-    }
+    fun readAppointments(context: Context): Flow<List<Appointment>> =
+        context.dataStore.data.map { prefs ->
+            prefs[APPOINTMENT_KEY]?.let { jsonString ->
+                Json.decodeFromString<List<Appointment>>(jsonString)
+            } ?: emptyList()
+        }
 
     suspend fun deleteAppointment(context: Context, appointmentId: String) {
         val currentAppointments = readAppointments(context).first()
@@ -47,5 +51,43 @@ object DataStoreUtils {
 
         saveAppointments(context, updatedAppointments)
     }
+
+    suspend fun savePatientUUID(context: Context, uuid: String) {
+        context.dataStore.edit { preferences ->
+            preferences[PATIENT_UUID_KEY] = uuid
+        }
+    }
+
+    fun readPatientUUID(context: Context): Flow<String?> {
+        return context.dataStore.data.map { preferences ->
+            preferences[PATIENT_UUID_KEY]
+        }
+    }
+
+    suspend fun saveQuestion14Response(context: Context, response: String) {
+        context.dataStore.edit { preferences ->
+            preferences[QUESTION_14_KEY] = response
+        }
+    }
+
+    suspend fun saveIMC(context: Context, imc: String) {
+        context.dataStore.edit { preferences ->
+            preferences[IMC_KEY] = imc
+        }
+    }
+
+    fun readQuestion14Response(context: Context): Flow<String?> {
+        return context.dataStore.data.map { preferences ->
+            preferences[QUESTION_14_KEY]
+        }
+    }
+
+    fun readImc(context: Context): Flow<String?> {
+        return context.dataStore.data.map { preferences ->
+            preferences[IMC_KEY]
+        }
+    }
+
+
 }
 
