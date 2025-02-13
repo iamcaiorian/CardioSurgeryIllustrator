@@ -16,7 +16,13 @@ import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavType
@@ -29,6 +35,9 @@ import com.example.cardiosurgeryillustrator.R
 import com.example.cardiosurgeryillustrator.models.mock.student.StudyMock
 import com.example.cardiosurgeryillustrator.models.mock.student.mockModules
 import com.example.cardiosurgeryillustrator.models.mock.student.mockQuizzes
+import com.example.cardiosurgeryillustrator.ui.screens.student.auth.LoginScreen
+import com.example.cardiosurgeryillustrator.ui.screens.student.auth.RegisterScreen
+import com.example.cardiosurgeryillustrator.models.student.quiz.CreateQuizQuestionRequest
 import com.example.cardiosurgeryillustrator.models.student.quiz.question.QuestionResponse
 import com.example.cardiosurgeryillustrator.ui.screens.authentication.LoginScreen
 import com.example.cardiosurgeryillustrator.ui.screens.authentication.RegisterScreen
@@ -46,6 +55,7 @@ import com.example.cardiosurgeryillustrator.ui.screens.student.settings_student.
 import com.example.cardiosurgeryillustrator.ui.screens.student.subject.SubjectsScreen
 import com.example.cardiosurgeryillustrator.ui.screens.student.student.HomeStudentScreen
 import com.example.cardiosurgeryillustrator.ui.screens.student.settings_student.SettingsStudentScreen
+import com.example.cardiosurgeryillustrator.utils.DataStoreUtils
 
 sealed class TopBarStudentAction(
     val route: String,
@@ -149,7 +159,20 @@ sealed class SettingsAction(val route: String) {
 @ExperimentalMaterial3Api
 fun StudentNavHost(
 ) {
+
+
     val studentNavController = rememberNavController()
+    val context = LocalContext.current
+    var startDestination by remember { mutableStateOf(LoginFlow.Login.route) }
+
+    LaunchedEffect(Unit) {
+        DataStoreUtils.readToken(context).collect { token ->
+            if (!token.isNullOrEmpty()) {
+                startDestination = BottomBarStudentAction.Home.route
+            }
+        }
+    }
+
 
     val bottomBarRoutes = listOf(
         BottomBarStudentAction.Home.route,
@@ -159,7 +182,7 @@ fun StudentNavHost(
 
     NavHost(
         navController = studentNavController,
-        startDestination = LoginFlow.Login.route,
+        startDestination = startDestination,
         enterTransition = {
             val fromIndex = bottomBarRoutes.indexOf(initialState.destination.route)
             val toIndex = bottomBarRoutes.indexOf(targetState.destination.route)
@@ -215,13 +238,10 @@ fun StudentNavHost(
                 onRegisterClick = { studentNavController.navigate(LoginFlow.Register.route) }
             )
         }
+
         composable(LoginFlow.Register.route) {
             RegisterScreen(
-                onRegisterClick = { _, _ ->
-                    studentNavController.navigate(LoginFlow.Login.route) {
-                        popUpTo(LoginFlow.Login.route)
-                    }
-                }
+                onRegisterSuccess = { studentNavController.navigate(LoginFlow.Login.route) }
             )
         }
 

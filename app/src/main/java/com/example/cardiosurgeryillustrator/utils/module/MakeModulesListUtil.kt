@@ -1,4 +1,4 @@
-package com.example.cardiosurgeryillustrator.utils
+package com.example.cardiosurgeryillustrator.utils.module
 
 import androidx.compose.runtime.mutableStateOf
 import com.example.cardiosurgeryillustrator.models.student.module.Module
