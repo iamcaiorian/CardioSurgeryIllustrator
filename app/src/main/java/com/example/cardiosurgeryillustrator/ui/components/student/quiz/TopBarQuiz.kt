@@ -38,6 +38,7 @@ fun TopBarQuiz(
                     Spacer(modifier = Modifier.height(2.dp))
                     Text(
                         text = subtitle,
+                        maxLines = 1,
                         style = MaterialTheme.typography.bodyMedium,
                         color = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.7f)
                     )
@@ -49,33 +50,6 @@ fun TopBarQuiz(
                 Icon(
                     imageVector = Icons.AutoMirrored.Filled.ArrowBack,
                     contentDescription = "Voltar"
-                )
-            }
-        },
-        actions = {
-            IconButton(onClick = { expanded = true }) {
-                Icon(
-                    imageVector = Icons.Default.MoreVert,
-                    contentDescription = "Menu"
-                )
-            }
-            DropdownMenu(
-                expanded = expanded,
-                onDismissRequest = { expanded = false }
-            ) {
-                DropdownMenuItem(
-                    text = { Text("Configurações") },
-                    onClick = {
-                        expanded = false
-                        onMenuOptionClick("Configurações")
-                    }
-                )
-                DropdownMenuItem(
-                    text = { Text("Ajuda") },
-                    onClick = {
-                        expanded = false
-                        onMenuOptionClick("Ajuda")
-                    }
                 )
             }
         },

@@ -1,7 +1,7 @@
 package com.example.cardiosurgeryillustrator.models.mock.student
 
-import com.example.cardiosurgeryillustrator.models.student.quiz.Question
-import com.example.cardiosurgeryillustrator.models.student.quiz.QuestionType
+import com.example.cardiosurgeryillustrator.models.student.quiz.question.Question
+import com.example.cardiosurgeryillustrator.models.student.quiz.question.QuestionType
 
 
 val mockQuestions = listOf(

@@ -1,6 +1,6 @@
 package com.example.cardiosurgeryillustrator.models.student.module
 
-import com.example.cardiosurgeryillustrator.models.student.quiz.Quiz
+import com.example.cardiosurgeryillustrator.models.student.quiz.quiz.Quiz
 
 data class ModuleResponse(
     val id: String,

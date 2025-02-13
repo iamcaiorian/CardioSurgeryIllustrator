@@ -66,8 +66,8 @@ fun ModulesScreen(
             // NO NAV CONTROLLER A SEGUIR DEVE IR DIRETO PRA QUIZ, PASSANDO module.quiz.id e
             // tratar quiz inexistente, e alterar tambem no studentnavhost
 
-            onModuleClick = {module ->
-                navController.navigate("${SubjectAction.ModulesVideo.route}/${module.id}")
+            onModuleClick = { module ->
+                navController.navigate("${SubjectAction.Study.route}/${module.id}")
             }
         )
     }
