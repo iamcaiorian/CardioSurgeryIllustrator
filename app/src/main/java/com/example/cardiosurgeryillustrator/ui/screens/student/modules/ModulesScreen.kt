@@ -62,7 +62,13 @@ fun ModulesScreen(
                 .fillMaxSize()
                 .padding(innerPadding),
             modulesList = modules,
-            onModuleClick = {module -> navController.navigate("${SubjectAction.ModulesVideo.route}/${module.id}")}
+
+            // NO NAV CONTROLLER A SEGUIR DEVE IR DIRETO PRA QUIZ, PASSANDO module.quiz.id e
+            // tratar quiz inexistente, e alterar tambem no studentnavhost
+
+            onModuleClick = {module ->
+                navController.navigate("${SubjectAction.ModulesVideo.route}/${module.id}")
+            }
         )
     }
 }

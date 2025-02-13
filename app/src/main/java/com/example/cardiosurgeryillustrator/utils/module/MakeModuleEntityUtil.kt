@@ -13,7 +13,8 @@ fun makeModuleEntityUtil(moduleResponse: ModuleResponse): Module {
             cover = moduleResponse.cover,
             progress = moduleResponse.progress,
             longDescription = moduleResponse.longDescription,
-            isFavorite = mutableStateOf(moduleResponse.isFavorite)
+            isFavorite = mutableStateOf(moduleResponse.isFavorite),
+            quiz = moduleResponse.quiz
         )
     
 }

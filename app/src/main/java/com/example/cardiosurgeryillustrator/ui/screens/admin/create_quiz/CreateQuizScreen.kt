@@ -1,7 +1,5 @@
 package com.example.cardiosurgeryillustrator.ui.screens.admin.create_quiz
 
-import com.example.cardiosurgeryillustrator.view_models.admin.quiz_modules.CreateQuizViewModel
-import com.example.cardiosurgeryillustrator.view_models.admin.quiz_modules.CreateQuizViewModelFactory
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -12,22 +10,25 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
-import com.example.cardiosurgeryillustrator.core.network.RetrofitInstance
-import com.example.cardiosurgeryillustrator.models.student.quiz.CreateQuizQuestionRequest
-import com.example.cardiosurgeryillustrator.models.student.quiz.CreateQuizRequest
+import com.example.cardiosurgeryillustrator.models.student.module.ModuleResponse
 import com.example.cardiosurgeryillustrator.models.student.quiz.Quiz
-import com.example.cardiosurgeryillustrator.models.student.quiz.QuizQuestion
 import com.example.cardiosurgeryillustrator.repository.quiz.QuizRepository
-import kotlinx.coroutines.launch
+import com.example.cardiosurgeryillustrator.repository.admin.question.QuestionRepository
+import com.example.cardiosurgeryillustrator.repository.student.module.ModuleRepository
+import com.example.cardiosurgeryillustrator.ui.components.admin.create_module.SelectModule
+import com.example.cardiosurgeryillustrator.view_models.admin.quiz_modules.QuizViewModel
+import com.example.cardiosurgeryillustrator.view_models.admin.quiz_modules.QuizViewModelFactory
 
 @Composable
 fun AdminAddQuizScreen(
-    onQuizAdded: (CreateQuizRequest) -> Unit,
+    onQuizAdded: (Quiz) -> Unit,
     modifier: Modifier = Modifier
 ) {
     val quizRepository = QuizRepository()
-    val factory = CreateQuizViewModelFactory(quizRepository)
-    val viewModel: CreateQuizViewModel = viewModel(factory = factory)
+    val questionRepository = QuestionRepository()
+    val moduleRepository = ModuleRepository()
+    val factory = QuizViewModelFactory(quizRepository, questionRepository, moduleRepository)
+    val viewModel: QuizViewModel = viewModel(factory = factory)
 
     var title by remember { mutableStateOf("") }
     var description by remember { mutableStateOf("") }
@@ -39,12 +40,29 @@ fun AdminAddQuizScreen(
     var answer by remember { mutableStateOf("") }
     var errorMessage by remember { mutableStateOf<String?>(null) }
 
+    // Estado para módulos
+    val modules by viewModel.modules.collectAsState()
+    var selectedModule by remember { mutableStateOf<ModuleResponse?>(null) }
+
+    LaunchedEffect(Unit) {
+        viewModel.loadModules()
+    }
+
     Column(
         modifier = modifier
             .fillMaxSize()
             .padding(16.dp)
     ) {
         Text("Adicionar Novo Quiz", style = MaterialTheme.typography.titleLarge)
+
+        Spacer(modifier = Modifier.height(16.dp))
+
+        // Dropdown de módulos
+        SelectModule(
+            modules = modules,
+            selectedModule = selectedModule,
+            onModuleSelected = { selectedModule = it }
+        )
 
         Spacer(modifier = Modifier.height(16.dp))
 
@@ -133,24 +151,19 @@ fun AdminAddQuizScreen(
             onClick = {
                 if (title.isNotBlank() && description.isNotBlank() && problem.isNotBlank() &&
                     alternativeA.isNotBlank() && alternativeB.isNotBlank() &&
-                    alternativeC.isNotBlank() && alternativeD.isNotBlank() && answer.isNotBlank()
+                    alternativeC.isNotBlank() && alternativeD.isNotBlank() &&
+                    answer.isNotBlank() && selectedModule != null
                 ) {
-                    val quiz = CreateQuizRequest(
+                    viewModel.createQuiz(
                         title = title,
                         description = description,
-                        questionEntityList = listOf(
-                            CreateQuizQuestionRequest(
-                                problem = problem,
-                                alternativeA = alternativeA,
-                                alternativeB = alternativeB,
-                                alternativeC = alternativeC,
-                                alternativeD = alternativeD,
-                                answer = answer
-                            )
-                        )
-                    )
-                    viewModel.createQuiz(
-                        quiz = quiz,
+                        problem = problem,
+                        alternativeA = alternativeA,
+                        alternativeB = alternativeB,
+                        alternativeC = alternativeC,
+                        alternativeD = alternativeD,
+                        answer = answer,
+                        moduleId = selectedModule!!.id,
                         onSuccess = {
                             onQuizAdded(it)
                             errorMessage = null
@@ -158,7 +171,7 @@ fun AdminAddQuizScreen(
                         onError = { errorMessage = it }
                     )
                 } else {
-                    errorMessage = "Por favor, preencha todos os campos!"
+                    errorMessage = "Por favor, preencha todos os campos e selecione um módulo!"
                 }
             },
             modifier = Modifier.align(Alignment.End),
@@ -168,61 +181,6 @@ fun AdminAddQuizScreen(
             )
         ) {
             Text("Salvar Quiz")
-        }
-    }
-}
-
-
-
-@Composable
-fun AdminQuizListScreen(
-    quizzes: List<Quiz>,
-    onEditQuiz: (Quiz) -> Unit,
-    onDeleteQuiz: (String) -> Unit,
-    modifier: Modifier = Modifier
-) {
-    LazyColumn(
-        modifier = modifier
-            .fillMaxSize()
-            .padding(16.dp)
-    ) {
-        item {
-            Text("Lista de Quizzes", style = MaterialTheme.typography.titleLarge)
-            Spacer(modifier = Modifier.height(16.dp))
-        }
-
-        items(quizzes) { quiz ->
-            Card(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(vertical = 8.dp),
-                elevation = CardDefaults.cardElevation(4.dp)
-            ) {
-                Column(modifier = Modifier.padding(16.dp)) {
-                    Text(quiz.title, style = MaterialTheme.typography.titleMedium)
-                    Text(quiz.description, style = MaterialTheme.typography.bodyMedium)
-
-                    Spacer(modifier = Modifier.height(8.dp))
-
-                    Row(
-                        horizontalArrangement = Arrangement.End,
-                        modifier = Modifier.fillMaxWidth()
-                    ) {
-                        Button(onClick = { onEditQuiz(quiz) }) {
-                            Text("Editar")
-                        }
-
-                        Spacer(modifier = Modifier.width(8.dp))
-
-                        Button(
-                            onClick = { onDeleteQuiz(quiz.id.orEmpty()) },
-                            colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.error)
-                        ) {
-                            Text("Excluir")
-                        }
-                    }
-                }
-            }
         }
     }
 }

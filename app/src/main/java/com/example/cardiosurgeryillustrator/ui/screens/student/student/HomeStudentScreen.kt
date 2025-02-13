@@ -19,8 +19,6 @@ import com.example.cardiosurgeryillustrator.ui.components.student.student.TopBar
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun HomeStudentScreen(navController: NavController, modifier: Modifier = Modifier) {
-
-
     Scaffold(topBar = { TopBarStudent(navController = navController) }) { innerPadding ->
         Column(
             modifier = modifier
@@ -29,7 +27,7 @@ fun HomeStudentScreen(navController: NavController, modifier: Modifier = Modifie
                 .padding(16.dp),
             verticalArrangement = Arrangement.spacedBy(16.dp)
         ) {
-            LastModuleCard(module = mockModules[4],
+            LastModuleCard(module = mockModules[2],
                 onClick = { navController.navigate("${SubjectAction.ModulesVideo.route}/${mockModules[1].id}") })
             LastQuizCard(module = mockModules[1], onClick = {})
             StudentQuizzes()

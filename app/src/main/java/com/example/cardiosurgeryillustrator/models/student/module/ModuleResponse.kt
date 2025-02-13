@@ -1,5 +1,7 @@
 package com.example.cardiosurgeryillustrator.models.student.module
 
+import com.example.cardiosurgeryillustrator.models.student.quiz.Quiz
+
 data class ModuleResponse(
     val id: String,
     val subjectId: String,
@@ -8,5 +10,6 @@ data class ModuleResponse(
     val cover: String,
     val progress: Float,
     val longDescription: String,
-    var isFavorite: Boolean
+    var isFavorite: Boolean,
+    var quiz: Quiz
 )

@@ -15,6 +15,7 @@ import androidx.compose.ui.unit.dp
 import com.example.cardiosurgeryillustrator.R
 import com.example.cardiosurgeryillustrator.models.student.quiz.CreateQuizQuestionRequest
 import com.example.cardiosurgeryillustrator.models.student.quiz.Quiz
+import com.example.cardiosurgeryillustrator.models.student.quiz.question.QuestionResponse
 import com.example.cardiosurgeryillustrator.ui.components.button.QuestionsButton
 import com.example.cardiosurgeryillustrator.ui.components.buttons.ConfirmationButton
 import com.example.cardiosurgeryillustrator.ui.components.student.quiz.TopBarQuiz
@@ -23,7 +24,7 @@ import com.example.cardiosurgeryillustrator.ui.components.student.quiz.TopBarQui
 @Composable
 fun SecondQuizScreen(
     quiz: Quiz,
-    question: CreateQuizQuestionRequest?,
+    question: QuestionResponse?,
     modifier: Modifier = Modifier,
     onBackClick: () -> Unit
 ) {
