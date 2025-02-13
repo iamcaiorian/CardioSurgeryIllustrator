@@ -38,6 +38,9 @@ import com.example.cardiosurgeryillustrator.models.mock.student.mockQuizzes
 import com.example.cardiosurgeryillustrator.ui.screens.student.auth.LoginScreen
 import com.example.cardiosurgeryillustrator.ui.screens.student.auth.RegisterScreen
 import com.example.cardiosurgeryillustrator.models.student.quiz.CreateQuizQuestionRequest
+import com.example.cardiosurgeryillustrator.models.student.quiz.question.QuestionResponse
+import com.example.cardiosurgeryillustrator.ui.screens.authentication.LoginScreen
+import com.example.cardiosurgeryillustrator.ui.screens.authentication.RegisterScreen
 import com.example.cardiosurgeryillustrator.ui.screens.student.modules.ModuleVideoScreen
 import com.example.cardiosurgeryillustrator.ui.screens.student.favorite.FavoriteScreen
 import com.example.cardiosurgeryillustrator.ui.screens.student.modules.ModulesScreen
@@ -169,6 +172,7 @@ fun StudentNavHost(
             }
         }
     }
+
 
     val bottomBarRoutes = listOf(
         BottomBarStudentAction.Home.route,
@@ -443,7 +447,7 @@ fun StudentNavHost(
                     val question = it.questionEntityList?.firstOrNull() // Obtém a primeira questão
                     SecondQuizScreen(
                         quiz = it,
-                        question = question as? CreateQuizQuestionRequest,
+                        question = question as? QuestionResponse,
                         modifier = Modifier.padding(innerPadding),
                         onBackClick = { studentNavController.popBackStack() }
                     )

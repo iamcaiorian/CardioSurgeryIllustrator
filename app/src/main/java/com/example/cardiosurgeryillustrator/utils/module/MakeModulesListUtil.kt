@@ -14,7 +14,8 @@ fun makeModulesListUtil(moduleResponses: List<ModuleResponse>): List<Module> {
             cover = moduleResponse.cover,
             progress = moduleResponse.progress,
             longDescription = moduleResponse.longDescription,
-            isFavorite = mutableStateOf(moduleResponse.isFavorite)
+            isFavorite = mutableStateOf(moduleResponse.isFavorite),
+            quiz = moduleResponse.quiz
         )
     }
 }

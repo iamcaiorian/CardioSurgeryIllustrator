@@ -22,7 +22,9 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.cardiosurgeryillustrator.R
+import com.example.cardiosurgeryillustrator.repository.admin.question.QuestionRepository
 import com.example.cardiosurgeryillustrator.repository.quiz.QuizRepository
+import com.example.cardiosurgeryillustrator.repository.student.module.ModuleRepository
 import com.example.cardiosurgeryillustrator.ui.components.admin.admin.BottomBarAdmin
 import com.example.cardiosurgeryillustrator.ui.components.student.student.BottomBarStudent
 import com.example.cardiosurgeryillustrator.ui.components.topBar.StandardTopBar
@@ -94,7 +96,13 @@ fun AdminNavHost() {
     val adminNavController = rememberNavController()
 
     val quizRepository = QuizRepository()
-    val quizViewModel = QuizViewModelFactory(quizRepository).create(QuizViewModel::class.java)
+    val questionRepository = QuestionRepository()
+    val moduleRepository = ModuleRepository()
+
+    val quizViewModel =
+        QuizViewModelFactory(quizRepository, questionRepository, moduleRepository).create(
+            QuizViewModel::class.java
+        )
 
     LaunchedEffect(Unit) {
         quizViewModel.loadQuizzes()
