@@ -33,7 +33,6 @@ import androidx.navigation.navArgument
 import com.example.cardiosurgeryillustrator.R
 import com.example.cardiosurgeryillustrator.models.mock.student.mockModules
 import com.example.cardiosurgeryillustrator.models.mock.student.mockQuizzes
-import com.example.cardiosurgeryillustrator.models.student.quiz.question.QuestionResponse
 import com.example.cardiosurgeryillustrator.ui.components.student.student.BottomBarStudent
 import com.example.cardiosurgeryillustrator.ui.screens.student.auth.LoginScreen
 import com.example.cardiosurgeryillustrator.ui.screens.student.auth.RegisterScreen
@@ -43,12 +42,14 @@ import com.example.cardiosurgeryillustrator.ui.screens.student.modules.ModulesSc
 import com.example.cardiosurgeryillustrator.ui.screens.student.modules.StudyScreen
 import com.example.cardiosurgeryillustrator.ui.screens.student.notification.HabitDetailScreen
 import com.example.cardiosurgeryillustrator.ui.screens.student.notification.NotificationSettingsScreen
+import com.example.cardiosurgeryillustrator.ui.screens.student.password_recovery.GenerateCodeScreen
+import com.example.cardiosurgeryillustrator.ui.screens.student.password_recovery.ValidateCodeScreen
 import com.example.cardiosurgeryillustrator.ui.screens.student.quiz.QuizScreen
 import com.example.cardiosurgeryillustrator.ui.screens.student.quiz.SecondQuizScreen
-import com.example.cardiosurgeryillustrator.ui.screens.student.settings_student.ChangePasswordScreen
+import com.example.cardiosurgeryillustrator.ui.screens.student.password_recovery.ChangePasswordScreen
 import com.example.cardiosurgeryillustrator.ui.screens.student.settings_student.ProfileScreen
 import com.example.cardiosurgeryillustrator.ui.screens.student.settings_student.SettingsStudentScreen
-import com.example.cardiosurgeryillustrator.ui.screens.student.settings_student.ValidateCodeScreen
+import com.example.cardiosurgeryillustrator.ui.screens.student.settings_student.SettingsValidateCodeScreen
 import com.example.cardiosurgeryillustrator.ui.screens.student.student.HomeStudentScreen
 import com.example.cardiosurgeryillustrator.ui.screens.student.subject.SubjectsScreen
 import com.example.cardiosurgeryillustrator.utils.DataStoreUtils
@@ -145,7 +146,13 @@ sealed class SubjectAction(val route: String) {
 
 sealed class SettingsAction(val route: String) {
     object Profile : SettingsAction("profile")
-    object ValidadeCode : SettingsAction("validadeCode")
+    object ValidateCode : SettingsAction("settingsValidateCode")
+    object ChangePassword : SettingsAction("changePassword")
+}
+
+sealed class PasswordRecoveryAction(val route: String) {
+    object GenerateCode : SettingsAction("generateCode")
+    object ValidateCode : SettingsAction("validateCode")
     object ChangePassword : SettingsAction("changePassword")
 }
 
@@ -154,7 +161,6 @@ sealed class SettingsAction(val route: String) {
 @ExperimentalMaterial3Api
 fun StudentNavHost(
 ) {
-
 
     val studentNavController = rememberNavController()
     val context = LocalContext.current
@@ -229,7 +235,7 @@ fun StudentNavHost(
         composable(LoginFlow.Login.route) {
             LoginScreen(
                 onNavigateToHome = { studentNavController.navigate(BottomBarStudentAction.Home.route) },
-                onForgotPasswordClick = { },
+                onForgotPasswordClick = { studentNavController.navigate(PasswordRecoveryAction.GenerateCode.route) },
                 onRegisterClick = { studentNavController.navigate(LoginFlow.Register.route) }
             )
         }
@@ -239,6 +245,57 @@ fun StudentNavHost(
                 onRegisterSuccess = { studentNavController.navigate(LoginFlow.Login.route) }
             )
         }
+
+        composable(PasswordRecoveryAction.GenerateCode.route) {
+            GenerateCodeScreen(
+                onNavigateBack = { studentNavController.popBackStack()},
+                onNavigateToValidateCode = { email ->
+                studentNavController.navigate(
+                    "${PasswordRecoveryAction.ValidateCode.route}/$email"
+                )
+            })
+        }
+
+        composable(
+            route = "${PasswordRecoveryAction.ValidateCode.route}/{email}",
+            arguments = listOf(navArgument("email") { type = NavType.StringType })
+        ) { backStackEntry ->
+
+            val email = backStackEntry.arguments?.getString("email")
+
+            ValidateCodeScreen(
+                email = email ?: "",
+                onNavigateBack = { studentNavController.popBackStack() },
+                onNavigateToChangePassword = { email, code ->
+                    studentNavController.navigate(
+                        "${PasswordRecoveryAction.ChangePassword.route}/$email/$code"
+                    )
+                }
+            )
+        }
+
+        composable(
+            route = "${PasswordRecoveryAction.ChangePassword.route}/{email}/{code}",
+            arguments = listOf(
+                navArgument("email") { type = NavType.StringType },
+                navArgument("code") { type = NavType.StringType }
+            )
+        ) { backStackEntry ->
+
+            val email = backStackEntry.arguments?.getString("email") ?: ""
+            val code = backStackEntry.arguments?.getString("code") ?: ""
+
+            Scaffold { innerPadding ->
+                ChangePasswordScreen(
+                    modifier = Modifier.padding(innerPadding),
+                    email = email,
+                    code = code,
+                    onNavigateBack = { studentNavController.popBackStack() },
+                    onNavigateToLogin = { studentNavController.navigate(LoginFlow.Login.route) }
+                )
+            }
+        }
+
 
         composable(TopBarStudentAction.Settings.route) {
             Scaffold(
@@ -304,9 +361,9 @@ fun StudentNavHost(
             }
         }
 
-        composable(SettingsAction.ValidadeCode.route) {
+        composable(SettingsAction.ValidateCode.route) {
             Scaffold { innerPadding ->
-                ValidateCodeScreen(
+                SettingsValidateCodeScreen(
                     modifier = Modifier.padding(innerPadding),
                     onNavigateBack = { studentNavController.popBackStack() },
                     navController = studentNavController
@@ -314,14 +371,7 @@ fun StudentNavHost(
             }
         }
 
-        composable(SettingsAction.ChangePassword.route) {
-            Scaffold { innerPadding ->
-                ChangePasswordScreen(
-                    modifier = Modifier.padding(innerPadding),
-                    onNavigateBack = { studentNavController.popBackStack() },
-                )
-            }
-        }
+
 
         composable(
             route = "${SubjectAction.Modules.route}/{subjectId}",
