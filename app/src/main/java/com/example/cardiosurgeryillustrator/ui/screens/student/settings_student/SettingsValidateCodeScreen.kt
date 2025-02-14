@@ -33,7 +33,7 @@ import com.example.cardiosurgeryillustrator.ui.theme.Typography
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun ValidateCodeScreen(
+fun SettingsValidateCodeScreen(
     modifier: Modifier = Modifier,
     onNavigateBack: () -> Unit,
     navController: NavController,
@@ -57,7 +57,7 @@ fun ValidateCodeScreen(
                 verticalArrangement = Arrangement.Center,
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
-                // Botão para enviar código por e-mail
+
                 TransparentButton(
                     text = "Enviar código por e-mail",
                     onClick = {},
@@ -110,5 +110,5 @@ fun ValidateCodeScreen(
 @Preview
 @Composable
 private fun ValidateCodeScreenPreview() {
-    ValidateCodeScreen(onNavigateBack = {}, navController = rememberNavController())
+    SettingsValidateCodeScreen(onNavigateBack = {}, navController = rememberNavController())
 }
