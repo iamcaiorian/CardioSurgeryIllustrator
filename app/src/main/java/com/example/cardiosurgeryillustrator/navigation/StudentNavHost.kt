@@ -26,23 +26,19 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavType
-import com.example.cardiosurgeryillustrator.ui.components.student.student.BottomBarStudent
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import com.example.cardiosurgeryillustrator.R
-import com.example.cardiosurgeryillustrator.models.mock.student.StudyMock
 import com.example.cardiosurgeryillustrator.models.mock.student.mockModules
 import com.example.cardiosurgeryillustrator.models.mock.student.mockQuizzes
+import com.example.cardiosurgeryillustrator.models.student.quiz.question.QuestionResponse
+import com.example.cardiosurgeryillustrator.ui.components.student.student.BottomBarStudent
 import com.example.cardiosurgeryillustrator.ui.screens.student.auth.LoginScreen
 import com.example.cardiosurgeryillustrator.ui.screens.student.auth.RegisterScreen
-import com.example.cardiosurgeryillustrator.models.student.quiz.CreateQuizQuestionRequest
-import com.example.cardiosurgeryillustrator.models.student.quiz.question.QuestionResponse
-import com.example.cardiosurgeryillustrator.ui.screens.authentication.LoginScreen
-import com.example.cardiosurgeryillustrator.ui.screens.authentication.RegisterScreen
-import com.example.cardiosurgeryillustrator.ui.screens.student.modules.ModuleVideoScreen
 import com.example.cardiosurgeryillustrator.ui.screens.student.favorite.FavoriteScreen
+import com.example.cardiosurgeryillustrator.ui.screens.student.modules.ModuleVideoScreen
 import com.example.cardiosurgeryillustrator.ui.screens.student.modules.ModulesScreen
 import com.example.cardiosurgeryillustrator.ui.screens.student.modules.StudyScreen
 import com.example.cardiosurgeryillustrator.ui.screens.student.notification.HabitDetailScreen
@@ -51,10 +47,10 @@ import com.example.cardiosurgeryillustrator.ui.screens.student.quiz.QuizScreen
 import com.example.cardiosurgeryillustrator.ui.screens.student.quiz.SecondQuizScreen
 import com.example.cardiosurgeryillustrator.ui.screens.student.settings_student.ChangePasswordScreen
 import com.example.cardiosurgeryillustrator.ui.screens.student.settings_student.ProfileScreen
-import com.example.cardiosurgeryillustrator.ui.screens.student.settings_student.ValidateCodeScreen
-import com.example.cardiosurgeryillustrator.ui.screens.student.subject.SubjectsScreen
-import com.example.cardiosurgeryillustrator.ui.screens.student.student.HomeStudentScreen
 import com.example.cardiosurgeryillustrator.ui.screens.student.settings_student.SettingsStudentScreen
+import com.example.cardiosurgeryillustrator.ui.screens.student.settings_student.ValidateCodeScreen
+import com.example.cardiosurgeryillustrator.ui.screens.student.student.HomeStudentScreen
+import com.example.cardiosurgeryillustrator.ui.screens.student.subject.SubjectsScreen
 import com.example.cardiosurgeryillustrator.utils.DataStoreUtils
 
 sealed class TopBarStudentAction(
@@ -148,7 +144,6 @@ sealed class SubjectAction(val route: String) {
 }
 
 sealed class SettingsAction(val route: String) {
-    object Notifications : SettingsAction("notifications")
     object Profile : SettingsAction("profile")
     object ValidadeCode : SettingsAction("validadeCode")
     object ChangePassword : SettingsAction("changePassword")
@@ -372,30 +367,45 @@ fun StudentNavHost(
             arguments = listOf(navArgument("moduleId") { type = NavType.StringType })
         ) { backStackEntry ->
             val moduleId = backStackEntry.arguments?.getString("moduleId")
-            val study = StudyMock.find { it.moduleId == moduleId }
 
             Scaffold { innerPadding ->
-                study?.let {
-                    StudyScreen(
-                        moduleId = moduleId ?: "1",
-                        modifier = Modifier.padding(innerPadding),
-                        onPreviousClick = { previousId ->
-                            if (previousId != null) {
-                                studentNavController.navigate("${SubjectAction.Study.route}/$previousId")
-                            }
-                        },
-                        onNextClick = { nextId ->
-                            studentNavController.navigate("${SubjectAction.Quiz.route}/$nextId")
-                        },
-                        onBackClick = { studentNavController.popBackStack() },
-                        onMenuOptionClick = { println("Menu clicado: $it") }
-                    )
-                }
+                StudyScreen(
+                    moduleId = moduleId ?: "1",
+                    modifier = Modifier.padding(innerPadding),
+                    onPreviousClick = { previousId ->
+                        if (previousId != null) {
+                            studentNavController.navigate("${SubjectAction.Study.route}/$previousId")
+                        }
+                    },
+                    onNextClick = { nextId ->
+                        studentNavController.navigate("${SubjectAction.Quiz.route}/$nextId")
+                    },
+                    onBackClick = { studentNavController.popBackStack() },
+                    onMenuOptionClick = { println("Menu clicado: $it") }
+                )
+
             }
         }
 
         composable(
-            route = "${SubjectAction.Quiz.route}/{moduleId}",
+            route = "${SubjectAction.Quiz.route}/{quizId}",
+            arguments = listOf(navArgument("quizId") { type = NavType.StringType })
+        ) { backStackEntry ->
+            val quizId = backStackEntry.arguments?.getString("quizId")
+
+            Scaffold { innerPadding ->
+
+                QuizScreen(
+                    quizId = quizId ?: "1",
+                    modifier = Modifier.padding(innerPadding),
+                    onBackClick = { studentNavController.popBackStack() }
+                )
+
+            }
+        }
+
+        composable(
+            route = "${SubjectAction.SecondQuiz.route}/{moduleId}",
             arguments = listOf(navArgument("moduleId") { type = NavType.StringType })
         ) { backStackEntry ->
             val moduleId = backStackEntry.arguments?.getString("moduleId")
@@ -403,7 +413,7 @@ fun StudentNavHost(
 
             Scaffold { innerPadding ->
                 quiz?.let {
-                    QuizScreen(
+                    SecondQuizScreen(
                         quiz = it,
                         modifier = Modifier.padding(innerPadding),
                         onBackClick = { studentNavController.popBackStack() },
@@ -418,6 +428,7 @@ fun StudentNavHost(
                 }
             }
         }
+
         composable(
             route = "habit_detail/{title}/{description}",
             arguments = listOf(
@@ -434,25 +445,6 @@ fun StudentNavHost(
                 description = description,
                 onBackClick = { studentNavController.popBackStack() }
             )
-        }
-        composable(
-            route = "${SubjectAction.SecondQuiz.route}/{moduleId}",
-            arguments = listOf(navArgument("moduleId") { type = NavType.StringType })
-        ) { backStackEntry ->
-            val moduleId = backStackEntry.arguments?.getString("moduleId")
-            val quiz = mockQuizzes.find { it.id == moduleId }
-
-            Scaffold { innerPadding ->
-                quiz?.let {
-                    val question = it.questionEntityList?.firstOrNull() // Obtém a primeira questão
-                    SecondQuizScreen(
-                        quiz = it,
-                        question = question as? QuestionResponse,
-                        modifier = Modifier.padding(innerPadding),
-                        onBackClick = { studentNavController.popBackStack() }
-                    )
-                }
-            }
         }
     }
 }

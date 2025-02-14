@@ -1,6 +1,4 @@
-package com.example.cardiosurgeryillustrator.models.student.quiz
-
-import java.util.UUID
+package com.example.cardiosurgeryillustrator.models.student.quiz.quiz
 
 data class CreateQuizData (
     val title: String,

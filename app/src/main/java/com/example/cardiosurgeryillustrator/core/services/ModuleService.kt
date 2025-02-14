@@ -17,4 +17,7 @@ interface ModuleService {
 
     @GET("/module/by-subject/{subject_id}")
     suspend fun getAllModulesBySubjectId(@Path("subject_id") subjectId: String): List<ModuleResponse>
+
+    @GET("/module/{module_id}")
+    suspend fun getModuleById(@Path("module_id") moduleId: String): ModuleResponse
 }

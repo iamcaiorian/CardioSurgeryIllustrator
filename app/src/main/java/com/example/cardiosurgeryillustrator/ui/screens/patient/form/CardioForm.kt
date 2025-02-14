@@ -35,9 +35,9 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.cardiosurgeryillustrator.R
-import com.example.cardiosurgeryillustrator.models.student.quiz.Question
+import com.example.cardiosurgeryillustrator.models.student.quiz.question.Question
 import com.example.cardiosurgeryillustrator.models.mock.student.mockQuestions
-import com.example.cardiosurgeryillustrator.models.student.quiz.QuestionType
+import com.example.cardiosurgeryillustrator.models.student.quiz.question.QuestionType
 import com.example.cardiosurgeryillustrator.ui.components.patient.form.TextInputField
 import com.example.cardiosurgeryillustrator.ui.components.buttons.ConfirmationButton
 
