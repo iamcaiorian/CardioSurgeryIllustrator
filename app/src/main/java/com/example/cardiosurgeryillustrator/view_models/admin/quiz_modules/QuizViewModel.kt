@@ -2,11 +2,11 @@ package com.example.cardiosurgeryillustrator.view_models.admin.quiz_modules
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.cardiosurgeryillustrator.models.student.quiz.Quiz
+import com.example.cardiosurgeryillustrator.models.student.quiz.quiz.Quiz
 import com.example.cardiosurgeryillustrator.models.student.quiz.question.CreateQuestionRequest
 import com.example.cardiosurgeryillustrator.models.student.quiz.question.QuestionResponse
 import com.example.cardiosurgeryillustrator.models.student.module.ModuleResponse
-import com.example.cardiosurgeryillustrator.models.student.quiz.CreateQuizRequest
+import com.example.cardiosurgeryillustrator.models.student.quiz.quiz.CreateQuizRequest
 import com.example.cardiosurgeryillustrator.repository.admin.question.QuestionRepository
 import com.example.cardiosurgeryillustrator.repository.quiz.QuizRepository
 import com.example.cardiosurgeryillustrator.repository.student.module.ModuleRepository
