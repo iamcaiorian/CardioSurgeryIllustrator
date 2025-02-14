@@ -1,39 +1,38 @@
 package com.example.cardiosurgeryillustrator.ui.screens.student.quiz
 
+import ErrorButton
+import com.example.cardiosurgeryillustrator.ui.components.button.SuccessButton
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
-import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Text
-import androidx.compose.runtime.*
+import androidx.compose.material3.*
+import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.cardiosurgeryillustrator.R
-import com.example.cardiosurgeryillustrator.models.student.quiz.CreateQuizQuestionRequest
-import com.example.cardiosurgeryillustrator.models.student.quiz.Quiz
-import com.example.cardiosurgeryillustrator.ui.components.button.QuestionsButton
-import com.example.cardiosurgeryillustrator.ui.components.buttons.ConfirmationButton
+import com.example.cardiosurgeryillustrator.models.student.quiz.quiz.Quiz
+import com.example.cardiosurgeryillustrator.models.mock.student.mockQuizzes
 import com.example.cardiosurgeryillustrator.ui.components.student.quiz.TopBarQuiz
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun SecondQuizScreen(
     quiz: Quiz,
-    question: CreateQuizQuestionRequest?,
     modifier: Modifier = Modifier,
-    onBackClick: () -> Unit
+    onBackClick: () -> Unit,
+    onMenuOptionClick: (String) -> Unit,
+    onAnswerClick: (Boolean) -> Unit,
+    onNavigateToSecondQuiz: (String?) -> Unit
 ) {
     Scaffold(
         topBar = {
             TopBarQuiz(
                 title = quiz.title ?: "Quiz sem título",
-                subtitle = "Detalhes do Quiz",
                 onBackClick = onBackClick,
-                onMenuOptionClick = {}
+                onMenuOptionClick = onMenuOptionClick
             )
         }
     ) { innerPadding ->
@@ -49,47 +48,49 @@ fun SecondQuizScreen(
                 painter = painterResource(id = R.drawable.coracao_icon),
                 contentDescription = "Imagem do coração",
                 modifier = Modifier
-                    .size(150.dp)
-                    .padding(8.dp),
+                    .weight(1f)
+                    .aspectRatio(1f)
+                    .padding(4.dp)
+                    .width(120.dp),
                 contentScale = ContentScale.Crop
             )
 
             Text(
-                text = question?.problem ?: "Pergunta não disponível.",
+                text = "Este é o conteúdo do quiz",
                 style = MaterialTheme.typography.titleLarge,
-                modifier = Modifier.align(Alignment.Start)
+                modifier = Modifier.align(Alignment.CenterHorizontally)
             )
 
-            Column(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(top = 16.dp),
-                verticalArrangement = Arrangement.spacedBy(8.dp)
-            ) {
-                listOf(
-                    question?.alternativeA ?: "",
-                    question?.alternativeB ?: "",
-                    question?.alternativeC ?: "",
-                    question?.alternativeD ?: ""
-                ).filter { it.isNotBlank() }.forEach { alternative ->
-                    QuestionsButton(
-                        text = alternative,
-                        isSelected = false,
-                        onClick = { /* Lógica de seleção */ }
-                    )
-                } ?: Text(
-                    text = "Nenhuma opção disponível.",
-                    style = MaterialTheme.typography.bodyMedium,
-                    modifier = Modifier.align(Alignment.CenterHorizontally)
-                )
-            }
+            Text(
+                text = quiz.description ?: "Descrição não fornecida",
+                style = MaterialTheme.typography.bodyMedium,
+                modifier = Modifier.align(Alignment.CenterHorizontally)
+            )
 
             Spacer(modifier = Modifier.height(32.dp))
 
-            ConfirmationButton(
-                text = "Confirmar",
-                onClick = { /* Lógica de confirmação */ }
-            )
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(top = 16.dp),
+                horizontalArrangement = Arrangement.SpaceEvenly
+            ) {
+                ErrorButton(
+                    text = "Errado",
+                    onClick = {
+                        onAnswerClick(false)
+                        onNavigateToSecondQuiz(quiz.id)
+                    }
+                )
+                SuccessButton(
+                    text = "Certo",
+                    onClick = {
+                        onAnswerClick(true)
+                        onNavigateToSecondQuiz(quiz.id)
+                    }
+                )
+            }
         }
     }
 }
+

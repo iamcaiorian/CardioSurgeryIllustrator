@@ -40,10 +40,15 @@ import androidx.lifecycle.ViewModel
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.example.cardiosurgeryillustrator.R
+
 import com.example.cardiosurgeryillustrator.models.student.quiz.Question
 import com.example.cardiosurgeryillustrator.models.mock.patient.mockQuestions
 import com.example.cardiosurgeryillustrator.models.student.quiz.QuestionType
 import com.example.cardiosurgeryillustrator.ui.components.buttons.ButtonDefault
+
+import com.example.cardiosurgeryillustrator.models.student.quiz.question.Question
+import com.example.cardiosurgeryillustrator.models.mock.student.mockQuestions
+
 import com.example.cardiosurgeryillustrator.ui.components.patient.form.TextInputField
 import com.example.cardiosurgeryillustrator.ui.components.buttons.ConfirmationButton
 import com.example.cardiosurgeryillustrator.ui.theme.Zinc500

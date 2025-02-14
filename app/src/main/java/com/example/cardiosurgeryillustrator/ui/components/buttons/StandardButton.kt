@@ -29,7 +29,8 @@ fun StandardButton(
     text: String? = null,
     @DrawableRes iconRes: Int? = null,
     onClick: () -> Unit,
-    color: Color = Blue700
+    color: Color = Blue700,
+    enabled: Boolean = true
 ) {
     val isIconOnly = text == null && iconRes != null
     Button(
@@ -41,7 +42,8 @@ fun StandardButton(
         shape = RoundedCornerShape(8.dp),
         contentPadding = if (text == null && iconRes != null) PaddingValues(0.dp) else ButtonDefaults.ContentPadding,
         colors = ButtonDefaults.buttonColors(containerColor = color),
-        onClick = onClick
+        onClick = onClick,
+        enabled = enabled
     ) {
         Row(
             verticalAlignment = Alignment.CenterVertically,

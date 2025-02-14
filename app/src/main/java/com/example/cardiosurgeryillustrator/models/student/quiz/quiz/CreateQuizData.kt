@@ -1,15 +1,12 @@
-package com.example.cardiosurgeryillustrator.models.student.quiz
+package com.example.cardiosurgeryillustrator.models.student.quiz.quiz
 
-import java.util.UUID
-
-data class CreateQuizRequest (
+data class CreateQuizData (
     val title: String,
     val description: String,
     val questionEntityList: List<CreateQuizQuestionRequest>,
 )
 
 data class CreateQuizQuestionRequest(
-    val id: String= UUID.randomUUID().toString(),
     val problem: String,
     val alternativeA: String,
     val alternativeB: String,

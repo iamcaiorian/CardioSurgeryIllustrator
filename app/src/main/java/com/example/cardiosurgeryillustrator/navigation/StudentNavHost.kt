@@ -16,36 +16,43 @@ import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavType
-import com.example.cardiosurgeryillustrator.ui.components.student.student.BottomBarStudent
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import com.example.cardiosurgeryillustrator.R
-import com.example.cardiosurgeryillustrator.models.mock.student.StudyMock
 import com.example.cardiosurgeryillustrator.models.mock.student.mockModules
 import com.example.cardiosurgeryillustrator.models.mock.student.mockQuizzes
-import com.example.cardiosurgeryillustrator.ui.screens.authentication.LoginScreen
-import com.example.cardiosurgeryillustrator.ui.screens.authentication.RegisterScreen
-import com.example.cardiosurgeryillustrator.models.student.quiz.CreateQuizQuestionRequest
-import com.example.cardiosurgeryillustrator.ui.screens.student.modules.ModuleVideoScreen
+import com.example.cardiosurgeryillustrator.ui.components.student.student.BottomBarStudent
+import com.example.cardiosurgeryillustrator.ui.screens.student.auth.LoginScreen
+import com.example.cardiosurgeryillustrator.ui.screens.student.auth.RegisterScreen
 import com.example.cardiosurgeryillustrator.ui.screens.student.favorite.FavoriteScreen
+import com.example.cardiosurgeryillustrator.ui.screens.student.modules.ModuleVideoScreen
 import com.example.cardiosurgeryillustrator.ui.screens.student.modules.ModulesScreen
 import com.example.cardiosurgeryillustrator.ui.screens.student.modules.StudyScreen
 import com.example.cardiosurgeryillustrator.ui.screens.student.notification.HabitDetailScreen
 import com.example.cardiosurgeryillustrator.ui.screens.student.notification.NotificationSettingsScreen
+import com.example.cardiosurgeryillustrator.ui.screens.student.password_recovery.GenerateCodeScreen
+import com.example.cardiosurgeryillustrator.ui.screens.student.password_recovery.ValidateCodeScreen
 import com.example.cardiosurgeryillustrator.ui.screens.student.quiz.QuizScreen
 import com.example.cardiosurgeryillustrator.ui.screens.student.quiz.SecondQuizScreen
-import com.example.cardiosurgeryillustrator.ui.screens.student.settings_student.ChangePasswordScreen
+import com.example.cardiosurgeryillustrator.ui.screens.student.password_recovery.ChangePasswordScreen
 import com.example.cardiosurgeryillustrator.ui.screens.student.settings_student.ProfileScreen
-import com.example.cardiosurgeryillustrator.ui.screens.student.settings_student.ValidateCodeScreen
-import com.example.cardiosurgeryillustrator.ui.screens.student.subject.SubjectsScreen
-import com.example.cardiosurgeryillustrator.ui.screens.student.student.HomeStudentScreen
 import com.example.cardiosurgeryillustrator.ui.screens.student.settings_student.SettingsStudentScreen
+import com.example.cardiosurgeryillustrator.ui.screens.student.settings_student.SettingsValidateCodeScreen
+import com.example.cardiosurgeryillustrator.ui.screens.student.student.HomeStudentScreen
+import com.example.cardiosurgeryillustrator.ui.screens.student.subject.SubjectsScreen
+import com.example.cardiosurgeryillustrator.utils.DataStoreUtils
 
 sealed class TopBarStudentAction(
     val route: String,
@@ -138,26 +145,45 @@ sealed class SubjectAction(val route: String) {
 }
 
 sealed class SettingsAction(val route: String) {
-    object Notifications : SettingsAction("notifications")
     object Profile : SettingsAction("profile")
-    object ValidadeCode : SettingsAction("validadeCode")
+    object ValidateCode : SettingsAction("settingsValidateCode")
     object ChangePassword : SettingsAction("changePassword")
 }
 
-
+sealed class PasswordRecoveryAction(val route: String) {
+    object GenerateCode : SettingsAction("generateCode")
+    object ValidateCode : SettingsAction("validateCode")
+    object ChangePassword : SettingsAction("changePassword")
+}
 
 
 @Composable
 @ExperimentalMaterial3Api
 fun StudentNavHost(
 ) {
-    val studentNavController = rememberNavController()
 
-    val bottomBarRoutes = listOf(BottomBarStudentAction.Home.route, BottomBarStudentAction.Subject.route, BottomBarStudentAction.Favorites.route)
+    val studentNavController = rememberNavController()
+    val context = LocalContext.current
+    var startDestination by remember { mutableStateOf(LoginFlow.Login.route) }
+
+    LaunchedEffect(Unit) {
+        DataStoreUtils.readToken(context).collect { token ->
+            if (!token.isNullOrEmpty()) {
+                startDestination = BottomBarStudentAction.Home.route
+            }
+        }
+    }
+
+
+    val bottomBarRoutes = listOf(
+        BottomBarStudentAction.Home.route,
+        BottomBarStudentAction.Subject.route,
+        BottomBarStudentAction.Favorites.route
+    )
 
     NavHost(
         navController = studentNavController,
-        startDestination = LoginFlow.Login.route,
+        startDestination = startDestination,
         enterTransition = {
             val fromIndex = bottomBarRoutes.indexOf(initialState.destination.route)
             val toIndex = bottomBarRoutes.indexOf(targetState.destination.route)
@@ -208,20 +234,68 @@ fun StudentNavHost(
 
         composable(LoginFlow.Login.route) {
             LoginScreen(
-                onNavigateToHome = { studentNavController.navigate(BottomBarStudentAction.Home.route)  },
-                onForgotPasswordClick = { },
+                onNavigateToHome = { studentNavController.navigate(BottomBarStudentAction.Home.route) },
+                onForgotPasswordClick = { studentNavController.navigate(PasswordRecoveryAction.GenerateCode.route) },
                 onRegisterClick = { studentNavController.navigate(LoginFlow.Register.route) }
             )
         }
+
         composable(LoginFlow.Register.route) {
             RegisterScreen(
-                onRegisterClick = { _, _ ->
-                    studentNavController.navigate(LoginFlow.Login.route) {
-                        popUpTo(LoginFlow.Login.route)
-                    }
+                onRegisterSuccess = { studentNavController.navigate(LoginFlow.Login.route) }
+            )
+        }
+
+        composable(PasswordRecoveryAction.GenerateCode.route) {
+            GenerateCodeScreen(
+                onNavigateBack = { studentNavController.popBackStack()},
+                onNavigateToValidateCode = { email ->
+                studentNavController.navigate(
+                    "${PasswordRecoveryAction.ValidateCode.route}/$email"
+                )
+            })
+        }
+
+        composable(
+            route = "${PasswordRecoveryAction.ValidateCode.route}/{email}",
+            arguments = listOf(navArgument("email") { type = NavType.StringType })
+        ) { backStackEntry ->
+
+            val email = backStackEntry.arguments?.getString("email")
+
+            ValidateCodeScreen(
+                email = email ?: "",
+                onNavigateBack = { studentNavController.popBackStack() },
+                onNavigateToChangePassword = { email, code ->
+                    studentNavController.navigate(
+                        "${PasswordRecoveryAction.ChangePassword.route}/$email/$code"
+                    )
                 }
             )
         }
+
+        composable(
+            route = "${PasswordRecoveryAction.ChangePassword.route}/{email}/{code}",
+            arguments = listOf(
+                navArgument("email") { type = NavType.StringType },
+                navArgument("code") { type = NavType.StringType }
+            )
+        ) { backStackEntry ->
+
+            val email = backStackEntry.arguments?.getString("email") ?: ""
+            val code = backStackEntry.arguments?.getString("code") ?: ""
+
+            Scaffold { innerPadding ->
+                ChangePasswordScreen(
+                    modifier = Modifier.padding(innerPadding),
+                    email = email,
+                    code = code,
+                    onNavigateBack = { studentNavController.popBackStack() },
+                    onNavigateToLogin = { studentNavController.navigate(LoginFlow.Login.route) }
+                )
+            }
+        }
+
 
         composable(TopBarStudentAction.Settings.route) {
             Scaffold(
@@ -287,9 +361,9 @@ fun StudentNavHost(
             }
         }
 
-        composable(SettingsAction.ValidadeCode.route) {
+        composable(SettingsAction.ValidateCode.route) {
             Scaffold { innerPadding ->
-                ValidateCodeScreen(
+                SettingsValidateCodeScreen(
                     modifier = Modifier.padding(innerPadding),
                     onNavigateBack = { studentNavController.popBackStack() },
                     navController = studentNavController
@@ -297,14 +371,7 @@ fun StudentNavHost(
             }
         }
 
-        composable(SettingsAction.ChangePassword.route) {
-            Scaffold { innerPadding ->
-                ChangePasswordScreen(
-                    modifier = Modifier.padding(innerPadding),
-                    onNavigateBack = { studentNavController.popBackStack() },
-                )
-            }
-        }
+
 
         composable(
             route = "${SubjectAction.Modules.route}/{subjectId}",
@@ -333,7 +400,7 @@ fun StudentNavHost(
 
             Scaffold { innerPadding ->
                 module?.let {
-                    ModuleVideoScreen (
+                    ModuleVideoScreen(
                         module = module,
                         modifier = Modifier.padding(innerPadding),
                         onBackClick = { studentNavController.popBackStack() },
@@ -350,30 +417,45 @@ fun StudentNavHost(
             arguments = listOf(navArgument("moduleId") { type = NavType.StringType })
         ) { backStackEntry ->
             val moduleId = backStackEntry.arguments?.getString("moduleId")
-            val study = StudyMock.find { it.moduleId == moduleId }
 
             Scaffold { innerPadding ->
-                study?.let {
-                    StudyScreen(
-                        moduleId = moduleId ?: "1",
-                        modifier = Modifier.padding(innerPadding),
-                        onPreviousClick = { previousId ->
-                            if (previousId != null) {
-                                studentNavController.navigate("${SubjectAction.Study.route}/$previousId")
-                            }
-                        },
-                        onNextClick = { nextId ->
-                            studentNavController.navigate("${SubjectAction.Quiz.route}/$nextId")
-                        },
-                        onBackClick = { studentNavController.popBackStack() },
-                        onMenuOptionClick = { println("Menu clicado: $it") }
-                    )
-                }
+                StudyScreen(
+                    moduleId = moduleId ?: "1",
+                    modifier = Modifier.padding(innerPadding),
+                    onPreviousClick = { previousId ->
+                        if (previousId != null) {
+                            studentNavController.navigate("${SubjectAction.Study.route}/$previousId")
+                        }
+                    },
+                    onNextClick = { nextId ->
+                        studentNavController.navigate("${SubjectAction.Quiz.route}/$nextId")
+                    },
+                    onBackClick = { studentNavController.popBackStack() },
+                    onMenuOptionClick = { println("Menu clicado: $it") }
+                )
+
             }
         }
 
         composable(
-            route = "${SubjectAction.Quiz.route}/{moduleId}",
+            route = "${SubjectAction.Quiz.route}/{quizId}",
+            arguments = listOf(navArgument("quizId") { type = NavType.StringType })
+        ) { backStackEntry ->
+            val quizId = backStackEntry.arguments?.getString("quizId")
+
+            Scaffold { innerPadding ->
+
+                QuizScreen(
+                    quizId = quizId ?: "1",
+                    modifier = Modifier.padding(innerPadding),
+                    onBackClick = { studentNavController.popBackStack() }
+                )
+
+            }
+        }
+
+        composable(
+            route = "${SubjectAction.SecondQuiz.route}/{moduleId}",
             arguments = listOf(navArgument("moduleId") { type = NavType.StringType })
         ) { backStackEntry ->
             val moduleId = backStackEntry.arguments?.getString("moduleId")
@@ -381,7 +463,7 @@ fun StudentNavHost(
 
             Scaffold { innerPadding ->
                 quiz?.let {
-                    QuizScreen(
+                    SecondQuizScreen(
                         quiz = it,
                         modifier = Modifier.padding(innerPadding),
                         onBackClick = { studentNavController.popBackStack() },
@@ -396,6 +478,7 @@ fun StudentNavHost(
                 }
             }
         }
+
         composable(
             route = "habit_detail/{title}/{description}",
             arguments = listOf(
@@ -404,32 +487,14 @@ fun StudentNavHost(
             )
         ) { backStackEntry ->
             val title = backStackEntry.arguments?.getString("title") ?: "Detalhes"
-            val description = backStackEntry.arguments?.getString("description") ?: "Sem descrição disponível."
+            val description =
+                backStackEntry.arguments?.getString("description") ?: "Sem descrição disponível."
 
             HabitDetailScreen(
                 title = title,
                 description = description,
                 onBackClick = { studentNavController.popBackStack() }
             )
-        }
-        composable(
-            route = "${SubjectAction.SecondQuiz.route}/{moduleId}",
-            arguments = listOf(navArgument("moduleId") { type = NavType.StringType })
-        ) { backStackEntry ->
-            val moduleId = backStackEntry.arguments?.getString("moduleId")
-            val quiz = mockQuizzes.find { it.id == moduleId }
-
-            Scaffold { innerPadding ->
-                quiz?.let {
-                    val question = it.questionEntityList?.firstOrNull() // Obtém a primeira questão
-                    SecondQuizScreen(
-                        quiz = it,
-                        question = question as? CreateQuizQuestionRequest,
-                        modifier = Modifier.padding(innerPadding),
-                        onBackClick = { studentNavController.popBackStack() }
-                    )
-                }
-            }
         }
     }
 }

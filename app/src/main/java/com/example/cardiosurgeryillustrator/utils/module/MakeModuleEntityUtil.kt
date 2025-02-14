@@ -1,4 +1,4 @@
-package com.example.cardiosurgeryillustrator.utils
+package com.example.cardiosurgeryillustrator.utils.module
 
 import androidx.compose.runtime.mutableStateOf
 import com.example.cardiosurgeryillustrator.models.student.module.Module
@@ -13,7 +13,8 @@ fun makeModuleEntityUtil(moduleResponse: ModuleResponse): Module {
             cover = moduleResponse.cover,
             progress = moduleResponse.progress,
             longDescription = moduleResponse.longDescription,
-            isFavorite = mutableStateOf(moduleResponse.isFavorite)
+            isFavorite = mutableStateOf(moduleResponse.isFavorite),
+            quiz = moduleResponse.quiz
         )
     
 }

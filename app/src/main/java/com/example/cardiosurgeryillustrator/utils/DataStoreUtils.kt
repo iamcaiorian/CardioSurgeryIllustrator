@@ -17,9 +17,13 @@ val Context.dataStore by preferencesDataStore(name = "user_prefs")
 object DataStoreUtils {
     private val THEME_KEY = booleanPreferencesKey("is_dark_theme")
     private val APPOINTMENT_KEY = stringPreferencesKey("appointment")
+
     private val PATIENT_UUID_KEY = stringPreferencesKey("patient_uuid")
     private val IMC_KEY = stringPreferencesKey("imc")
     private val QUESTION_14_KEY = stringPreferencesKey("question_14")
+
+    private val TOKEN_KEY = stringPreferencesKey("auth_token")
+
 
     suspend fun saveTheme(context: Context, isDark: Boolean) {
         context.dataStore.edit { prefs ->
@@ -89,5 +93,20 @@ object DataStoreUtils {
     }
 
 
+    suspend fun saveToken(context: Context, token: String) {
+        context.dataStore.edit { prefs ->
+            prefs[TOKEN_KEY] = token
+        }
+    }
+
+    fun readToken(context: Context): Flow<String?> = context.dataStore.data.map { prefs ->
+        prefs[TOKEN_KEY]
+    }
+
+    suspend fun clearToken(context: Context) {
+        context.dataStore.edit { prefs ->
+            prefs.remove(TOKEN_KEY)
+        }
+    }
 }
 

@@ -15,13 +15,11 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
-import com.example.cardiosurgeryillustrator.models.student.module.Module
-import com.example.cardiosurgeryillustrator.models.mock.student.mockModules
 import com.example.cardiosurgeryillustrator.navigation.SubjectAction
 import com.example.cardiosurgeryillustrator.repository.student.module.ModuleRepository
 import com.example.cardiosurgeryillustrator.ui.components.student.modules.ModuleCardList
 import com.example.cardiosurgeryillustrator.ui.components.student.modules.TopBarModules
-import com.example.cardiosurgeryillustrator.utils.makeModulesListUtil
+import com.example.cardiosurgeryillustrator.utils.module.makeModulesListUtil
 import com.example.cardiosurgeryillustrator.view_models.student.module.ModulesViewModel
 import com.example.cardiosurgeryillustrator.view_models.student.module.ModulesViewModelFactory
 
@@ -64,7 +62,13 @@ fun ModulesScreen(
                 .fillMaxSize()
                 .padding(innerPadding),
             modulesList = modules,
-            onModuleClick = {module -> navController.navigate("${SubjectAction.ModulesVideo.route}/${module.id}")}
+
+            // NO NAV CONTROLLER A SEGUIR DEVE IR DIRETO PRA QUIZ, PASSANDO module.quiz.id e
+            // tratar quiz inexistente, e alterar tambem no studentnavhost
+
+            onModuleClick = { module ->
+                navController.navigate("${SubjectAction.Study.route}/${module.id}")
+            }
         )
     }
 }
