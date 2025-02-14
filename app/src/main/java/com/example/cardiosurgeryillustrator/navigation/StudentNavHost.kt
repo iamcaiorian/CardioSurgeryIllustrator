@@ -37,10 +37,7 @@ import com.example.cardiosurgeryillustrator.models.mock.student.mockModules
 import com.example.cardiosurgeryillustrator.models.mock.student.mockQuizzes
 import com.example.cardiosurgeryillustrator.ui.screens.student.auth.LoginScreen
 import com.example.cardiosurgeryillustrator.ui.screens.student.auth.RegisterScreen
-import com.example.cardiosurgeryillustrator.models.student.quiz.CreateQuizQuestionRequest
 import com.example.cardiosurgeryillustrator.models.student.quiz.question.QuestionResponse
-import com.example.cardiosurgeryillustrator.ui.screens.authentication.LoginScreen
-import com.example.cardiosurgeryillustrator.ui.screens.authentication.RegisterScreen
 import com.example.cardiosurgeryillustrator.ui.screens.student.modules.ModuleVideoScreen
 import com.example.cardiosurgeryillustrator.ui.screens.student.favorite.FavoriteScreen
 import com.example.cardiosurgeryillustrator.ui.screens.student.modules.ModulesScreen

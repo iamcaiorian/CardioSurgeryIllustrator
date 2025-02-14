@@ -4,6 +4,8 @@ import com.example.cardiosurgeryillustrator.core.services.AssistantService
 import com.example.cardiosurgeryillustrator.core.services.AuthService
 import com.example.cardiosurgeryillustrator.core.services.ModuleService
 import com.example.cardiosurgeryillustrator.core.services.QuestionService
+import com.example.cardiosurgeryillustrator.core.services.ForumService
+import com.example.cardiosurgeryillustrator.core.services.PatientService
 import com.example.cardiosurgeryillustrator.core.services.QuizService
 import com.example.cardiosurgeryillustrator.core.services.SubjectService
 import retrofit2.Retrofit
@@ -30,14 +32,6 @@ object RetrofitInstance {
             .create(SubjectService::class.java)
     }
 
-    val questionService: QuestionService by lazy {
-        Retrofit.Builder()
-            .baseUrl(BASE_URL)
-            .addConverterFactory(GsonConverterFactory.create())
-            .build()
-            .create(QuestionService::class.java)
-    }
-
     val assistantService: AssistantService by lazy {
         Retrofit.Builder()
             .baseUrl(CHATBOT_URL)
@@ -54,6 +48,30 @@ object RetrofitInstance {
             .create(QuizService::class.java)
     }
 
+    val forumService: ForumService by lazy {
+        Retrofit.Builder()
+            .baseUrl(BASE_URL)
+            .addConverterFactory(GsonConverterFactory.create())
+            .build()
+            .create(ForumService::class.java)
+    }
+
+    val patientService: PatientService by lazy {
+        Retrofit.Builder()
+            .baseUrl(BASE_URL)
+            .addConverterFactory(GsonConverterFactory.create())
+            .build()
+            .create(PatientService::class.java)
+    }
+
+    val questionService: QuestionService by lazy {
+        Retrofit.Builder()
+            .baseUrl(BASE_URL)
+            .addConverterFactory(GsonConverterFactory.create())
+            .build()
+            .create(QuestionService::class.java)
+    }
+
     val authService: AuthService by lazy {
         Retrofit.Builder()
             .baseUrl(BASE_URL)
@@ -61,5 +79,4 @@ object RetrofitInstance {
             .build()
             .create(AuthService::class.java)
     }
-
 }

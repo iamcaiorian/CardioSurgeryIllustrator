@@ -13,7 +13,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import com.example.cardiosurgeryillustrator.R
-import com.example.cardiosurgeryillustrator.models.patient.community.Topic
+import com.example.cardiosurgeryillustrator.models.patient.community.topic.Topic
 import com.example.cardiosurgeryillustrator.ui.theme.Typography
 
 @Composable
