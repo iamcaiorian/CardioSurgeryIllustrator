@@ -1,8 +1,6 @@
 package com.example.cardiosurgeryillustrator.ui.screens.patient.form
 
 import android.util.Log
-import com.example.cardiosurgeryillustrator.ui.components.patient.form.CheckboxGroup
-import com.example.cardiosurgeryillustrator.ui.components.patient.form.RadioGroup
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -13,13 +11,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.ArrowBack
-import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -36,21 +27,16 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.lifecycle.ViewModel
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.example.cardiosurgeryillustrator.R
-
-import com.example.cardiosurgeryillustrator.models.student.quiz.Question
 import com.example.cardiosurgeryillustrator.models.mock.patient.mockQuestions
-import com.example.cardiosurgeryillustrator.models.student.quiz.QuestionType
-import com.example.cardiosurgeryillustrator.ui.components.buttons.ButtonDefault
-
 import com.example.cardiosurgeryillustrator.models.student.quiz.question.Question
-import com.example.cardiosurgeryillustrator.models.mock.student.mockQuestions
-
+import com.example.cardiosurgeryillustrator.models.student.quiz.question.QuestionType
+import com.example.cardiosurgeryillustrator.ui.components.buttons.ButtonDefault
+import com.example.cardiosurgeryillustrator.ui.components.patient.form.CheckboxGroup
+import com.example.cardiosurgeryillustrator.ui.components.patient.form.RadioGroup
 import com.example.cardiosurgeryillustrator.ui.components.patient.form.TextInputField
-import com.example.cardiosurgeryillustrator.ui.components.buttons.ConfirmationButton
 import com.example.cardiosurgeryillustrator.ui.theme.Zinc500
 import com.example.cardiosurgeryillustrator.view_models.patient.form.CardioFormViewModel
 
