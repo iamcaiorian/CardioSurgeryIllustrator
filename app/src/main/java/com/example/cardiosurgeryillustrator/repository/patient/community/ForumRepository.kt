@@ -1,29 +1,33 @@
 package com.example.cardiosurgeryillustrator.repository.patient.community
 
 import com.example.cardiosurgeryillustrator.core.network.RetrofitInstance
-import com.example.cardiosurgeryillustrator.models.patient.community.Message
-import com.example.cardiosurgeryillustrator.models.patient.community.topic.TopicRequest
-import com.example.cardiosurgeryillustrator.models.patient.community.topic.TopicResponse
+import com.example.cardiosurgeryillustrator.models.patient.community.forum.ForumRequest
+import com.example.cardiosurgeryillustrator.models.patient.community.forum.ForumResponse
 
 class ForumRepository {
-    suspend fun createForum(topicRequest: TopicRequest): TopicResponse {
-        return RetrofitInstance.forumService.createForum(topicRequest)
+    suspend fun createForum(forumRequest: ForumRequest): ForumResponse {
+        return RetrofitInstance.forumService.createForum(forumRequest)
     }
 
-    suspend fun getAllForums(): List<TopicResponse> {
+    suspend fun getAllForums(): List<ForumResponse> {
         return RetrofitInstance.forumService.getAllForums()
+    }
+
+    suspend fun getForumById(forumId: String): ForumResponse {
+        return RetrofitInstance.forumService.getForumById(forumId)
+    }
+
+    // Curtir um fórum
+    suspend fun likeForum(forumId: String, patientId: String) {
+        RetrofitInstance.forumService.likeForum(forumId, patientId)
+    }
+
+    // Salvar um fórum
+    suspend fun saveForum(forumId: String, patientId: String) {
+        RetrofitInstance.forumService.saveForum(forumId, patientId)
     }
 
     suspend fun deleteForumsById(topicId: String) {
         RetrofitInstance.forumService.deleteForumById(topicId)
-    }
-
-    suspend fun getAllMessagesForForum(forumId: String): List<Message> {
-        return RetrofitInstance.forumService.getAllMessagesForForum(forumId)
-    }
-
-    suspend fun sendMessageToForum(forumId: String, userId: String, content: String) {
-        val message = Message(userId, content)
-        RetrofitInstance.forumService.postNewMessage(forumId, message)
     }
 }

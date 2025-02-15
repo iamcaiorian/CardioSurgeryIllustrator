@@ -17,7 +17,7 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import com.example.cardiosurgeryillustrator.R
-import com.example.cardiosurgeryillustrator.models.patient.community.topic.Topic
+import com.example.cardiosurgeryillustrator.models.patient.community.forum.Topic
 import com.example.cardiosurgeryillustrator.ui.theme.Typography
 import com.example.cardiosurgeryillustrator.ui.theme.Zinc100
 import com.example.cardiosurgeryillustrator.ui.theme.Zinc300

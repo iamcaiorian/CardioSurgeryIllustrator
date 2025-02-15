@@ -2,6 +2,7 @@ package com.example.cardiosurgeryillustrator.core.network
 
 import com.example.cardiosurgeryillustrator.core.services.AssistantService
 import com.example.cardiosurgeryillustrator.core.services.AuthService
+import com.example.cardiosurgeryillustrator.core.services.CommentService
 import com.example.cardiosurgeryillustrator.core.services.ModuleService
 import com.example.cardiosurgeryillustrator.core.services.PasswordRecoveryService
 import com.example.cardiosurgeryillustrator.core.services.QuestionService
@@ -87,5 +88,13 @@ object RetrofitInstance {
             .addConverterFactory(GsonConverterFactory.create())
             .build()
             .create(PasswordRecoveryService::class.java)
+    }
+
+    val commentService: CommentService by lazy {
+        Retrofit.Builder()
+            .baseUrl(BASE_URL)
+            .addConverterFactory(GsonConverterFactory.create())
+            .build()
+            .create(CommentService::class.java)
     }
 }

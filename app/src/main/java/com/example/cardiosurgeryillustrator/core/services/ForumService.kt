@@ -1,30 +1,41 @@
 package com.example.cardiosurgeryillustrator.core.services
 
-import com.example.cardiosurgeryillustrator.models.patient.community.Message
-import com.example.cardiosurgeryillustrator.models.patient.community.topic.TopicRequest
-import com.example.cardiosurgeryillustrator.models.patient.community.topic.TopicResponse
+import com.example.cardiosurgeryillustrator.models.patient.community.forum.ForumRequest
+import com.example.cardiosurgeryillustrator.models.patient.community.forum.ForumResponse
 import retrofit2.http.Body
 import retrofit2.http.DELETE
 import retrofit2.http.GET
 import retrofit2.http.POST
 import retrofit2.http.Path
 
+import retrofit2.http.*
+
 interface ForumService {
+
+    // Criar um fórum
     @POST("/forum/")
-    suspend fun createForum(@Body topicRequest: TopicRequest): TopicResponse
+    suspend fun createForum(@Body createForum: ForumRequest): ForumResponse
 
+    // Obter todos os fóruns
     @GET("/forum/")
-    suspend fun getAllForums(): List<TopicResponse>
+    suspend fun getAllForums(): List<ForumResponse>
 
-    @POST("/forum/{forum_id}/messages")
-    suspend fun postNewMessage(
-        @Path("forum_id") forumId: String,
-        @Body message: Message
+    // Obter um fórum por ID
+    @GET("/forum/{forumId}")
+    suspend fun getForumById(@Path("forumId") forumId: String): ForumResponse
+
+    @POST("/forum/{forumId}/like/{patientId}")
+    suspend fun likeForum(
+        @Path("forumId") forumId: String,
+        @Path("patientId") patientId: String
     )
 
-    @DELETE("/forum/{forum_id}")
-    suspend fun deleteForumById(@Path("forum_id") forumId: String)
+    @POST("/forum/{forumId}/save/{patientId}")
+    suspend fun saveForum(
+        @Path("forumId") forumId: String,
+        @Path("patientId") patientId: String
+    )
 
-    @GET("/forum/{forum_id}/messages")
-    suspend fun getAllMessagesForForum(@Path("forum_id") forumId: String): List<Message>
+    @DELETE("/forum/{forumId}")
+    suspend fun deleteForumById(@Path("forumId") forumId: String)
 }
