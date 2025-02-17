@@ -35,6 +35,7 @@ import com.example.cardiosurgeryillustrator.ui.screens.admin.faq.FAQScreen
 import com.example.cardiosurgeryillustrator.ui.screens.admin.home.HomeAdminScreen
 import com.example.cardiosurgeryillustrator.ui.screens.admin.login.LoginAdminScreen
 import com.example.cardiosurgeryillustrator.ui.screens.admin.quiz.addQuestionToQuiz.QuestionQuiz
+import com.example.cardiosurgeryillustrator.ui.screens.student.quiz.QuizResultScreen
 import com.example.cardiosurgeryillustrator.ui.screens.student.student.HomeStudentScreen
 import com.example.cardiosurgeryillustrator.view_models.admin.quiz_modules.QuizViewModel
 import com.example.cardiosurgeryillustrator.view_models.admin.quiz_modules.QuizViewModelFactory

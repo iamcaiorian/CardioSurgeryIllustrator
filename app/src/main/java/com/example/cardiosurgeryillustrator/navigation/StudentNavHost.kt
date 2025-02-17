@@ -47,6 +47,7 @@ import com.example.cardiosurgeryillustrator.ui.screens.student.password_recovery
 import com.example.cardiosurgeryillustrator.ui.screens.student.quiz.QuizScreen
 import com.example.cardiosurgeryillustrator.ui.screens.student.quiz.SecondQuizScreen
 import com.example.cardiosurgeryillustrator.ui.screens.student.password_recovery.ChangePasswordScreen
+import com.example.cardiosurgeryillustrator.ui.screens.student.quiz.QuizResultScreen
 import com.example.cardiosurgeryillustrator.ui.screens.student.settings_student.ProfileScreen
 import com.example.cardiosurgeryillustrator.ui.screens.student.settings_student.SettingsStudentScreen
 import com.example.cardiosurgeryillustrator.ui.screens.student.settings_student.SettingsValidateCodeScreen
@@ -413,6 +414,63 @@ fun StudentNavHost(
         }
 
         composable(
+            route = "quiz/{quizId}",
+            arguments = listOf(navArgument("quizId") { type = NavType.StringType })
+        ) { backStackEntry ->
+            val quizId = backStackEntry.arguments?.getString("quizId")
+
+            QuizScreen(
+                quizId = quizId ?: "1",
+                onBackClick = { studentNavController.popBackStack() },
+                onFinishQuiz = { correctAnswers, totalQuestions ->
+                    studentNavController.navigate("quiz_result/$correctAnswers/$totalQuestions")
+                }
+            )
+        }
+
+        composable(
+            route = "quiz_result/{correctAnswers}/{totalQuestions}",
+            arguments = listOf(
+                navArgument("correctAnswers") { type = NavType.IntType },
+                navArgument("totalQuestions") { type = NavType.IntType }
+            )
+        ) { backStackEntry ->
+            val correctAnswers = backStackEntry.arguments?.getInt("correctAnswers") ?: 0
+            val totalQuestions = backStackEntry.arguments?.getInt("totalQuestions") ?: 0
+
+            QuizResultScreen(
+                correctAnswers = correctAnswers,
+                totalQuestions = totalQuestions,
+                onBackToHome = {
+                    studentNavController.navigate("home") {
+                        popUpTo("home") { inclusive = true }
+                    }
+                }
+            )
+        }
+
+        composable(
+            route = "${SubjectAction.ModulesVideo.route}/{moduleId}",
+            arguments = listOf(navArgument("moduleId") { type = NavType.StringType })
+        ) { backStackEntry ->
+            val moduleId = backStackEntry.arguments?.getString("moduleId")
+            val module = mockModules.find { it.id == moduleId }
+
+            Scaffold { innerPadding ->
+                module?.let {
+                    ModuleVideoScreen(
+                        module = module,
+                        modifier = Modifier.padding(innerPadding),
+                        onBackClick = { studentNavController.popBackStack() },
+                        onMenuOptionClick = { println("Menu clicado: $it") },
+                        navController = studentNavController
+                    )
+
+                }
+            }
+        }
+
+        composable(
             route = "${SubjectAction.Study.route}/{moduleId}",
             arguments = listOf(navArgument("moduleId") { type = NavType.StringType })
         ) { backStackEntry ->
@@ -433,24 +491,6 @@ fun StudentNavHost(
                     onBackClick = { studentNavController.popBackStack() },
                     onMenuOptionClick = { println("Menu clicado: $it") }
                 )
-
-            }
-        }
-
-        composable(
-            route = "${SubjectAction.Quiz.route}/{quizId}",
-            arguments = listOf(navArgument("quizId") { type = NavType.StringType })
-        ) { backStackEntry ->
-            val quizId = backStackEntry.arguments?.getString("quizId")
-
-            Scaffold { innerPadding ->
-
-                QuizScreen(
-                    quizId = quizId ?: "1",
-                    modifier = Modifier.padding(innerPadding),
-                    onBackClick = { studentNavController.popBackStack() }
-                )
-
             }
         }
 
