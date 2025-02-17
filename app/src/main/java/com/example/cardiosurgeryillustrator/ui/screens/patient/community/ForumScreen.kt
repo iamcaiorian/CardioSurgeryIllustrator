@@ -25,8 +25,8 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.example.cardiosurgeryillustrator.R
-import com.example.cardiosurgeryillustrator.models.patient.community.Message
-import com.example.cardiosurgeryillustrator.models.patient.community.topic.Topic
+import com.example.cardiosurgeryillustrator.models.patient.community.comment.CommentRequest
+import com.example.cardiosurgeryillustrator.models.patient.community.forum.Topic
 import com.example.cardiosurgeryillustrator.repository.patient.community.ForumRepository
 import com.example.cardiosurgeryillustrator.ui.components.patient.community.forum.ForumTopBar
 import com.example.cardiosurgeryillustrator.ui.components.patient.message_bottom.MessageBottomBar
@@ -163,17 +163,17 @@ fun PreviewForumScreen() {
     var messageText by remember { mutableStateOf(TextFieldValue("")) }
     val listState = rememberLazyListState()
 
-    val messages = listOf(
-        Message(userId = "1", content = "Olá, alguém pode me explicar sobre a cirurgia?"),
-        Message(userId = "2", content = "Claro! A cirurgia de ponte de safena é um procedimento comum para tratar obstruções nas artérias coronárias."),
-        Message(userId = "2", content = "Ela melhora o fluxo sanguíneo e reduz os sintomas de angina."),
-        Message(userId = "3", content = "Já passei por esse procedimento, foi tranquilo."),
-        Message(userId = "1", content = "Que bom saber! Quanto tempo foi a recuperação?"),
-        Message(userId = "1", content = "Preciso me preparar para isso.")
+    val commentRequests = listOf(
+        CommentRequest(userId = "1", content = "Olá, alguém pode me explicar sobre a cirurgia?"),
+        CommentRequest(userId = "2", content = "Claro! A cirurgia de ponte de safena é um procedimento comum para tratar obstruções nas artérias coronárias."),
+        CommentRequest(userId = "2", content = "Ela melhora o fluxo sanguíneo e reduz os sintomas de angina."),
+        CommentRequest(userId = "3", content = "Já passei por esse procedimento, foi tranquilo."),
+        CommentRequest(userId = "1", content = "Que bom saber! Quanto tempo foi a recuperação?"),
+        CommentRequest(userId = "1", content = "Preciso me preparar para isso.")
     )
 
-    LaunchedEffect(messages.size) {
-        listState.animateScrollToItem(messages.size)
+    LaunchedEffect(commentRequests.size) {
+        listState.animateScrollToItem(commentRequests.size)
     }
 
     val defaultTopic = Topic(
@@ -181,7 +181,7 @@ fun PreviewForumScreen() {
         userId = "123",
         theme = "Cardiologia",
         title = "Cirurgia de Ponte de Safena",
-        messages = messages,
+        commentRequests = commentRequests,
         likes = 10,
         comments = 3,
         timestamp = System.currentTimeMillis()
@@ -223,8 +223,8 @@ fun PreviewForumScreen() {
                         .padding(8.dp),
                     state = listState
                 ) {
-                    itemsIndexed(messages) { index, message ->
-                        val previousUserId = if (index > 0) messages[index - 1].userId else null
+                    itemsIndexed(commentRequests) { index, message ->
+                        val previousUserId = if (index > 0) commentRequests[index - 1].userId else null
                         val showAvatar = previousUserId != message.userId
 
                         MessageBubble(

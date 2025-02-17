@@ -2,9 +2,9 @@ package com.example.cardiosurgeryillustrator.view_models.patient.community
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.cardiosurgeryillustrator.models.patient.community.topic.Topic
+import com.example.cardiosurgeryillustrator.models.patient.community.forum.Topic
 import com.example.cardiosurgeryillustrator.models.patient.community.Patient
-import com.example.cardiosurgeryillustrator.models.patient.community.topic.TopicRequest
+import com.example.cardiosurgeryillustrator.models.patient.community.forum.ForumRequest
 import com.example.cardiosurgeryillustrator.repository.patient.community.ForumRepository
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -29,7 +29,7 @@ class CommunityViewModel(private val repository: ForumRepository) : ViewModel() 
                     userId = response.userId,
                     theme = response.theme,
                     title = response.title,
-                    messages = response.messages,
+                    commentRequests = response.messages,
                     likes = response.likes,
                     comments = response.comments,
                     timestamp = response.timestamp
@@ -40,7 +40,7 @@ class CommunityViewModel(private val repository: ForumRepository) : ViewModel() 
 
     fun createNewForum(theme: String, title: String, userId: String) {
         viewModelScope.launch {
-            val request = TopicRequest(theme = theme, title = title, userId = userId)
+            val request = ForumRequest(theme = theme, title = title, userId = userId)
             val response = repository.createForum(request)
 
             val newTopic = Topic(
@@ -48,7 +48,7 @@ class CommunityViewModel(private val repository: ForumRepository) : ViewModel() 
                 userId = response.userId,
                 theme = response.theme,
                 title = response.title,
-                messages = response.messages,
+                commentRequests = response.messages,
                 likes = response.likes,
                 comments = response.comments,
                 timestamp = response.timestamp
