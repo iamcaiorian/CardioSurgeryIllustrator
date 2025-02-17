@@ -17,7 +17,7 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import com.example.cardiosurgeryillustrator.R
-import com.example.cardiosurgeryillustrator.models.patient.community.forum.Topic
+import com.example.cardiosurgeryillustrator.models.patient.community.forum.Forum
 import com.example.cardiosurgeryillustrator.ui.theme.Typography
 import com.example.cardiosurgeryillustrator.ui.theme.Zinc100
 import com.example.cardiosurgeryillustrator.ui.theme.Zinc300
@@ -30,14 +30,17 @@ import com.example.cardiosurgeryillustrator.repository.patient.community.Patient
 
 @Composable
 fun ForumItem(
-    topic: Topic,
+    forum: Forum,
     navController: NavController,
     modifier: Modifier = Modifier,
-    communityViewModel: CommunityViewModel = viewModel(factory = CommunityViewModelFactory(ForumRepository())),
+    communityViewModel: CommunityViewModel = viewModel(factory = CommunityViewModelFactory(
+        ForumRepository(),
+        PatientRepository()
+    )),
     patientViewModel: PatientViewModel = viewModel(factory = PatientViewModelFactory(PatientRepository()))
 ) {
     val savedForums by patientViewModel.savedForums.collectAsState(emptyList())
-    val isSaved = topic.id in savedForums
+    val isSaved = forum.id in savedForums
 
     Box(
         modifier = modifier
@@ -45,7 +48,7 @@ fun ForumItem(
             .background(color = Color.Transparent, shape = RoundedCornerShape(12.dp))
             .clickable {
                 try {
-                    navController.navigate("forum_screen/${topic.id}")
+                    navController.navigate("forum_screen/${forum.id}")
                 } catch (e: Exception) {
                     Log.e("ForumItem", "Erro ao navegar para o fórum", e)
                 }
@@ -91,13 +94,13 @@ fun ForumItem(
                     verticalArrangement = Arrangement.Bottom
                 ) {
                     Text(
-                        text = topic.theme,
+                        text = forum.theme,
                         style = Typography.headlineLarge,
                         color = Zinc100
                     )
                     Spacer(modifier = Modifier.height(4.dp))
                     Text(
-                        text = topic.title,
+                        text = forum.title,
                         style = Typography.bodyLarge,
                         color = Zinc300
                     )
@@ -105,11 +108,8 @@ fun ForumItem(
             }
 
             ForumInteractions(
-                topic = topic,
-                isTopicSaved = isSaved,
-                onSaveToggle = { topicId, newState ->
-                    patientViewModel.toggleSavedTopic(topicId, newState)
-                }
+                forum = forum,
+                communityViewModel = communityViewModel
             )
 
             LastMessageForum(

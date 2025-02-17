@@ -5,6 +5,7 @@ import java.time.LocalDateTime
 
 data class ForumResponse(
     val id: String,
+    val creatorId: String,
     val theme: String,
     val title: String,
     val comments: List<CommentResponse>,

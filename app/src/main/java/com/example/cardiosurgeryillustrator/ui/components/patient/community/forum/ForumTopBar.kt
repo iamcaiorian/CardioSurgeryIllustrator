@@ -17,19 +17,19 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import com.example.cardiosurgeryillustrator.R
-import com.example.cardiosurgeryillustrator.models.patient.community.forum.Topic
+import com.example.cardiosurgeryillustrator.models.patient.community.forum.Forum
 import com.example.cardiosurgeryillustrator.ui.components.buttons.StandardButton
 import com.example.cardiosurgeryillustrator.ui.theme.Typography
 import com.example.cardiosurgeryillustrator.ui.theme.Zinc100
 import com.example.cardiosurgeryillustrator.ui.theme.Zinc300
+import com.example.cardiosurgeryillustrator.view_models.patient.community.CommunityViewModel
 
 @Composable
 fun ForumTopBar(
-    topic: Topic,
+    forum: Forum,
+    viewModel: CommunityViewModel,
     backgroundImageRes: Int,
     modifier: Modifier = Modifier,
-    isTopicSaved: Boolean,
-    onSaveToggle: (Boolean) -> Unit,
     onBackClick: () -> Unit
 ) {
     val scrollState = rememberScrollState()
@@ -83,13 +83,13 @@ fun ForumTopBar(
 
                 Column {
                     Text(
-                        text = topic.title,
+                        text = forum.title,
                         style = Typography.headlineLarge,
                         color = Zinc100
                     )
                     Spacer(modifier = Modifier.height(4.dp))
                     Text(
-                        text = topic.theme,
+                        text = forum.theme,
                         style = Typography.bodyLarge,
                         color = Zinc300
                     )
@@ -98,9 +98,8 @@ fun ForumTopBar(
         }
 
         ForumInteractions(
-            topic = topic,
-            isTopicSaved = isTopicSaved,
-            onSaveToggle = { topicId, newState -> onSaveToggle(newState) }
+            forum = forum,
+            viewModel = viewModel
         )
     }
 }

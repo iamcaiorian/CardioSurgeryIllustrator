@@ -1,18 +1,30 @@
 package com.example.cardiosurgeryillustrator.ui.screens.patient.community
 
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxHeight
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.HorizontalDivider
-import androidx.compose.runtime.*
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateListOf
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
+import androidx.navigation.compose.rememberNavController
 import com.example.cardiosurgeryillustrator.R
 import com.example.cardiosurgeryillustrator.repository.patient.community.ForumRepository
 import com.example.cardiosurgeryillustrator.repository.patient.community.PatientRepository
@@ -25,30 +37,32 @@ import com.example.cardiosurgeryillustrator.ui.components.patient.community.foru
 import com.example.cardiosurgeryillustrator.ui.theme.Zinc300
 import com.example.cardiosurgeryillustrator.view_models.patient.community.CommunityViewModel
 import com.example.cardiosurgeryillustrator.view_models.patient.community.CommunityViewModelFactory
-import com.example.cardiosurgeryillustrator.view_models.patient.community.PatientViewModel
-import com.example.cardiosurgeryillustrator.view_models.patient.community.PatientViewModelFactory
 
 @Composable
 fun CommunityScreen(
     modifier: Modifier = Modifier,
     navController: NavController,
-    communityViewModel: CommunityViewModel = viewModel(factory = CommunityViewModelFactory(ForumRepository())),
-    patientViewModel: PatientViewModel = viewModel(factory = PatientViewModelFactory(PatientRepository()))
+    communityViewModel: CommunityViewModel = viewModel(
+        factory = CommunityViewModelFactory(
+            ForumRepository(),
+            PatientRepository()
+        )
+    )
 ) {
     var searchText by remember { mutableStateOf("") }
     var selectedFilter by remember { mutableStateOf(CommunityFilterChipView.POPULARES) }
     var showNewForumDialog by remember { mutableStateOf(false) }
 
-    val allTopics by communityViewModel.topics.collectAsState(emptyList())
-    val savedForums by patientViewModel.savedForums.collectAsState(emptyList())
+    val allForums by communityViewModel.forums.collectAsState()
+    val savedForums = remember { mutableStateListOf<String>() }
 
-    val filteredTopics = remember(selectedFilter, allTopics, savedForums, searchText) {
+    val filteredForums = remember(selectedFilter, allForums, searchText) {
         when (selectedFilter) {
-            CommunityFilterChipView.POPULARES -> allTopics.sortedByDescending { it.likes }
-            CommunityFilterChipView.SALVOS -> allTopics.filter { it.id in savedForums }
-        }.filter { topic ->
-            topic.title.contains(searchText, ignoreCase = true) ||
-                    topic.theme.contains(searchText, ignoreCase = true)
+            CommunityFilterChipView.POPULARES -> allForums.sortedByDescending { it.likes }
+            CommunityFilterChipView.SALVOS -> allForums.filter { it.isFavorite }
+        }.filter { forum ->
+            forum.title.contains(searchText, ignoreCase = true) ||
+                    forum.theme.contains(searchText, ignoreCase = true)
         }
     }
 
@@ -78,9 +92,9 @@ fun CommunityScreen(
                 .weight(1f),
             verticalArrangement = Arrangement.spacedBy(8.dp)
         ) {
-            items(filteredTopics) { topic ->
+            items(filteredForums) { forum ->
                 ForumItem(
-                    topic = topic,
+                    forum = forum,
                     navController = navController,
                     modifier = Modifier.padding(horizontal = 8.dp, vertical = 4.dp)
                 )
@@ -107,9 +121,17 @@ fun CommunityScreen(
         NewForumDialog(
             onDismiss = { showNewForumDialog = false },
             onConfirm = { theme, title ->
-                communityViewModel.createNewForum(theme, title, userId = "1")
+                communityViewModel.createNewForum(theme, title)
                 showNewForumDialog = false
             }
         )
     }
+}
+
+@Preview(showBackground = true)
+@Composable
+fun PreviewCommunityScreen() {
+    CommunityScreen(
+        navController = rememberNavController()
+    )
 }

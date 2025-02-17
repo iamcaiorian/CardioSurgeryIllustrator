@@ -13,29 +13,19 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import com.example.cardiosurgeryillustrator.R
-import com.example.cardiosurgeryillustrator.models.patient.community.forum.Topic
+import com.example.cardiosurgeryillustrator.models.patient.community.forum.Forum
 import com.example.cardiosurgeryillustrator.ui.theme.Typography
+import com.example.cardiosurgeryillustrator.view_models.patient.community.CommunityViewModel
 
 @Composable
 fun ForumInteractions(
-    topic: Topic,
-    isTopicSaved: Boolean,
-    onSaveToggle: (String, Boolean) -> Unit,
+    forum: Forum,
+    viewModel: CommunityViewModel,
     modifier: Modifier = Modifier
 ) {
-    var likes by remember { mutableStateOf(topic.likes) }
-    var isLiked by remember { mutableStateOf(false) }
-    var isSaved by remember { mutableStateOf(isTopicSaved) }
-
-    fun toggleLike() {
-        isLiked = !isLiked
-        likes += if (isLiked) 1 else -1
-    }
-
-    fun toggleSave() {
-        isSaved = !isSaved
-        onSaveToggle(topic.id, isSaved)
-    }
+    var likes by remember { mutableStateOf(forum.likes) }
+    var isLiked by remember { mutableStateOf(forum.isLiked) }
+    var isSaved by remember { mutableStateOf(forum.isFavorite) }
 
     Row(
         modifier = modifier
@@ -45,7 +35,11 @@ fun ForumInteractions(
     ) {
         Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
             Row(verticalAlignment = Alignment.CenterVertically) {
-                IconButton(onClick = { toggleLike() }) {
+                IconButton(onClick = {
+                    viewModel.likeForum(forum.id)
+                    isLiked = true
+                    likes++
+                }) {
                     Icon(
                         painter = painterResource(id = if (isLiked) R.drawable.ic_liked else R.drawable.ic_unliked),
                         contentDescription = "Curtir"
@@ -55,17 +49,18 @@ fun ForumInteractions(
             }
 
             Row(verticalAlignment = Alignment.CenterVertically) {
-                IconButton(onClick = { /* Adicionar lógica de comentário */ }) {
-                    Icon(
-                        painter = painterResource(id = R.drawable.ic_comment),
-                        contentDescription = "Comentar"
-                    )
-                }
-                Text(text = topic.comments.toString(), style = Typography.bodySmall) // Mantendo os comentários fixos
+                Icon(
+                    painter = painterResource(id = R.drawable.ic_comment),
+                    contentDescription = "Comentar"
+                )
+                Text(text = forum.comments.toString(), style = Typography.bodySmall)
             }
         }
 
-        IconButton(onClick = { toggleSave() }) {
+        IconButton(onClick = {
+            viewModel.saveForum(forum.id)
+            isSaved = !isSaved
+        }) {
             Icon(
                 painter = painterResource(id = if (isSaved) R.drawable.ic_saved else R.drawable.ic_unsaved),
                 contentDescription = "Salvar"
@@ -73,4 +68,3 @@ fun ForumInteractions(
         }
     }
 }
-
