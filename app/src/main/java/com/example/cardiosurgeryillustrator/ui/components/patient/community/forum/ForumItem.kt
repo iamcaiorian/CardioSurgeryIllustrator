@@ -109,7 +109,7 @@ fun ForumItem(
 
             ForumInteractions(
                 forum = forum,
-                communityViewModel = communityViewModel
+                viewModel = communityViewModel
             )
 
             LastMessageForum(

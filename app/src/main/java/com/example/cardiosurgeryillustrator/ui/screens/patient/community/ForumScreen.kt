@@ -36,18 +36,33 @@ import com.example.cardiosurgeryillustrator.view_models.patient.community.ForumV
 fun ForumScreen(
     navController: NavController,
     forumId: String,
-    viewModel: ForumViewModel,
+    viewModel: ForumViewModel = viewModel(factory = ForumViewModelFactory(ForumRepository(), CommentRepository(), PatientRepository())),
     communityViewModel: CommunityViewModel
 ) {
-    val forumResponse by viewModel.forum
+    val forumResponse by viewModel.forum.collectAsState()
     val messages by viewModel.messages.collectAsState()
     var messageText by remember { mutableStateOf(TextFieldValue("")) }
     val listState = rememberLazyListState()
 
-    val forum = communityViewModel.getForumById(forumResponse?.id.toString())
+    val forum = forumResponse?.let {
+        Forum(
+            id = it.id,
+            userId = it.creatorId,
+            theme = it.theme,
+            title = it.title,
+            commentResponse = it.comments,
+            likes = it.likesAmount,
+            comments = it.commentsAmount,
+            timestamp = it.createdAt
+        )
+    }
 
     LaunchedEffect(forumId) { viewModel.loadForum(forumId, "1") }
-    LaunchedEffect(messages.size) { listState.animateScrollToItem(messages.size) }
+    LaunchedEffect(messages.size) {
+        if (messages.isNotEmpty()) {
+            listState.animateScrollToItem(messages.lastIndex)
+        }
+    }
 
     Scaffold(
         bottomBar = {
