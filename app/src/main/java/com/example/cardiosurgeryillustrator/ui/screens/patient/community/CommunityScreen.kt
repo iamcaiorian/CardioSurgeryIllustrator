@@ -14,6 +14,8 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import com.example.cardiosurgeryillustrator.R
+import com.example.cardiosurgeryillustrator.repository.patient.community.ForumRepository
+import com.example.cardiosurgeryillustrator.repository.patient.community.PatientRepository
 import com.example.cardiosurgeryillustrator.ui.components.buttons.StandardButton
 import com.example.cardiosurgeryillustrator.ui.components.patient.community.CommunityTopBar
 import com.example.cardiosurgeryillustrator.ui.components.patient.community.filter.CommunityCategoryFilterChipList
@@ -22,23 +24,28 @@ import com.example.cardiosurgeryillustrator.ui.components.patient.community.foru
 import com.example.cardiosurgeryillustrator.ui.components.patient.community.forum.NewForumDialog
 import com.example.cardiosurgeryillustrator.ui.theme.Zinc300
 import com.example.cardiosurgeryillustrator.view_models.patient.community.CommunityViewModel
+import com.example.cardiosurgeryillustrator.view_models.patient.community.CommunityViewModelFactory
+import com.example.cardiosurgeryillustrator.view_models.patient.community.PatientViewModel
+import com.example.cardiosurgeryillustrator.view_models.patient.community.PatientViewModelFactory
 
 @Composable
 fun CommunityScreen(
     modifier: Modifier = Modifier,
     navController: NavController,
-    viewModel: CommunityViewModel = viewModel()
+    communityViewModel: CommunityViewModel = viewModel(factory = CommunityViewModelFactory(ForumRepository())),
+    patientViewModel: PatientViewModel = viewModel(factory = PatientViewModelFactory(PatientRepository()))
 ) {
     var searchText by remember { mutableStateOf("") }
     var selectedFilter by remember { mutableStateOf(CommunityFilterChipView.POPULARES) }
     var showNewForumDialog by remember { mutableStateOf(false) }
-    val allTopics by viewModel.topics.collectAsState(emptyList())
-    val currentUser by viewModel.currentUser.collectAsState()
 
-    val filteredTopics = remember(selectedFilter, allTopics, currentUser.savedTopics, searchText) {
+    val allTopics by communityViewModel.topics.collectAsState(emptyList())
+    val savedForums by patientViewModel.savedForums.collectAsState(emptyList())
+
+    val filteredTopics = remember(selectedFilter, allTopics, savedForums, searchText) {
         when (selectedFilter) {
             CommunityFilterChipView.POPULARES -> allTopics.sortedByDescending { it.likes }
-            CommunityFilterChipView.SALVOS -> allTopics.filter { it.id in currentUser.savedTopics }
+            CommunityFilterChipView.SALVOS -> allTopics.filter { it.id in savedForums }
         }.filter { topic ->
             topic.title.contains(searchText, ignoreCase = true) ||
                     topic.theme.contains(searchText, ignoreCase = true)
@@ -100,10 +107,9 @@ fun CommunityScreen(
         NewForumDialog(
             onDismiss = { showNewForumDialog = false },
             onConfirm = { theme, title ->
-                viewModel.createNewForum(theme, title)
+                communityViewModel.createNewForum(theme, title, userId = "1")
                 showNewForumDialog = false
             }
         )
     }
 }
-
