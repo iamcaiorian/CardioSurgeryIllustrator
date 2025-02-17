@@ -32,12 +32,13 @@ fun QuizScreen(
     onBackClick: () -> Unit
 ) {
     val quizRepository = QuizRepository()
-
     val viewModel: QuizViewModel = viewModel(
         factory = QuizViewModelFactory(quizRepository)
     )
 
     var isLoading by remember { mutableStateOf(true) }
+    var selectedAnswer by remember { mutableStateOf<String?>(null) }
+    var resultMessage by remember { mutableStateOf<String?>(null) }
 
     LaunchedEffect(quizId) {
         viewModel.getQuizById(quizId)
@@ -100,15 +101,18 @@ fun QuizScreen(
                     ) {
                         question?.let {
                             listOf(
-                                it.alternativeA,
-                                it.alternativeB,
-                                it.alternativeC,
-                                it.alternativeD
-                            ).forEach { alternative ->
+                                it.alternativeA to "A",
+                                it.alternativeB to "B",
+                                it.alternativeC to "C",
+                                it.alternativeD to "D"
+                            ).forEach { (alternative, label) ->
+                                val isSelected = selectedAnswer == label  // Armazenando apenas a letra
                                 QuestionsButton(
-                                    text = alternative,
-                                    isSelected = false,
-                                    onClick = { /* Lógica de seleção */ }
+                                    text = "$label. $alternative",
+                                    isSelected = isSelected,
+                                    onClick = {
+                                        selectedAnswer = label  // A resposta será apenas a letra da alternativa
+                                    }
                                 )
                             }
                         } ?: Text(
@@ -122,8 +126,27 @@ fun QuizScreen(
 
                     ConfirmationButton(
                         text = "Confirmar",
-                        onClick = { /* Lógica de confirmação */ }
+                        onClick = {
+                            resultMessage = when {
+                                selectedAnswer == null -> {
+                                    "Nenhuma resposta selecionada."
+                                }
+                                selectedAnswer.equals(question?.answer, ignoreCase = true) -> {
+                                    "Parabéns! Você acertou a resposta!"
+                                }
+                                else -> {
+                                    "Resposta errada! A alternativa correta é: ${question?.answer}"
+                                }
+                            }
+                        }
                     )
+
+                    resultMessage?.let {
+                        Text(
+                            text = it,
+                            color = if (it.startsWith("Parabéns")) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.error
+                        )
+                    }
                 }
             } ?: run {
                 Box(

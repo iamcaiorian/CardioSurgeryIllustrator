@@ -20,7 +20,7 @@ import androidx.compose.ui.unit.dp
 fun ConfirmationButton(
     text: String,
     modifier: Modifier = Modifier,
-    onClick: () -> Unit
+    onClick: () -> Unit // Mudando para função normal (não Composable)
 ) {
     Button(
         onClick = onClick,
@@ -55,5 +55,6 @@ fun ConfirmationButton(
 fun ConfirmationButtonPreview() {
     ConfirmationButton(
         text = "Confirmar!",
-        onClick = {})
+        onClick = { /* Aqui vai a lógica do clique, exemplo:*/ println("Botão clicado!") }
+    )
 }
