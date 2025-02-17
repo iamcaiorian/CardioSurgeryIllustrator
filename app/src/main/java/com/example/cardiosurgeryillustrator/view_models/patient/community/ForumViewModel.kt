@@ -3,18 +3,20 @@ package com.example.cardiosurgeryillustrator.view_models.patient.community
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.cardiosurgeryillustrator.models.patient.community.comment.CommentRequest
+import com.example.cardiosurgeryillustrator.models.patient.community.comment.CommentResponse
 import com.example.cardiosurgeryillustrator.models.patient.community.forum.Topic
+import com.example.cardiosurgeryillustrator.repository.patient.community.CommentRepository
 import com.example.cardiosurgeryillustrator.repository.patient.community.ForumRepository
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 
-class ForumViewModel(private val repository: ForumRepository) : ViewModel() {
+class ForumViewModel(private val repository: ForumRepository, private val commentRepository: CommentRepository) : ViewModel() {
     private val _topics = MutableStateFlow<List<Topic>>(emptyList())
     val topics: StateFlow<List<Topic>> = _topics
 
-    private val _messages = MutableStateFlow<List<CommentRequest>>(emptyList())
-    val messages: StateFlow<List<CommentRequest>> = _messages
+    private val _messages = MutableStateFlow<List<CommentResponse>>(emptyList())
+    val messages: StateFlow<List<CommentResponse>> = _messages
 
     init {
         loadForums()
@@ -25,13 +27,13 @@ class ForumViewModel(private val repository: ForumRepository) : ViewModel() {
             _topics.value = repository.getAllForums().map { response ->
                 Topic(
                     id = response.id,
-                    userId = response.userId,
+                    userId = response.id,
                     theme = response.theme,
                     title = response.title,
-                    commentRequests = response.messages,
-                    likes = response.likes,
-                    comments = response.comments,
-                    timestamp = response.timestamp
+                    commentResponse = response.comments,
+                    likes = 10,
+                    comments = 1,
+                    timestamp = 11,
                 )
             }
         }
@@ -39,13 +41,12 @@ class ForumViewModel(private val repository: ForumRepository) : ViewModel() {
 
     fun getAllMessagesForForum(topicId: String) {
         viewModelScope.launch {
-            _messages.value = repository.getAllMessagesForForum(topicId)
+            _messages.value = commentRepository.getAllComments()
         }
     }
 
     fun sendMessageToTopic(topicId: String, userId: String, message: String) {
         viewModelScope.launch {
-            repository.sendMessageToForum(topicId, userId, message)
             getAllMessagesForForum(topicId)
         }
     }
