@@ -27,6 +27,7 @@ import androidx.navigation.compose.rememberNavController
 import com.example.cardiosurgeryillustrator.R
 import com.example.cardiosurgeryillustrator.models.patient.community.comment.CommentRequest
 import com.example.cardiosurgeryillustrator.models.patient.community.forum.Topic
+import com.example.cardiosurgeryillustrator.repository.patient.community.CommentRepository
 import com.example.cardiosurgeryillustrator.repository.patient.community.ForumRepository
 import com.example.cardiosurgeryillustrator.ui.components.patient.community.forum.ForumTopBar
 import com.example.cardiosurgeryillustrator.ui.components.patient.message_bottom.MessageBottomBar
@@ -38,7 +39,7 @@ import com.example.cardiosurgeryillustrator.view_models.patient.community.ForumV
 @Composable
 fun ForumScreen(
     modifier: Modifier = Modifier,
-    viewModel: ForumViewModel = viewModel(factory = ForumViewModelFactory(ForumRepository())),
+    viewModel: ForumViewModel = viewModel(factory = ForumViewModelFactory(ForumRepository(), CommentRepository() )),
     navController: NavController,
     topicId: String
 ) {
@@ -64,7 +65,7 @@ fun ForumScreen(
                 onMessageTextChange = { messageText = it },
                 onSendClick = {
                     if (messageText.text.isNotEmpty()) {
-                        viewModel.sendMessageToTopic(topicId, userId = "1", messageText.text)
+                        viewModel.sendMessageToTopic(topicId = topicId, userId = "1", message = messageText.text,)
                         messageText = TextFieldValue("")
                     }
                 },
@@ -96,9 +97,9 @@ fun ForumScreen(
                         items(messages) { message ->
                             MessageBubble(
                                 content = message.content,
-                                isUserMessage = message.userId == "1",
+                                isUserMessage = message.id == "1",
                                 showAvatar = true,
-                                userAvatar = if (message.userId == "1") R.drawable.avatar_1 else R.drawable.avatar_1
+                                userAvatar = if (message.id == "1") R.drawable.avatar_1 else R.drawable.avatar_1
                             )
                         }
                     }
@@ -156,86 +157,86 @@ fun MessageBubble(
 }
 
 
-@Preview(showBackground = true)
-@Composable
-fun PreviewForumScreen() {
-    val navController = rememberNavController()
-    var messageText by remember { mutableStateOf(TextFieldValue("")) }
-    val listState = rememberLazyListState()
-
-    val commentRequests = listOf(
-        CommentRequest(userId = "1", content = "Olá, alguém pode me explicar sobre a cirurgia?"),
-        CommentRequest(userId = "2", content = "Claro! A cirurgia de ponte de safena é um procedimento comum para tratar obstruções nas artérias coronárias."),
-        CommentRequest(userId = "2", content = "Ela melhora o fluxo sanguíneo e reduz os sintomas de angina."),
-        CommentRequest(userId = "3", content = "Já passei por esse procedimento, foi tranquilo."),
-        CommentRequest(userId = "1", content = "Que bom saber! Quanto tempo foi a recuperação?"),
-        CommentRequest(userId = "1", content = "Preciso me preparar para isso.")
-    )
-
-    LaunchedEffect(commentRequests.size) {
-        listState.animateScrollToItem(commentRequests.size)
-    }
-
-    val defaultTopic = Topic(
-        id = "1",
-        userId = "123",
-        theme = "Cardiologia",
-        title = "Cirurgia de Ponte de Safena",
-        commentRequests = commentRequests,
-        likes = 10,
-        comments = 3,
-        timestamp = System.currentTimeMillis()
-    )
-
-    Scaffold(
-        bottomBar = {
-            MessageBottomBar(
-                messageText = messageText,
-                onMessageTextChange = { messageText = it },
-                onSendClick = {
-                    if (messageText.text.isNotEmpty()) {
-                        messageText = TextFieldValue("")
-                    }
-                },
-                placeholder = "Digite sua mensagem..."
-            )
-        },
-        content = { paddingValues ->
-            Column(
-                modifier = Modifier
-                    .background(Color.White)
-                    .fillMaxHeight()
-                    .fillMaxWidth()
-                    .padding(paddingValues)
-            ) {
-                ForumTopBar(
-                    topic = defaultTopic,
-                    backgroundImageRes = R.drawable.img_defaul,
-                    modifier = Modifier.fillMaxWidth(),
-                    isTopicSaved = false,
-                    onSaveToggle = {},
-                    onBackClick = { }
-                )
-
-                LazyColumn(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(8.dp),
-                    state = listState
-                ) {
-                    itemsIndexed(commentRequests) { index, message ->
-                        val previousUserId = if (index > 0) commentRequests[index - 1].userId else null
-                        val showAvatar = previousUserId != message.userId
-
-                        MessageBubble(
-                            content = message.content,
-                            isUserMessage = message.userId == "1",
-                            showAvatar = showAvatar,
-                            userAvatar = if (message.userId == "1") R.drawable.avatar_1 else R.drawable.avatar_1
-                        )
-                    }
-                }
-            }
-        }
-    )
-}
+//@Preview(showBackground = true)
+//@Composable
+//fun PreviewForumScreen() {
+//    val navController = rememberNavController()
+//    var messageText by remember { mutableStateOf(TextFieldValue("")) }
+//    val listState = rememberLazyListState()
+//
+//    val commentRequests = listOf(
+//        CommentRequest(patientId = "1", content = "Olá, alguém pode me explicar sobre a cirurgia?"),
+//        CommentRequest(patientId = "2", content = "Claro! A cirurgia de ponte de safena é um procedimento comum para tratar obstruções nas artérias coronárias."),
+//        CommentRequest(patientId = "2", content = "Ela melhora o fluxo sanguíneo e reduz os sintomas de angina."),
+//        CommentRequest(patientId = "3", content = "Já passei por esse procedimento, foi tranquilo."),
+//        CommentRequest(patientId = "1", content = "Que bom saber! Quanto tempo foi a recuperação?"),
+//        CommentRequest(patientId = "1", content = "Preciso me preparar para isso.")
+//    )
+//
+//    LaunchedEffect(commentRequests.size) {
+//        listState.animateScrollToItem(commentRequests.size)
+//    }
+//
+//    val defaultTopic = Topic(
+//        id = "1",
+//        patientId = "123",
+//        theme = "Cardiologia",
+//        title = "Cirurgia de Ponte de Safena",
+//        commentRequests = commentRequests,
+//        likes = 10,
+//        comments = 3,
+//        timestamp = System.currentTimeMillis()
+//    )
+//
+//    Scaffold(
+//        bottomBar = {
+//            MessageBottomBar(
+//                messageText = messageText,
+//                onMessageTextChange = { messageText = it },
+//                onSendClick = {
+//                    if (messageText.text.isNotEmpty()) {
+//                        messageText = TextFieldValue("")
+//                    }
+//                },
+//                placeholder = "Digite sua mensagem..."
+//            )
+//        },
+//        content = { paddingValues ->
+//            Column(
+//                modifier = Modifier
+//                    .background(Color.White)
+//                    .fillMaxHeight()
+//                    .fillMaxWidth()
+//                    .padding(paddingValues)
+//            ) {
+//                ForumTopBar(
+//                    topic = defaultTopic,
+//                    backgroundImageRes = R.drawable.img_defaul,
+//                    modifier = Modifier.fillMaxWidth(),
+//                    isTopicSaved = false,
+//                    onSaveToggle = {},
+//                    onBackClick = { }
+//                )
+//
+//                LazyColumn(
+//                    modifier = Modifier
+//                        .fillMaxWidth()
+//                        .padding(8.dp),
+//                    state = listState
+//                ) {
+//                    itemsIndexed(commentRequests) { index, message ->
+//                        val previousUserId = if (index > 0) commentRequests[index - 1].patientId else null
+//                        val showAvatar = previousUserId != message.patientId
+//
+//                        MessageBubble(
+//                            content = message.content,
+//                            isUserMessage = message.patientId == "1",
+//                            showAvatar = showAvatar,
+//                            userAvatar = if (message.patientId == "1") R.drawable.avatar_1 else R.drawable.avatar_1
+//                        )
+//                    }
+//                }
+//            }
+//        }
+//    )
+//}

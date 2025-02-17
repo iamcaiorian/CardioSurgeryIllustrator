@@ -20,8 +20,8 @@ class PatientViewModel(private val patientRepository: PatientRepository) : ViewM
 
     private fun fetchLikedAndSavedForums() {
         viewModelScope.launch {
-            _likedForums.value = patientRepository.getAllForumsLiked()
-            _savedForums.value = patientRepository.getAllForumsSaved()
+            _likedForums.value = patientRepository.getAllForumsLiked("")
+            _savedForums.value = patientRepository.getAllForumsSaved("1")
         }
     }
 

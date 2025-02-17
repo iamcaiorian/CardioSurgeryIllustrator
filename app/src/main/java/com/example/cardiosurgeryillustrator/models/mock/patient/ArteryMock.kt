@@ -57,5 +57,100 @@ val mockArtery = listOf(
             )
 
         )
+    ),
+    Artery(
+        id = "mitral_valve",
+        arteryName = "Válvula Mitral",
+        imageRes = R.drawable.right_coronary,
+        texts = listOf(
+            InfoText(
+                id = 1,
+                title = "Valvopatia Mitral",
+                subtitle = "Problemas na válvula mitral",
+                content = "A valvopatia mitral é caracterizada por problemas na válvula que regula o fluxo sanguíneo entre o átrio esquerdo e o ventrículo esquerdo do coração. Isso pode resultar em fluxo sanguíneo anormal, o que pode levar a insuficiência cardíaca e aumento da pressão pulmonar."
+            ),
+            InfoText(
+                id = 2,
+                title = "Fatores de Risco",
+                subtitle = "Fatores que causam problemas na válvula mitral",
+                content = "Infecções como febre reumática, hipertensão e envelhecimento podem levar à degeneração da válvula mitral, resultando em um mau funcionamento da válvula e comprometendo o fluxo sanguíneo."
+            )
+        )
+    ),
+    Artery(
+        id = "aortic_valve",
+        arteryName = "Válvula Aórtica",
+        imageRes = R.drawable.left_coronary,
+        texts = listOf(
+            InfoText(
+                id = 1,
+                title = "Valvopatia Aórtica",
+                subtitle = "Problemas na válvula aórtica",
+                content = "A valvopatia aórtica é caracterizada pelo mau funcionamento da válvula aórtica, que pode afetar a circulação sanguínea para o resto do corpo. Isso pode levar a sintomas como falta de ar, dor no peito e cansaço, além de aumentar o risco de infarto."
+            ),
+            InfoText(
+                id = 2,
+                title = "Fatores de Risco",
+                subtitle = "Fatores que prejudicam a válvula aórtica",
+                content = "Fatores como hipertensão, doenças cardíacas hereditárias, infecções e o envelhecimento podem afetar a válvula aórtica e levar a problemas de saúde graves."
+            )
+        )
+    ),
+    Artery(
+        id = "aortic_dissection",
+        arteryName = "Dissecção Aórtica",
+        imageRes = R.drawable.right_coronary,
+        texts = listOf(
+            InfoText(
+                id = 1,
+                title = "Dissecção Aórtica",
+                subtitle = "Ruptura da parede da aorta",
+                content = "A dissecção aórtica é uma condição grave em que ocorre uma ruptura na parede da aorta, a maior artéria do corpo. Isso pode causar dor intensa no peito e levar a complicações fatais se não tratado rapidamente."
+            ),
+            InfoText(
+                id = 2,
+                title = "Fatores de Risco",
+                subtitle = "Causas da dissecção aórtica",
+                content = "Hipertensão, aneurismas aórticos, doenças do tecido conectivo e histórico familiar aumentam o risco de dissecção aórtica."
+            )
+        )
+    ),
+    Artery(
+        id = "abdominal_aneurysm",
+        arteryName = "Aneurisma de Aorta Abdominal",
+        imageRes = R.drawable.left_coronary,
+        texts = listOf(
+            InfoText(
+                id = 1,
+                title = "Aneurisma Abdominal",
+                subtitle = "A dilatação da aorta abdominal",
+                content = "O aneurisma de aorta abdominal ocorre quando a aorta se dilata na região abdominal, aumentando o risco de ruptura e hemorragia interna. Essa condição é frequentemente assintomática até que ocorra uma ruptura."
+            ),
+            InfoText(
+                id = 2,
+                title = "Fatores de Risco",
+                subtitle = "Riscos relacionados ao aneurisma abdominal",
+                content = "Fatores como idade avançada, tabagismo, hipertensão e histórico familiar de aneurismas aumentam o risco de desenvolver aneurisma de aorta abdominal."
+            )
+        )
+    ),
+    Artery(
+        id = "myocardial_disease",
+        arteryName = "Miocardiopatia",
+        imageRes = R.drawable.right_coronary,
+        texts = listOf(
+            InfoText(
+                id = 1,
+                title = "Miocardiopatia Dilatada ou Hipertrófica",
+                subtitle = "Doença que afeta o músculo cardíaco",
+                content = "A miocardiopatia dilatada é caracterizada pela dilatação e enfraquecimento das paredes do coração, o que prejudica a função cardíaca. A miocardiopatia hipertrófica ocorre quando o músculo cardíaco se torna excessivamente espesso, dificultando o bombeamento eficiente do sangue."
+            ),
+            InfoText(
+                id = 2,
+                title = "Fatores de Risco",
+                subtitle = "Causas da miocardiopatia",
+                content = "Fatores genéticos, hipertensão e doenças cardíacas pré-existentes são fatores que podem contribuir para o desenvolvimento de miocardiopatia dilatada ou hipertrófica."
+            )
+        )
     )
 )

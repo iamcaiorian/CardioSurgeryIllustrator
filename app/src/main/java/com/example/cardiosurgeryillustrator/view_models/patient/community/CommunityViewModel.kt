@@ -26,13 +26,13 @@ class CommunityViewModel(private val repository: ForumRepository) : ViewModel() 
             _topics.value = repository.getAllForums().map { response ->
                 Topic(
                     id = response.id,
-                    userId = response.userId,
+                    userId = response.id,
                     theme = response.theme,
                     title = response.title,
-                    commentRequests = response.messages,
-                    likes = response.likes,
-                    comments = response.comments,
-                    timestamp = response.timestamp
+                    likes = response.likesAmount,
+                    comments = 1,
+                    timestamp = 1,
+                    commentResponse = response.comments
                 )
             }
         }
@@ -40,18 +40,18 @@ class CommunityViewModel(private val repository: ForumRepository) : ViewModel() 
 
     fun createNewForum(theme: String, title: String, userId: String) {
         viewModelScope.launch {
-            val request = ForumRequest(theme = theme, title = title, userId = userId)
+            val request = ForumRequest(theme = theme, title = title, creatorId = userId)
             val response = repository.createForum(request)
 
             val newTopic = Topic(
                 id = response.id,
-                userId = response.userId,
+                userId = response.id,
                 theme = response.theme,
                 title = response.title,
-                commentRequests = response.messages,
-                likes = response.likes,
-                comments = response.comments,
-                timestamp = response.timestamp
+                likes = response.likesAmount,
+                comments = 1,
+                timestamp = 1,
+                commentResponse = response.comments
             )
             _topics.value = _topics.value + newTopic
         }

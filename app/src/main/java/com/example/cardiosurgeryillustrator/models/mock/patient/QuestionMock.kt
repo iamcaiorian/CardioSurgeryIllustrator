@@ -1,4 +1,4 @@
-package com.example.cardiosurgeryillustrator.models.mock.student
+package com.example.cardiosurgeryillustrator.models.mock.patient
 
 import com.example.cardiosurgeryillustrator.models.student.quiz.question.Question
 import com.example.cardiosurgeryillustrator.models.student.quiz.question.QuestionType
@@ -27,8 +27,7 @@ val mockQuestions = listOf(
                 "Doença arterial coronariana",
                 "Dislipidemia (colesterol ou triglicerídeos elevados)",
                 "Doença renal crônica",
-                "Doença pulmonar obstrutiva crônica (DPOC)",
-                "Outra"
+                "Doença pulmonar obstrutiva crônica (DPOC)"
             ),
             type = QuestionType.CHECKBOX
         ),
@@ -41,8 +40,7 @@ val mockQuestions = listOf(
                 "Insuficiência cardíaca",
                 "Arritmia cardíaca (ex.: fibrilação atrial, taquicardia ventricular)",
                 "Doença arterial periférica",
-                "Miocardite ou pericardite",
-                "Outra"
+                "Miocardite ou pericardite"
             ),
             type = QuestionType.CHECKBOX
         ),
@@ -58,8 +56,7 @@ val mockQuestions = listOf(
             options = listOf(
                 "Não",
                 "Sim, infarto ou angina antes dos 55 anos (parentes masculinos)",
-                "Sim, infarto ou angina antes dos 65 anos (parentes femininos)",
-                "Outra"
+                "Sim, infarto ou angina antes dos 65 anos (parentes femininos)"
             ),
             type = QuestionType.RADIOBUTTON
         ),
@@ -72,8 +69,7 @@ val mockQuestions = listOf(
                 "Estatinas ou outros redutores de colesterol",
                 "Antidiabéticos (ex.: metformina, glifage, insulina)",
                 "Anticoagulantes (ex.: varfarina, rivaroxabana)",
-                "Antiagregantes plaquetários (ex.: AAS, clopidogrel)",
-                "Outra"
+                "Antiagregantes plaquetários (ex.: AAS, clopidogrel)"
             ),
             type = QuestionType.CHECKBOX
         ),
@@ -85,8 +81,7 @@ val mockQuestions = listOf(
                 "Sim, angioplastia com stent",
                 "Sim, cirurgia de revascularização do miocárdio (pontes de safena ou mamária)",
                 "Sim, troca ou reparo valvar",
-                "Sim, implante de marcapasso ou desfibrilador cardíaco",
-                "Outra"
+                "Sim, implante de marcapasso ou desfibrilador cardíaco"
             ),
             type = QuestionType.RADIOBUTTON
         ),
@@ -156,8 +151,7 @@ val mockQuestions = listOf(
                 "Dissecção aórtica",
                 "Aneurisma de aorta torácica",
                 "Aneurisma de aorta abdominal",
-                "Miocardiopatia dilatada ou hipertrófica",
-                "Outra"
+                "Miocardiopatia dilatada ou hipertrófica"
             ),
             type = QuestionType.RADIOBUTTON
         ),
@@ -170,8 +164,7 @@ val mockQuestions = listOf(
                 "Reparação valvar (válvula mitral, aórtica ou tricúspide)",
                 "Cirurgia para dissecção aórtica",
                 "Correção de aneurisma aórtico",
-                "Implante transcateter de válvula aórtica (TAVI)",
-                "Outra"
+                "Implante transcateter de válvula aórtica (TAVI)"
             ),
             type = QuestionType.RADIOBUTTON
         ),
@@ -184,8 +177,7 @@ val mockQuestions = listOf(
                 "Tomografia computadorizada",
                 "Angiografia coronária",
                 "Hemograma completo",
-                "Exame de função renal",
-                "Outra"
+                "Exame de função renal"
             ),
             type = QuestionType.CHECKBOX
         ),
@@ -197,8 +189,7 @@ val mockQuestions = listOf(
                 "Efeitos colaterais ou complicações",
                 "Tempo de recuperação",
                 "Qualidade de vida após a cirurgia",
-                "Custo do procedimento",
-                "Outra"
+                "Custo do procedimento"
             ),
             type = QuestionType.RADIOBUTTON
         ),
