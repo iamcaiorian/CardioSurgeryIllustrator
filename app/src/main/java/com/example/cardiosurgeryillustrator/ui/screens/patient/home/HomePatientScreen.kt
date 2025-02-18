@@ -37,9 +37,10 @@ import com.example.cardiosurgeryillustrator.ui.modals.feedback.FeedbackModal
 fun HomePacientScreen(
     modifier: Modifier = Modifier,
     navController: NavController,
+    diseaseIndex: Int,
 ) {
 
-    val selectedDisease = diseases[0]
+    val selectedDisease = diseases[diseaseIndex]
 
     Column(
         modifier = modifier
@@ -127,5 +128,5 @@ fun HomePacientScreen(
 @Preview
 @Composable
 private fun HomePacientScreenPreview() {
-    HomePacientScreen(modifier = Modifier.fillMaxWidth(), navController = rememberNavController())
+    HomePacientScreen(modifier = Modifier.fillMaxWidth(), navController = rememberNavController(), diseaseIndex = 0)
 }

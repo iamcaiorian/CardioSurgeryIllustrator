@@ -33,12 +33,15 @@ import com.example.cardiosurgeryillustrator.R
 import com.example.cardiosurgeryillustrator.models.mock.patient.mockQuestions
 import com.example.cardiosurgeryillustrator.models.student.quiz.question.Question
 import com.example.cardiosurgeryillustrator.models.student.quiz.question.QuestionType
+import com.example.cardiosurgeryillustrator.navigation.BottomBarPacientAction
 import com.example.cardiosurgeryillustrator.ui.components.buttons.ButtonDefault
 import com.example.cardiosurgeryillustrator.ui.components.patient.form.CheckboxGroup
 import com.example.cardiosurgeryillustrator.ui.components.patient.form.RadioGroup
 import com.example.cardiosurgeryillustrator.ui.components.patient.form.TextInputField
 import com.example.cardiosurgeryillustrator.ui.theme.Zinc500
 import com.example.cardiosurgeryillustrator.view_models.patient.form.CardioFormViewModel
+import getQuestionIndex
+import removeAccents
 
 @Composable
 fun CardioForm(
@@ -161,23 +164,35 @@ fun CardioForm(
                     text = "Finalizar",
                     onClick = {
                         Log.d("Asnwers Array", answers.toString())
+
+                        // Salvar a resposta da questão 14
                         answers["14"]?.let { response ->
                             viewModel.saveQuestion14Response(response)
                         }
 
                         val height = answers["1"] ?: ""
                         val weight = answers["2"] ?: ""
-                        val imcResult = calculateIMC(height, weight)
+                        val disease = answers["14"] ?: ""
+                        Log.d("doença", disease)
 
+                        val diseaseIndex = getQuestionIndex(disease)
+                        val diseaseWithoutAccents = removeAccents(disease)
+                        Log.d("doença sem acentos", diseaseWithoutAccents)
+
+                        viewModel.saveUserDiseaseIndex(diseaseIndex)
+
+                        val imcResult = calculateIMC(height, weight)
                         if (imcResult != "Altura ou peso inválido") {
                             viewModel.saveIMC(imcResult)
                         }
 
                         viewModel.saveFormResponse()
-                        navController.navigate("home-pacient")
+
+                        navController.navigate("${BottomBarPacientAction.HomePacient.route}/$diseaseIndex")
                     },
                     isIcon = true
                 )
+
             }
         }
     }

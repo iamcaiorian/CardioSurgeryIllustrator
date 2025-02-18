@@ -21,6 +21,7 @@ object DataStoreUtils {
     private val PATIENT_UUID_KEY = stringPreferencesKey("patient_uuid")
     private val IMC_KEY = stringPreferencesKey("imc")
     private val QUESTION_14_KEY = stringPreferencesKey("question_14")
+    private val USER_DISEASE_INDEX = stringPreferencesKey("user_disease_index")
 
     private val TOKEN_KEY = stringPreferencesKey("auth_token")
 
@@ -106,6 +107,18 @@ object DataStoreUtils {
     suspend fun clearToken(context: Context) {
         context.dataStore.edit { prefs ->
             prefs.remove(TOKEN_KEY)
+        }
+    }
+
+    suspend fun saveUserDiseaseIndex(context: Context, index: Int) {
+        context.dataStore.edit { preferences ->
+            preferences[stringPreferencesKey("user_disease_index")] = index.toString()
+        }
+    }
+
+    fun readUserDiseaseIndex(context: Context): Flow<Int?> {
+        return context.dataStore.data.map { preferences ->
+            preferences[stringPreferencesKey("user_disease_index")]?.toIntOrNull()
         }
     }
 }
