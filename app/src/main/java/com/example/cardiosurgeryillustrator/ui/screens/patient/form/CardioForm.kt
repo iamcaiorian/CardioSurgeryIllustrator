@@ -27,26 +27,35 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
+import com.android.identity.util.UUID
 import com.example.cardiosurgeryillustrator.R
 import com.example.cardiosurgeryillustrator.models.mock.patient.mockQuestions
 import com.example.cardiosurgeryillustrator.models.student.quiz.question.Question
 import com.example.cardiosurgeryillustrator.models.student.quiz.question.QuestionType
+import com.example.cardiosurgeryillustrator.repository.patient.community.PatientRepository
 import com.example.cardiosurgeryillustrator.ui.components.buttons.ButtonDefault
 import com.example.cardiosurgeryillustrator.ui.components.patient.form.CheckboxGroup
 import com.example.cardiosurgeryillustrator.ui.components.patient.form.RadioGroup
 import com.example.cardiosurgeryillustrator.ui.components.patient.form.TextInputField
 import com.example.cardiosurgeryillustrator.ui.theme.Zinc500
 import com.example.cardiosurgeryillustrator.view_models.patient.form.CardioFormViewModel
+import com.example.cardiosurgeryillustrator.view_models.patient.form.CardioFormViewModelFactory
 
 @Composable
 fun CardioForm(
     navController: NavController,
     questionsList: List<Question>,
-    viewModel: CardioFormViewModel = CardioFormViewModel(LocalContext.current),
     modifier: Modifier = Modifier
 ) {
+    val patientRepository = PatientRepository()
+    val viewModel: CardioFormViewModel = viewModel(
+        factory = CardioFormViewModelFactory(LocalContext.current, patientRepository)
+    )
+
+
     var currentIndex by remember { mutableStateOf(0) }
     var answers by remember { mutableStateOf(mutableMapOf<String, String>()) }
 
@@ -160,7 +169,10 @@ fun CardioForm(
                 ButtonDefault(
                     text = "Finalizar",
                     onClick = {
-                        Log.d("Asnwers Array", answers.toString())
+                        Log.d("Answers Array", answers.toString())
+
+                        val userId = UUID.randomUUID().toString() // Gera um UUID para o usuário
+
                         answers["14"]?.let { response ->
                             viewModel.saveQuestion14Response(response)
                         }
@@ -173,11 +185,18 @@ fun CardioForm(
                             viewModel.saveIMC(imcResult)
                         }
 
-                        viewModel.saveFormResponse()
+                        viewModel.saveFormResponse(userId = userId, questionsAndAnswers = answers) // Salva o formulário preenchido
+
+                        // Salvar o ID do usuário no DataStore
+                        viewModelScope.launch {
+                            DataStoreUtils.savePatientUUID(LocalContext.current, userId)
+                        }
+
                         navController.navigate("home-pacient")
                     },
                     isIcon = true
                 )
+
             }
         }
     }
@@ -212,8 +231,5 @@ private fun CardioFormPreview() {
         navController = rememberNavController(),
         questionsList = mockQuestions,
         modifier = Modifier,
-        viewModel = CardioFormViewModel(
-            LocalContext.current
-        )
     )
 }

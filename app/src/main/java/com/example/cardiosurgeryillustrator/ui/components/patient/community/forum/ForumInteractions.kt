@@ -37,7 +37,7 @@ fun ForumInteractions(
             Row(verticalAlignment = Alignment.CenterVertically) {
                 IconButton(onClick = {
                     viewModel.likeForum(forum.id)
-                    isLiked = true
+                    isLiked = forum.isLiked
                     likes++
                 }) {
                     Icon(
@@ -59,7 +59,7 @@ fun ForumInteractions(
 
         IconButton(onClick = {
             viewModel.saveForum(forum.id)
-            isSaved = !isSaved
+            isSaved = forum.isFavorite
         }) {
             Icon(
                 painter = painterResource(id = if (isSaved) R.drawable.ic_saved else R.drawable.ic_unsaved),

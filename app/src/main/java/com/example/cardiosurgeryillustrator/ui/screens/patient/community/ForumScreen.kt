@@ -36,6 +36,8 @@ import com.example.cardiosurgeryillustrator.view_models.patient.community.ForumV
 fun ForumScreen(
     navController: NavController,
     forumId: String,
+    isLiked: Boolean,
+    isFavorite: Boolean,
     viewModel: ForumViewModel = viewModel(factory = ForumViewModelFactory(ForumRepository(), CommentRepository(), PatientRepository())),
     communityViewModel: CommunityViewModel
 ) {
@@ -53,7 +55,9 @@ fun ForumScreen(
             commentResponse = it.comments,
             likes = it.likesAmount,
             comments = it.commentsAmount,
-            timestamp = it.createdAt
+            timestamp = it.createdAt,
+            isLiked = isLiked,
+            isFavorite = isFavorite
         )
     }
 

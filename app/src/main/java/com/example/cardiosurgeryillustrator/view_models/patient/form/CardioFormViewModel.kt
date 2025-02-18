@@ -4,6 +4,9 @@ import android.content.Context
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.cardiosurgeryillustrator.models.patient.patient.PatientRequest
+import com.example.cardiosurgeryillustrator.models.patient.patient.QuestionAndAnswer
+import com.example.cardiosurgeryillustrator.repository.patient.community.PatientRepository
 import com.example.cardiosurgeryillustrator.utils.DataStoreUtils
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -11,7 +14,11 @@ import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 import java.util.UUID
 
-class CardioFormViewModel(context: Context) : ViewModel() {
+class CardioFormViewModel(
+    context: Context,
+    private val patientRepository: PatientRepository
+) : ViewModel() {
+
     private val _hasAnsweredForm = MutableStateFlow(false)
     val hasAnsweredForm: StateFlow<Boolean> = _hasAnsweredForm
 
@@ -24,11 +31,19 @@ class CardioFormViewModel(context: Context) : ViewModel() {
         }
     }
 
-    fun saveFormResponse() {
+    fun saveFormResponse(userId: String, questionsAndAnswers: List<QuestionAndAnswer>) {
         viewModelScope.launch {
-            val newUUID = UUID.randomUUID().toString()
-            DataStoreUtils.savePatientUUID(appContext, newUUID)
-            _hasAnsweredForm.value = true
+            try {
+                val patientRequest = PatientRequest(UUID.fromString(userId), questionsAndAnswers)
+                val patientResponse = patientRepository.createPatient(patientRequest)
+
+                DataStoreUtils.savePatientUUID(appContext, patientResponse.userId.toString())
+                _hasAnsweredForm.value = true
+
+                Log.d("CardioFormViewModel", "Paciente criado com sucesso: $patientResponse")
+            } catch (e: Exception) {
+                Log.e("CardioFormViewModel", "Erro ao criar paciente: ${e.message}")
+            }
         }
     }
 
@@ -39,9 +54,34 @@ class CardioFormViewModel(context: Context) : ViewModel() {
         }
     }
 
+    // Salvar o IMC no DataStore
     fun saveIMC(imc: String) {
         viewModelScope.launch {
             DataStoreUtils.saveIMC(appContext, imc)
+        }
+    }
+
+    // Obter informações do paciente do servidor
+    fun getPatientById(userId: String) {
+        viewModelScope.launch {
+            try {
+                val patientResponse = patientRepository.getPatientById(userId)
+                Log.d("CardioFormViewModel", "Paciente encontrado: $patientResponse")
+            } catch (e: Exception) {
+                Log.e("CardioFormViewModel", "Erro ao buscar paciente: ${e.message}")
+            }
+        }
+    }
+
+    // Obter formulário preenchido por um paciente
+    fun getPatientForm(userId: String) {
+        viewModelScope.launch {
+            try {
+                val formResponse = patientRepository.getPatientForm(userId)
+                Log.d("CardioFormViewModel", "Formulário do paciente: $formResponse")
+            } catch (e: Exception) {
+                Log.e("CardioFormViewModel", "Erro ao buscar formulário: ${e.message}")
+            }
         }
     }
 }

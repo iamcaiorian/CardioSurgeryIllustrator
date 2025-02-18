@@ -48,7 +48,7 @@ fun ForumItem(
             .background(color = Color.Transparent, shape = RoundedCornerShape(12.dp))
             .clickable {
                 try {
-                    navController.navigate("forum_screen/${forum.id}")
+                    navController.navigate("forum_screen/${forum.id}/${forum.isFavorite}/${{forum.isLiked}}")
                 } catch (e: Exception) {
                     Log.e("ForumItem", "Erro ao navegar para o fórum", e)
                 }

@@ -223,15 +223,23 @@ fun PatientNavHost() {
 
         // Tela Fórum
         composable(
-            route = "forum_screen/{forumId}",
-            arguments = listOf(navArgument("forumId") { type = NavType.StringType })
+            route = "forum_screen/{forumId}/{isFavorite}/{isLiked}",
+            arguments = listOf(
+                navArgument("forumId") { type = NavType.StringType },
+                navArgument("isFavorite") { type = NavType.BoolType },
+                navArgument("isLiked") { type = NavType.BoolType }
+            )
         ) { backStackEntry ->
             val forumId = backStackEntry.arguments?.getString("forumId")
+            val isFavorite = backStackEntry.arguments?.getBoolean("isFavorite") ?: false
+            val isLiked = backStackEntry.arguments?.getBoolean("isLiked") ?: false
 
             if (!forumId.isNullOrEmpty()) {
                 ForumScreen(
                     navController = patientNavController,
                     forumId = forumId,
+                    isFavorite = isFavorite,
+                    isLiked = isLiked,
                     viewModel = viewModel(
                         factory = ForumViewModelFactory(
                             ForumRepository(),
@@ -245,6 +253,7 @@ fun PatientNavHost() {
                 Log.e("Navigation", "Erro ao abrir a tela do fórum: ID do fórum vazio")
             }
         }
+
 
         // Tela Assistente
         composable(BottomBarPacientAction.Assistant.route) {
