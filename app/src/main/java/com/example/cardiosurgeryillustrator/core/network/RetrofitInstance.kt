@@ -16,7 +16,7 @@ import retrofit2.converter.gson.GsonConverterFactory
 object RetrofitInstance {
     private const val BASE_URL = "http://10.0.2.2:8080"
     private const val CHATBOT_URL =
-        "https://chatbot-rasa-fkdbekeafjbxecgb.canadacentral-01.azurewebsites.net"
+        "https://chatboot-fgauhxcrbgcnffg0.canadacentral-01.azurewebsites.net"
 
     val moduleService: ModuleService by lazy {
         Retrofit.Builder()

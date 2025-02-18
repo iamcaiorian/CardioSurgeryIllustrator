@@ -135,13 +135,11 @@ fun PatientNavHost() {
             val fromIndex = bottomBarRoutes.indexOf(initialState.destination.route)
             val toIndex = bottomBarRoutes.indexOf(targetState.destination.route)
             if (toIndex > fromIndex) {
-                // Navegação "para frente" (da direita para esquerda)
                 slideInHorizontally(
                     initialOffsetX = { fullWidth -> fullWidth },
                     animationSpec = tween(durationMillis = 300)
                 )
             } else {
-                // Navegação "para trás" (da esquerda para direita)
                 slideInHorizontally(
                     initialOffsetX = { fullWidth -> -fullWidth },
                     animationSpec = tween(durationMillis = 300)
@@ -152,13 +150,11 @@ fun PatientNavHost() {
             val fromIndex = bottomBarRoutes.indexOf(initialState.destination.route)
             val toIndex = bottomBarRoutes.indexOf(targetState.destination.route)
             if (toIndex > fromIndex) {
-                // Navegação "para frente" (saindo para a esquerda)
                 slideOutHorizontally(
                     targetOffsetX = { fullWidth -> -fullWidth },
                     animationSpec = tween(durationMillis = 300)
                 )
             } else {
-                // Navegação "para trás" (saindo para a direita)
                 slideOutHorizontally(
                     targetOffsetX = { fullWidth -> fullWidth },
                     animationSpec = tween(durationMillis = 300)
@@ -203,7 +199,6 @@ fun PatientNavHost() {
             }
         }
 
-        // Tela Comunidade
         composable(BottomBarPacientAction.Community.route) {
             Scaffold(
                 bottomBar = { BottomBarPacient(navController = patientNavController) }

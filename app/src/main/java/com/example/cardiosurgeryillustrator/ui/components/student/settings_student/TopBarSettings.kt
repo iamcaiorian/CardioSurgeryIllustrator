@@ -1,15 +1,7 @@
 package com.example.cardiosurgeryillustrator.ui.components.student.settings_student
 
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.size
-import androidx.compose.material3.Button
-import androidx.compose.material3.ButtonDefaults
-import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.Icon
-import androidx.compose.material3.Text
-import androidx.compose.material3.TopAppBar
+import androidx.compose.foundation.layout.*
+import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -23,29 +15,32 @@ import com.example.cardiosurgeryillustrator.ui.theme.Zinc900
 
 @Composable
 @ExperimentalMaterial3Api
-fun TopBarSettings(modifier: Modifier = Modifier, onNavigateBack: () -> Unit, title: String) {
+fun TopBarSettings(
+    modifier: Modifier = Modifier,
+    onNavigateBack: () -> Unit,
+    title: String
+) {
     TopAppBar(
         title = {
-            Row (
-                modifier = modifier
-                    .fillMaxWidth(),
+            Row(
                 verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.Start
-            ){
-                Button(
+                horizontalArrangement = Arrangement.spacedBy(8.dp)
+            ) {
+                IconButton(
                     onClick = onNavigateBack,
-                    colors = ButtonDefaults.buttonColors(
-                        containerColor = Color.Transparent,
-                        contentColor = Zinc900
-                    )
+                    modifier = Modifier.size(40.dp)
                 ) {
                     Icon(
-                        modifier = Modifier.size(24.dp),
                         painter = painterResource(id = R.drawable.ic_arrow_left),
-                        contentDescription = "Ícone do botão",
+                        contentDescription = "Voltar",
+                        tint = Zinc900
                     )
                 }
-                Text(text = title, style = Typography.headlineLarge)
+                Text(
+                    text = title,
+                    style = Typography.headlineLarge,
+                    modifier = Modifier.weight(1f)
+                )
             }
         }
     )
@@ -55,5 +50,9 @@ fun TopBarSettings(modifier: Modifier = Modifier, onNavigateBack: () -> Unit, ti
 @Composable
 @ExperimentalMaterial3Api
 private fun TopBarSettingsPreview() {
-    TopBarSettings(modifier = Modifier, onNavigateBack = {}, title = "Configurações")
+    TopBarSettings(
+        modifier = Modifier,
+        onNavigateBack = {},
+        title = "Configurações"
+    )
 }

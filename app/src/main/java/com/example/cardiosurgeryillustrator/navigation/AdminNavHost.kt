@@ -34,6 +34,8 @@ import com.example.cardiosurgeryillustrator.ui.screens.admin.create_quiz.ListQui
 import com.example.cardiosurgeryillustrator.ui.screens.admin.faq.FAQScreen
 import com.example.cardiosurgeryillustrator.ui.screens.admin.home.HomeAdminScreen
 import com.example.cardiosurgeryillustrator.ui.screens.admin.login.LoginAdminScreen
+import com.example.cardiosurgeryillustrator.ui.screens.admin.quiz.addQuestionToQuiz.QuestionQuiz
+import com.example.cardiosurgeryillustrator.ui.screens.student.quiz.QuizResultScreen
 import com.example.cardiosurgeryillustrator.ui.screens.student.student.HomeStudentScreen
 import com.example.cardiosurgeryillustrator.view_models.admin.quiz_modules.QuizViewModel
 import com.example.cardiosurgeryillustrator.view_models.admin.quiz_modules.QuizViewModelFactory
@@ -170,15 +172,28 @@ fun AdminNavHost() {
             ) { innerPadding ->
                 val quizzes by quizViewModel.quizzes.collectAsState()
                 ListQuizScreen(
-                    quizzes = quizzes, // Mock ou integração futura
-                    onEditQuiz = {}, // Placeholder para edição futura
-                    onDeleteQuiz = {}, // Placeholder para exclusão futura
+                    quizzes = quizzes,
+                    onEditQuiz = { quiz ->
+                        adminNavController.navigate("add_question_to_quiz/${quiz.id}")
+                    },
+                    onDeleteQuiz = {},
                     onCreateQuiz = {
                         adminNavController.navigate("create_quiz")
                     },
                     modifier = Modifier.padding(innerPadding)
                 )
             }
+        }
+        composable("add_question_to_quiz/{quizId}") { backStackEntry ->
+            val quizId = backStackEntry.arguments?.getString("quizId") ?: return@composable
+
+            QuestionQuiz(
+                quizId = quizId,
+                onQuestionAdded = { addedQuestion ->
+                    println("Questão adicionada ao quiz com sucesso: ${addedQuestion.id}")
+                    adminNavController.popBackStack()
+                }
+            )
         }
 
         composable("create_quiz") {
