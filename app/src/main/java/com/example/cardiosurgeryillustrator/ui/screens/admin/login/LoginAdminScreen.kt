@@ -124,7 +124,7 @@ fun LoginAdminScreen(
                         isLoading = true
                         val request = AuthUserRequest(email, password)
 
-                        authViewModel.authUser(request) { success ->
+                        authViewModel.authUser(request, isAdmin = true) { success ->
                             isLoading = false
                             if (success) {
                                 Toast.makeText(context, "Login bem-sucedido!", Toast.LENGTH_SHORT)

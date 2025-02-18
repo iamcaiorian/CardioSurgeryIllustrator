@@ -14,6 +14,9 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.focusModifier
 import androidx.compose.ui.platform.LocalContext
@@ -30,6 +33,7 @@ import com.example.cardiosurgeryillustrator.ui.components.admin.admin.BottomBarA
 import com.example.cardiosurgeryillustrator.ui.components.student.student.BottomBarStudent
 import com.example.cardiosurgeryillustrator.ui.components.topBar.StandardTopBar
 import com.example.cardiosurgeryillustrator.ui.screens.admin.admin_modules.AdminModulesScreen
+import com.example.cardiosurgeryillustrator.ui.screens.admin.create_module.CreateModuleScreen
 import com.example.cardiosurgeryillustrator.ui.screens.admin.create_quiz.AdminAddQuizScreen
 import com.example.cardiosurgeryillustrator.ui.screens.admin.create_quiz.ListQuizScreen
 import com.example.cardiosurgeryillustrator.ui.screens.admin.faq.FAQScreen
@@ -38,6 +42,7 @@ import com.example.cardiosurgeryillustrator.ui.screens.admin.login.LoginAdminScr
 import com.example.cardiosurgeryillustrator.ui.screens.admin.quiz.addQuestionToQuiz.QuestionQuiz
 import com.example.cardiosurgeryillustrator.ui.screens.student.quiz.QuizResultScreen
 import com.example.cardiosurgeryillustrator.ui.screens.student.student.HomeStudentScreen
+import com.example.cardiosurgeryillustrator.utils.DataStoreUtils
 import com.example.cardiosurgeryillustrator.view_models.admin.quiz_modules.QuizViewModel
 import com.example.cardiosurgeryillustrator.view_models.admin.quiz_modules.QuizViewModelFactory
 
@@ -97,8 +102,9 @@ sealed class BottomBarAdminAction(
 @ExperimentalMaterial3Api
 fun AdminNavHost() {
     val adminNavController = rememberNavController()
+    val context = LocalContext.current
 
-    val quizRepository = QuizRepository(LocalContext.current)
+    val quizRepository = QuizRepository(context)
     val questionRepository = QuestionRepository()
     val moduleRepository = ModuleRepository()
 
@@ -107,19 +113,38 @@ fun AdminNavHost() {
             QuizViewModel::class.java
         )
 
+    var startDestination by remember { mutableStateOf(LoginAdminFlow.LoginAdmin.route) }
+
+    // Verifica se o token está salvo no DataStore
     LaunchedEffect(Unit) {
+        DataStoreUtils.readTokenAdmin(context).collect { token ->
+            if (!token.isNullOrEmpty()) {
+                startDestination = BottomBarAdminAction.Home.route
+            }
+        }
         quizViewModel.loadQuizzes()
     }
 
     NavHost(
         navController = adminNavController,
-        startDestination = LoginAdminFlow.LoginAdmin.route
+        startDestination = startDestination
     ) {
         composable(LoginAdminFlow.LoginAdmin.route) {
             Scaffold { innerPadding ->
                 LoginAdminScreen(
                     modifier = Modifier.padding(innerPadding),
                     onNavigateToHome = { adminNavController.navigate(BottomBarAdminAction.Home.route)}
+                )
+            }
+
+        }
+
+        composable("create_module") {
+            Scaffold { innerPadding ->
+                CreateModuleScreen(
+                    modifier = Modifier.padding(innerPadding),
+                    onNavigateBack = { adminNavController.popBackStack() },
+                    onNavigateToModules = { adminNavController.popBackStack() }
                 )
             }
 
