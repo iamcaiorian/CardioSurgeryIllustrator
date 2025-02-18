@@ -119,16 +119,12 @@ fun NavGraph(
                 )
             ) { backStackEntry ->
                 val title = backStackEntry.arguments?.getString("title") ?: "Detalhes"
-                val description = backStackEntry.arguments?.getString("description")
-                    ?: "Sem descrição disponível."
+                val description = backStackEntry.arguments?.getString("description") ?: "Sem descrição disponível."
+
                 HabitDetailScreen(
                     title = title,
                     description = description,
-                    onBackClick = {
-                        navController.navigate(AppFlow.StudentFlow.route) {
-                            popUpTo(AppFlow.StudentFlow.route) { inclusive = true }
-                        }
-                    }
+                    navController = navController
                 )
             }
         }

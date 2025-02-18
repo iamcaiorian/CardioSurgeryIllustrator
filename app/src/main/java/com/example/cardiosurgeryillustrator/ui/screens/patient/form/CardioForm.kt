@@ -36,6 +36,7 @@ import com.example.cardiosurgeryillustrator.models.patient.patient.QuestionAndAn
 import com.example.cardiosurgeryillustrator.models.student.quiz.question.Question
 import com.example.cardiosurgeryillustrator.models.student.quiz.question.QuestionType
 import com.example.cardiosurgeryillustrator.repository.patient.community.PatientRepository
+import com.example.cardiosurgeryillustrator.navigation.BottomBarPacientAction
 import com.example.cardiosurgeryillustrator.ui.components.buttons.ButtonDefault
 import com.example.cardiosurgeryillustrator.ui.components.patient.form.CheckboxGroup
 import com.example.cardiosurgeryillustrator.ui.components.patient.form.RadioGroup
@@ -44,6 +45,8 @@ import com.example.cardiosurgeryillustrator.ui.theme.Zinc500
 import com.example.cardiosurgeryillustrator.view_models.patient.form.CardioFormViewModel
 import com.example.cardiosurgeryillustrator.view_models.patient.form.CardioFormViewModelFactory
 import java.util.UUID
+import getQuestionIndex
+import removeAccents
 
 @Composable
 fun CardioForm(
@@ -180,8 +183,16 @@ fun CardioForm(
 
                         val height = answers["1"] ?: ""
                         val weight = answers["2"] ?: ""
-                        val imcResult = calculateIMC(height, weight)
+                        val disease = answers["14"] ?: ""
+                        Log.d("doença", disease)
 
+                        val diseaseIndex = getQuestionIndex(disease)
+                        val diseaseWithoutAccents = removeAccents(disease)
+                        Log.d("doença sem acentos", diseaseWithoutAccents)
+
+                        viewModel.saveUserDiseaseIndex(diseaseIndex)
+
+                        val imcResult = calculateIMC(height, weight)
                         if (imcResult != "Altura ou peso inválido") {
                             viewModel.saveIMC(imcResult)
                         }

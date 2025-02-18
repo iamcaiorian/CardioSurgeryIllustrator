@@ -116,13 +116,17 @@ sealed class MoreActionsFlow(val route: String) {
 fun PatientNavHost() {
     val patientNavController = rememberNavController()
 
+    val context = LocalContext.current
+    val uuidFlow = DataStoreUtils.readPatientUUID(context)
+    val diseaseIndexFlow = DataStoreUtils.readUserDiseaseIndex(context)
 
-    val uuidFlow = DataStoreUtils.readPatientUUID(LocalContext.current)
     val uuid = uuidFlow.collectAsStateWithLifecycle(initialValue = null)
+    val diseaseIndex = diseaseIndexFlow.collectAsStateWithLifecycle(initialValue = 0)
 
     val startDestination = uuid.value?.let {
-        BottomBarPacientAction.HomePacient.route
+        "${BottomBarPacientAction.HomePacient.route}/${diseaseIndex.value}"
     } ?: FormFlow.Form.route
+
 
     val bottomBarRoutes = listOf(
         BottomBarPacientAction.HomePacient.route,
@@ -139,13 +143,11 @@ fun PatientNavHost() {
             val fromIndex = bottomBarRoutes.indexOf(initialState.destination.route)
             val toIndex = bottomBarRoutes.indexOf(targetState.destination.route)
             if (toIndex > fromIndex) {
-                // Navegação "para frente" (da direita para esquerda)
                 slideInHorizontally(
                     initialOffsetX = { fullWidth -> fullWidth },
                     animationSpec = tween(durationMillis = 300)
                 )
             } else {
-                // Navegação "para trás" (da esquerda para direita)
                 slideInHorizontally(
                     initialOffsetX = { fullWidth -> -fullWidth },
                     animationSpec = tween(durationMillis = 300)
@@ -156,13 +158,11 @@ fun PatientNavHost() {
             val fromIndex = bottomBarRoutes.indexOf(initialState.destination.route)
             val toIndex = bottomBarRoutes.indexOf(targetState.destination.route)
             if (toIndex > fromIndex) {
-                // Navegação "para frente" (saindo para a esquerda)
                 slideOutHorizontally(
                     targetOffsetX = { fullWidth -> -fullWidth },
                     animationSpec = tween(durationMillis = 300)
                 )
             } else {
-                // Navegação "para trás" (saindo para a direita)
                 slideOutHorizontally(
                     targetOffsetX = { fullWidth -> fullWidth },
                     animationSpec = tween(durationMillis = 300)
@@ -196,18 +196,23 @@ fun PatientNavHost() {
         }
 
         // Tela Home
-        composable(BottomBarPacientAction.HomePacient.route) {
+        composable(
+            route = "${BottomBarPacientAction.HomePacient.route}/{diseaseIndex}",
+            arguments = listOf(navArgument("diseaseIndex") { type = NavType.IntType })
+        ) { backStackEntry ->
+            val diseaseIndex = backStackEntry.arguments?.getInt("diseaseIndex") ?: 0
+
             Scaffold(
                 bottomBar = { BottomBarPacient(navController = patientNavController) }
             ) { innerPadding ->
                 HomePacientScreen(
                     navController = patientNavController,
-                    modifier = Modifier.padding(innerPadding)
+                    modifier = Modifier.padding(innerPadding),
+                    diseaseIndex = diseaseIndex
                 )
             }
         }
 
-        // Tela Comunidade
         composable(BottomBarPacientAction.Community.route) {
             Scaffold(
                 bottomBar = { BottomBarPacient(navController = patientNavController) }

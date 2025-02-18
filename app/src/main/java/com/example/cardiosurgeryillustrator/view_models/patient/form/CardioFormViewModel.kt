@@ -22,12 +22,18 @@ class CardioFormViewModel(
     private val _hasAnsweredForm = MutableStateFlow(false)
     val hasAnsweredForm: StateFlow<Boolean> = _hasAnsweredForm
 
+    private val _userDiseaseIndex = MutableStateFlow<Int?>(null)
+    val userDiseaseIndex: StateFlow<Int?> = _userDiseaseIndex
+
     private val appContext = context.applicationContext
 
     init {
         viewModelScope.launch {
             val storedUUID = DataStoreUtils.readPatientUUID(appContext).first()
             _hasAnsweredForm.value = storedUUID != null
+
+            val diseaseIndex = DataStoreUtils.readUserDiseaseIndex(appContext).first()
+            _userDiseaseIndex.value = diseaseIndex
         }
     }
 
@@ -46,7 +52,6 @@ class CardioFormViewModel(
             }
         }
     }
-
 
     fun saveQuestion14Response(response: String) {
         viewModelScope.launch {
@@ -84,4 +89,18 @@ class CardioFormViewModel(
             }
         }
     }
+
+    fun saveUserDiseaseIndex(index: Int) {
+        viewModelScope.launch {
+            DataStoreUtils.saveUserDiseaseIndex(appContext, index)
+            _userDiseaseIndex.value = index
+        }
+    }
+
+    fun getUserDiseaseIndex() {
+        viewModelScope.launch {
+            _userDiseaseIndex.value = DataStoreUtils.readUserDiseaseIndex(appContext).first()
+        }
+    }
+
 }

@@ -9,12 +9,14 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.datastore.preferences.core.booleanPreferencesKey
 import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.longPreferencesKey
 import androidx.datastore.preferences.preferencesDataStore
+import androidx.navigation.NavController
 import com.example.cardiosurgeryillustrator.ui.theme.Blue700
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
@@ -26,12 +28,12 @@ val Context.dataStore by preferencesDataStore("habit_checklist")
 fun HabitDetailScreen(
     title: String,
     description: String,
-    onBackClick: () -> Unit
+    navController: NavController
 ) {
     val context = LocalContext.current
     val scope = rememberCoroutineScope()
 
-    // DataStore keys
+    // Chaves do DataStore
     val resetTimestampKey = longPreferencesKey("reset_timestamp")
     val habitsKeys = listOf(
         booleanPreferencesKey("exercise"),
@@ -74,10 +76,26 @@ fun HabitDetailScreen(
             TopAppBar(
                 title = { Text(title) },
                 navigationIcon = {
-                    IconButton(onClick = onBackClick) {
-                        Icon(Icons.Default.ArrowBack, contentDescription = "Voltar")
+                    IconButton(
+                        onClick = {
+                            if (navController.previousBackStackEntry != null) {
+                                navController.popBackStack() // Volta para a tela anterior
+                            } else {
+                                navController.navigate("home-pacient") {
+                                    popUpTo("home-pacient") { inclusive = false } // Garante que a home não seja removida
+                                    launchSingleTop = true // Evita múltiplas instâncias da home
+                                }
+                            }
+                        }
+                    ) {
+                        Icon(
+                            Icons.Default.ArrowBack,
+                            contentDescription = "Voltar",
+                            tint = Color.White
+                        )
                     }
-                }
+                },
+                colors = TopAppBarDefaults.mediumTopAppBarColors(containerColor = Color(0xFF2196F3)) // Azul suave no topo
             )
         }
     ) { innerPadding ->
@@ -116,9 +134,7 @@ fun HabitDetailScreen(
                         Checkbox(
                             checked = state.value,
                             onCheckedChange = { toggleHabit(index, it) },
-                            colors = CheckboxDefaults.colors(
-                                checkedColor = Blue700,
-                            )
+                            colors = CheckboxDefaults.colors(checkedColor = Blue700)
                         )
 
                         Text(text = labels[index], style = MaterialTheme.typography.bodyLarge)

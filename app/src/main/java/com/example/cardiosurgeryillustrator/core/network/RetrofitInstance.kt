@@ -23,7 +23,7 @@ import retrofit2.converter.gson.GsonConverterFactory
 object RetrofitInstance {
     private const val BASE_URL = "https://cardiosurgeryillustrator-api.onrender.com"
     private const val CHATBOT_URL =
-        "https://chatbot-rasa-fkdbekeafjbxecgb.canadacentral-01.azurewebsites.net"
+        "https://chatboot-fgauhxcrbgcnffg0.canadacentral-01.azurewebsites.net"
 
     /**
      * Interceptor para adicionar automaticamente o token nas requisições.
