@@ -30,12 +30,16 @@ class AuthViewModel(
         }
     }
 
-    fun authUser(authUserRequest: AuthUserRequest, onResult: (Boolean) -> Unit) {
+    fun authUser(authUserRequest: AuthUserRequest, isAdmin: Boolean = false, onResult: (Boolean) -> Unit) {
         viewModelScope.launch {
             try {
                 val response: AuthUserResponse = authRepository.authUser(authUserRequest)
 
-                DataStoreUtils.saveToken(context, response.token)
+                if (isAdmin) {
+                    DataStoreUtils.saveTokenAdmin(context, response.token)
+                } else {
+                    DataStoreUtils.saveToken(context, response.token)
+                }
 
                 onResult(true)
             } catch (e: Exception) {
@@ -44,4 +48,5 @@ class AuthViewModel(
             }
         }
     }
+
 }

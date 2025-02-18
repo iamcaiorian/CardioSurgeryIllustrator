@@ -23,6 +23,7 @@ object DataStoreUtils {
     private val QUESTION_14_KEY = stringPreferencesKey("question_14")
 
     private val TOKEN_KEY = stringPreferencesKey("auth_token")
+    private val TOKEN_ADMIN_KEY = stringPreferencesKey("auth_token_admin")
 
 
     suspend fun saveTheme(context: Context, isDark: Boolean) {
@@ -101,6 +102,16 @@ object DataStoreUtils {
 
     fun readToken(context: Context): Flow<String?> = context.dataStore.data.map { prefs ->
         prefs[TOKEN_KEY]
+    }
+
+    suspend fun saveTokenAdmin(context: Context, token: String) {
+        context.dataStore.edit { prefs ->
+            prefs[TOKEN_ADMIN_KEY] = token
+        }
+    }
+
+    fun readTokenAdmin(context: Context): Flow<String?> = context.dataStore.data.map { prefs ->
+        prefs[TOKEN_ADMIN_KEY]
     }
 
     suspend fun clearToken(context: Context) {

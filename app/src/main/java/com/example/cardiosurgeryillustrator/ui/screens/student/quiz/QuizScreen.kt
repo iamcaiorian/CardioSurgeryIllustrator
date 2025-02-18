@@ -7,6 +7,7 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.ViewModel
@@ -31,7 +32,7 @@ fun QuizScreen(
     modifier: Modifier = Modifier,
     onBackClick: () -> Unit
 ) {
-    val quizRepository = QuizRepository()
+    val quizRepository = QuizRepository(LocalContext.current)
 
     val viewModel: QuizViewModel = viewModel(
         factory = QuizViewModelFactory(quizRepository)

@@ -5,16 +5,24 @@ import com.example.cardiosurgeryillustrator.models.student.quiz.quiz.Quiz
 import retrofit2.Response
 import retrofit2.http.Body
 import retrofit2.http.GET
+import retrofit2.http.Header
+import retrofit2.http.Headers
 import retrofit2.http.POST
 import retrofit2.http.Path
 
 interface QuizService {
     @POST("/quiz/create")
-    suspend fun createQuiz(@Body quiz: CreateQuizRequest): Response<Quiz>
+    suspend fun createQuiz(
+        @Body quiz: CreateQuizRequest,
+        @Header("Authorization") token: String
+    ): Response<Quiz>
 
     @GET("/quiz/get-all")
-    suspend fun getQuizzes(): Response<List<Quiz>>
+    suspend fun getQuizzes(@Header("Authorization") token: String): Response<List<Quiz>>
 
     @GET("/quiz/get-one/{quiz_id}")
-    suspend fun getQuizById(@Path("quiz_id") quizId: String): Quiz
+    suspend fun getQuizById(
+        @Path("quiz_id") quizId: String,
+        @Header("Authorization") token: String
+    ): Quiz
 }

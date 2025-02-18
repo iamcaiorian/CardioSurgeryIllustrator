@@ -16,6 +16,7 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.focusModifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.navigation.compose.NavHost
@@ -95,7 +96,7 @@ sealed class BottomBarAdminAction(
 fun AdminNavHost() {
     val adminNavController = rememberNavController()
 
-    val quizRepository = QuizRepository()
+    val quizRepository = QuizRepository(LocalContext.current)
     val questionRepository = QuestionRepository()
     val moduleRepository = ModuleRepository()
 
@@ -116,12 +117,7 @@ fun AdminNavHost() {
             Scaffold { innerPadding ->
                 LoginAdminScreen(
                     modifier = Modifier.padding(innerPadding),
-                    onLoginClick = { _, _ ->
-                        adminNavController.navigate(BottomBarAdminAction.Home.route) {
-                            popUpTo(LoginAdminFlow.LoginAdmin.route) { inclusive = true }
-                        }
-                    },
-                    onForgotPasswordClick = { },
+                    onNavigateToHome = { adminNavController.navigate(BottomBarAdminAction.Home.route)}
                 )
             }
 
