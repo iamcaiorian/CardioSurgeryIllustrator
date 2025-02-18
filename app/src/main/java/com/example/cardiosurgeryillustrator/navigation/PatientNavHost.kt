@@ -44,7 +44,11 @@ import com.example.cardiosurgeryillustrator.ui.screens.patient.settings.PatientS
 import com.example.cardiosurgeryillustrator.ui.screens.student.notification.NotificationSettingsScreen
 import com.example.cardiosurgeryillustrator.utils.DataStoreUtils
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.example.cardiosurgeryillustrator.repository.patient.community.CommentRepository
+import com.example.cardiosurgeryillustrator.repository.patient.community.ForumRepository
+import com.example.cardiosurgeryillustrator.repository.patient.community.PatientRepository
 import com.example.cardiosurgeryillustrator.ui.screens.patient.home.LifeStyleScreen
+import com.example.cardiosurgeryillustrator.view_models.patient.community.ForumViewModelFactory
 
 
 sealed class BottomBarPacientAction(
@@ -224,21 +228,29 @@ fun PatientNavHost() {
 
         // Tela Fórum
         composable(
-            route = "forum_screen/{topicId}",
-            arguments = listOf(navArgument("topicId") { type = NavType.StringType })
+            route = "forum_screen/{forumId}/{isFavorite}/{isLiked}",
+            arguments = listOf(
+                navArgument("forumId") { type = NavType.StringType },
+                navArgument("isFavorite") { type = NavType.BoolType },
+                navArgument("isLiked") { type = NavType.BoolType }
+            )
         ) { backStackEntry ->
-            val topicId = backStackEntry.arguments?.getString("topicId")
+            val forumId = backStackEntry.arguments?.getString("forumId")
+            val isFavorite = backStackEntry.arguments?.getBoolean("isFavorite") ?: false
+            val isLiked = backStackEntry.arguments?.getBoolean("isLiked") ?: false
 
-            if (!topicId.isNullOrEmpty()) {
+            if (!forumId.isNullOrEmpty()) {
                 ForumScreen(
                     navController = patientNavController,
-                    viewModel = viewModel(),
-                    topicId = topicId
+                    forumId = forumId,
+                    isFavorite = isFavorite,
+                    isLiked = isLiked
                 )
             } else {
-                Log.e("Navigation", "Erro ao abrir a tela do fórum: ID do tópico vazio")
+                Log.e("Navigation", "Erro ao abrir a tela do fórum: ID do fórum vazio")
             }
         }
+
 
         // Tela Assistente
         composable(BottomBarPacientAction.Assistant.route) {

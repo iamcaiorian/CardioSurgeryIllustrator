@@ -6,18 +6,22 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
+import androidx.core.content.ContentProviderCompat.requireContext
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import com.example.cardiosurgeryillustrator.R
-import com.example.cardiosurgeryillustrator.models.patient.community.forum.Topic
+import com.example.cardiosurgeryillustrator.models.patient.community.forum.Forum
 import com.example.cardiosurgeryillustrator.ui.theme.Typography
 import com.example.cardiosurgeryillustrator.ui.theme.Zinc100
 import com.example.cardiosurgeryillustrator.ui.theme.Zinc300
@@ -30,34 +34,44 @@ import com.example.cardiosurgeryillustrator.repository.patient.community.Patient
 
 @Composable
 fun ForumItem(
-    topic: Topic,
+    forum: Forum,
     navController: NavController,
     modifier: Modifier = Modifier,
-    communityViewModel: CommunityViewModel = viewModel(factory = CommunityViewModelFactory(ForumRepository())),
+    communityViewModel: CommunityViewModel = viewModel(factory = CommunityViewModelFactory(
+        ForumRepository(),
+        PatientRepository(),
+        LocalContext.current
+    )),
     patientViewModel: PatientViewModel = viewModel(factory = PatientViewModelFactory(PatientRepository()))
 ) {
     val savedForums by patientViewModel.savedForums.collectAsState(emptyList())
-    val isSaved = topic.id in savedForums
+    val isSaved = forum.id in savedForums
 
-    Box(
+    Card(
         modifier = modifier
             .fillMaxWidth()
-            .background(color = Color.Transparent, shape = RoundedCornerShape(12.dp))
+            .padding(8.dp)
             .clickable {
                 try {
-                    navController.navigate("forum_screen/${topic.id}")
+                    navController.navigate("forum_screen/${forum.id}/${forum.isFavorite.value.toString()}/${forum.isLiked.value.toString()}")
                 } catch (e: Exception) {
                     Log.e("ForumItem", "Erro ao navegar para o fórum", e)
                 }
-            }
-    ) {
+
+            },
+        shape = RoundedCornerShape(12.dp),
+        colors = CardDefaults.cardColors(
+            containerColor = Color.Transparent // Define o fundo transparente
+        ),
+        elevation = CardDefaults.cardElevation(defaultElevation = 0.dp) // Remove sombra se necessário
+    )  {
         Column(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(8.dp)
+                .background(Color.Transparent)
         ) {
             Box(
-                modifier = modifier
+                modifier = Modifier
                     .fillMaxWidth()
                     .height(240.dp)
             ) {
@@ -84,33 +98,27 @@ fun ForumItem(
                 )
 
                 Column(
-                    modifier = modifier
+                    modifier = Modifier
                         .fillMaxWidth()
                         .fillMaxHeight()
                         .padding(16.dp),
                     verticalArrangement = Arrangement.Bottom
                 ) {
                     Text(
-                        text = topic.theme,
+                        text = forum.theme,
                         style = Typography.headlineLarge,
                         color = Zinc100
                     )
                     Spacer(modifier = Modifier.height(4.dp))
                     Text(
-                        text = topic.title,
+                        text = forum.title,
                         style = Typography.bodyLarge,
                         color = Zinc300
                     )
                 }
             }
 
-            ForumInteractions(
-                topic = topic,
-                isTopicSaved = isSaved,
-                onSaveToggle = { topicId, newState ->
-                    patientViewModel.toggleSavedTopic(topicId, newState)
-                }
-            )
+            ForumInteractions(forum = forum)
 
             LastMessageForum(
                 userAvatar = R.drawable.avatar_1,
@@ -118,4 +126,5 @@ fun ForumItem(
             )
         }
     }
+
 }

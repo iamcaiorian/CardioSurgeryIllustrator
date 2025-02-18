@@ -7,26 +7,36 @@ import com.example.cardiosurgeryillustrator.models.student.quiz.question.Questio
 import com.example.cardiosurgeryillustrator.models.student.quiz.quiz.CreateQuizRequest
 import com.example.cardiosurgeryillustrator.models.student.quiz.quiz.Quiz
 import retrofit2.Response
-
-
-class QuizRepository() {
+import android.content.Context
+import com.example.cardiosurgeryillustrator.utils.DataStoreUtils
+import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.runBlocking
+class QuizRepository(private val context: Context) {
 
     suspend fun createQuiz(quiz: CreateQuizRequest): Response<Quiz> {
-        return RetrofitInstance.quizService.createQuiz(quiz)
+        val token = getAdminToken()
+        return RetrofitInstance.quizService.createQuiz(quiz, token)
     }
 
     suspend fun getQuizzes(): Response<List<Quiz>> {
-        val response = RetrofitInstance.quizService.getQuizzes()
+        val token = getAdminToken()
+        val response = RetrofitInstance.quizService.getQuizzes(token)
         println("Resposta da API getQuizzes: ${response.body()}")
         return response
     }
 
     suspend fun getQuizById(quizId: String): Quiz {
-        return RetrofitInstance.quizService.getQuizById(quizId)
+        val token = getAdminToken()
+        return RetrofitInstance.quizService.getQuizById(quizId, token)
     }
 
+    private fun getAdminToken(): String {
+        return runBlocking {
+            "Bearer " + (DataStoreUtils.readTokenAdmin(context).first() ?: "")
+        }
+    }
+    
     suspend fun addQuestionToQuiz(questionId: String, quizId: String): Response<QuestionResponse> {
         return RetrofitInstance.quizService.addQuestionToQuiz(questionId, quizId)
     }
-
 }

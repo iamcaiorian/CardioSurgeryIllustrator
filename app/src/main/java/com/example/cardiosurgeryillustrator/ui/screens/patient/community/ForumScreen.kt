@@ -1,61 +1,99 @@
 package com.example.cardiosurgeryillustrator.ui.screens.patient.community
 
+import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
-import androidx.compose.runtime.*
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.input.TextFieldValue
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
-import androidx.navigation.compose.rememberNavController
 import com.example.cardiosurgeryillustrator.R
-import com.example.cardiosurgeryillustrator.models.patient.community.comment.CommentRequest
-import com.example.cardiosurgeryillustrator.models.patient.community.forum.Topic
+import com.example.cardiosurgeryillustrator.models.patient.community.forum.Forum
 import com.example.cardiosurgeryillustrator.repository.patient.community.CommentRepository
 import com.example.cardiosurgeryillustrator.repository.patient.community.ForumRepository
+import com.example.cardiosurgeryillustrator.repository.patient.community.PatientRepository
 import com.example.cardiosurgeryillustrator.ui.components.patient.community.forum.ForumTopBar
 import com.example.cardiosurgeryillustrator.ui.components.patient.message_bottom.MessageBottomBar
 import com.example.cardiosurgeryillustrator.ui.theme.Blue700
 import com.example.cardiosurgeryillustrator.ui.theme.Zinc300
+import com.example.cardiosurgeryillustrator.utils.makeForumEntity
 import com.example.cardiosurgeryillustrator.view_models.patient.community.ForumViewModel
 import com.example.cardiosurgeryillustrator.view_models.patient.community.ForumViewModelFactory
 
 @Composable
 fun ForumScreen(
     modifier: Modifier = Modifier,
-    viewModel: ForumViewModel = viewModel(factory = ForumViewModelFactory(ForumRepository(), CommentRepository() )),
     navController: NavController,
-    topicId: String
+    forumId: String,
+    isLiked: Boolean,
+    isFavorite: Boolean
 ) {
-    val allTopics by viewModel.topics.collectAsState(emptyList())
-    val topic = allTopics.find { it.id == topicId }
-    val messages by viewModel.messages.collectAsState(emptyList())
+
+
+    val context = LocalContext.current
+
+    val viewModel: ForumViewModel = viewModel(
+        factory = ForumViewModelFactory(
+            ForumRepository(),
+            CommentRepository(),
+            PatientRepository(),
+            context
+        )
+    )
+
+    val forumResponse by viewModel.forum.collectAsState()
+    val messages by viewModel.messages.collectAsState()
+    val patientId by viewModel.patientId.collectAsState()
 
     var messageText by remember { mutableStateOf(TextFieldValue("")) }
     val listState = rememberLazyListState()
 
-    LaunchedEffect(topicId) {
-        viewModel.getAllMessagesForForum(topicId)
-    }
+    LaunchedEffect(forumId) { viewModel.loadForum(forumId) }
 
     LaunchedEffect(messages.size) {
-        listState.animateScrollToItem(messages.size)
+        if (messages.isNotEmpty()) {
+            listState.animateScrollToItem(messages.lastIndex)
+        }
+    }
+
+    var forum by remember { mutableStateOf<Forum?>(null) }
+
+    LaunchedEffect(forumResponse, patientId) {
+        if (forumResponse != null && patientId != null) {
+            forum = makeForumEntity(forumResponse!!, patientId!!, isLiked, isFavorite)
+        }
     }
 
     Scaffold(
@@ -65,50 +103,46 @@ fun ForumScreen(
                 onMessageTextChange = { messageText = it },
                 onSendClick = {
                     if (messageText.text.isNotEmpty()) {
-                        viewModel.sendMessageToTopic(topicId = topicId, userId = "1", message = messageText.text,)
+                        viewModel.sendMessageToForum(forumId, messageText.text)
                         messageText = TextFieldValue("")
                     }
                 },
                 placeholder = "Digite sua mensagem..."
             )
-        },
-        content = { paddingValues ->
-            Column(
-                modifier = modifier
-                    .background(Color.White)
-                    .fillMaxHeight()
-                    .fillMaxWidth()
-                    .padding(paddingValues)
-            ) {
-                topic?.let {
-                    ForumTopBar(
-                        topic = it,
-                        backgroundImageRes = R.drawable.img_defaul,
-                        modifier = Modifier.fillMaxWidth(),
-                        isTopicSaved = false,
-                        onSaveToggle = {},
-                        onBackClick = { navController.popBackStack() }
-                    )
-
-                    LazyColumn(
-                        modifier = Modifier.fillMaxWidth().padding(8.dp),
-                        state = listState
-                    ) {
-                        items(messages) { message ->
-                            MessageBubble(
-                                content = message.content,
-                                isUserMessage = message.id == "1",
-                                showAvatar = true,
-                                userAvatar = if (message.id == "1") R.drawable.avatar_1 else R.drawable.avatar_1
-                            )
-                        }
+        }
+    ) { paddingValues ->
+        Column(
+            modifier = modifier
+                .background(Color.White)
+                .fillMaxSize()
+                .padding(paddingValues)
+        ) {
+            forum?.let {
+                ForumTopBar(
+                    forum = it,
+                    backgroundImageRes = R.drawable.img_defaul,
+                    modifier = Modifier.fillMaxWidth(),
+                    onBackClick = { navController.popBackStack() }
+                )
+                LazyColumn(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(8.dp),
+                    state = listState
+                ) {
+                    items(messages) { message ->
+                        MessageBubble(
+                            content = message.content,
+                            isUserMessage = message.id == patientId,
+                            showAvatar = true,
+                            userAvatar = R.drawable.avatar_1
+                        )
                     }
                 }
             }
         }
-    )
+    }
 }
-
 
 @Composable
 fun MessageBubble(
@@ -136,12 +170,16 @@ fun MessageBubble(
         } else if (!isUserMessage) {
             Spacer(modifier = Modifier.width(44.dp))
         }
-
         Box(
             modifier = Modifier
                 .background(
                     color = if (isUserMessage) Blue700 else Zinc300,
-                    shape = if (isUserMessage) RoundedCornerShape(16.dp, 16.dp, 2.dp, 16.dp) else RoundedCornerShape(16.dp, 16.dp, 16.dp, 2.dp)
+                    shape = if (isUserMessage) RoundedCornerShape(
+                        16.dp,
+                        16.dp,
+                        2.dp,
+                        16.dp
+                    ) else RoundedCornerShape(16.dp, 16.dp, 16.dp, 2.dp)
                 )
                 .padding(12.dp)
                 .widthIn(max = 250.dp)
@@ -155,88 +193,3 @@ fun MessageBubble(
         }
     }
 }
-
-
-//@Preview(showBackground = true)
-//@Composable
-//fun PreviewForumScreen() {
-//    val navController = rememberNavController()
-//    var messageText by remember { mutableStateOf(TextFieldValue("")) }
-//    val listState = rememberLazyListState()
-//
-//    val commentRequests = listOf(
-//        CommentRequest(patientId = "1", content = "Olá, alguém pode me explicar sobre a cirurgia?"),
-//        CommentRequest(patientId = "2", content = "Claro! A cirurgia de ponte de safena é um procedimento comum para tratar obstruções nas artérias coronárias."),
-//        CommentRequest(patientId = "2", content = "Ela melhora o fluxo sanguíneo e reduz os sintomas de angina."),
-//        CommentRequest(patientId = "3", content = "Já passei por esse procedimento, foi tranquilo."),
-//        CommentRequest(patientId = "1", content = "Que bom saber! Quanto tempo foi a recuperação?"),
-//        CommentRequest(patientId = "1", content = "Preciso me preparar para isso.")
-//    )
-//
-//    LaunchedEffect(commentRequests.size) {
-//        listState.animateScrollToItem(commentRequests.size)
-//    }
-//
-//    val defaultTopic = Topic(
-//        id = "1",
-//        patientId = "123",
-//        theme = "Cardiologia",
-//        title = "Cirurgia de Ponte de Safena",
-//        commentRequests = commentRequests,
-//        likes = 10,
-//        comments = 3,
-//        timestamp = System.currentTimeMillis()
-//    )
-//
-//    Scaffold(
-//        bottomBar = {
-//            MessageBottomBar(
-//                messageText = messageText,
-//                onMessageTextChange = { messageText = it },
-//                onSendClick = {
-//                    if (messageText.text.isNotEmpty()) {
-//                        messageText = TextFieldValue("")
-//                    }
-//                },
-//                placeholder = "Digite sua mensagem..."
-//            )
-//        },
-//        content = { paddingValues ->
-//            Column(
-//                modifier = Modifier
-//                    .background(Color.White)
-//                    .fillMaxHeight()
-//                    .fillMaxWidth()
-//                    .padding(paddingValues)
-//            ) {
-//                ForumTopBar(
-//                    topic = defaultTopic,
-//                    backgroundImageRes = R.drawable.img_defaul,
-//                    modifier = Modifier.fillMaxWidth(),
-//                    isTopicSaved = false,
-//                    onSaveToggle = {},
-//                    onBackClick = { }
-//                )
-//
-//                LazyColumn(
-//                    modifier = Modifier
-//                        .fillMaxWidth()
-//                        .padding(8.dp),
-//                    state = listState
-//                ) {
-//                    itemsIndexed(commentRequests) { index, message ->
-//                        val previousUserId = if (index > 0) commentRequests[index - 1].patientId else null
-//                        val showAvatar = previousUserId != message.patientId
-//
-//                        MessageBubble(
-//                            content = message.content,
-//                            isUserMessage = message.patientId == "1",
-//                            showAvatar = showAvatar,
-//                            userAvatar = if (message.patientId == "1") R.drawable.avatar_1 else R.drawable.avatar_1
-//                        )
-//                    }
-//                }
-//            }
-//        }
-//    )
-//}

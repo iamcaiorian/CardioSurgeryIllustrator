@@ -7,35 +7,46 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
-import androidx.compose.runtime.*
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.cardiosurgeryillustrator.R
-import com.example.cardiosurgeryillustrator.models.patient.community.forum.Topic
+import com.example.cardiosurgeryillustrator.models.patient.community.forum.Forum
+import com.example.cardiosurgeryillustrator.repository.patient.community.CommentRepository
+import com.example.cardiosurgeryillustrator.repository.patient.community.ForumRepository
+import com.example.cardiosurgeryillustrator.repository.patient.community.PatientRepository
 import com.example.cardiosurgeryillustrator.ui.theme.Typography
+import com.example.cardiosurgeryillustrator.view_models.patient.community.ForumViewModel
+import com.example.cardiosurgeryillustrator.view_models.patient.community.ForumViewModelFactory
 
 @Composable
 fun ForumInteractions(
-    topic: Topic,
-    isTopicSaved: Boolean,
-    onSaveToggle: (String, Boolean) -> Unit,
+    forum: Forum,
     modifier: Modifier = Modifier
 ) {
-    var likes by remember { mutableStateOf(topic.likes) }
-    var isLiked by remember { mutableStateOf(false) }
-    var isSaved by remember { mutableStateOf(isTopicSaved) }
+    var likes by remember { mutableStateOf(forum.likes) }
+    var isLiked by remember { mutableStateOf(forum.isLiked) }
+    var isSaved by remember { mutableStateOf(forum.isFavorite) }
 
-    fun toggleLike() {
-        isLiked = !isLiked
-        likes += if (isLiked) 1 else -1
-    }
-
-    fun toggleSave() {
-        isSaved = !isSaved
-        onSaveToggle(topic.id, isSaved)
-    }
+    val forumRepository = ForumRepository()
+    val commentRepository = CommentRepository()
+    val patientRepository = PatientRepository()
+    val viewModel: ForumViewModel = viewModel(
+        factory = ForumViewModelFactory(
+            forumRepository,
+            commentRepository,
+            patientRepository,
+            LocalContext.current
+        )
+    )
 
     Row(
         modifier = modifier
@@ -45,32 +56,39 @@ fun ForumInteractions(
     ) {
         Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
             Row(verticalAlignment = Alignment.CenterVertically) {
-                IconButton(onClick = { toggleLike() }) {
+                IconButton(onClick = {
+                    viewModel.likeForum(forum.id)
+                    forum.isLiked.value = !forum.isLiked.value
+                    likes++
+                }) {
                     Icon(
-                        painter = painterResource(id = if (isLiked) R.drawable.ic_liked else R.drawable.ic_unliked),
+                        painter = painterResource(id = if (forum.isLiked.value) R.drawable.ic_liked else R.drawable.ic_unliked),
                         contentDescription = "Curtir"
                     )
                 }
+
                 Text(text = likes.toString(), style = Typography.bodySmall)
             }
 
             Row(verticalAlignment = Alignment.CenterVertically) {
-                IconButton(onClick = { /* Adicionar lógica de comentário */ }) {
+                IconButton(onClick = { }) {
                     Icon(
                         painter = painterResource(id = R.drawable.ic_comment),
                         contentDescription = "Comentar"
                     )
                 }
-                Text(text = topic.comments.toString(), style = Typography.bodySmall) // Mantendo os comentários fixos
+                Text(text = forum.comments.toString(), style = Typography.bodySmall)
             }
         }
 
-        IconButton(onClick = { toggleSave() }) {
+        IconButton(onClick = {
+            viewModel.saveForum(forum.id)
+            forum.isFavorite.value = !forum.isFavorite.value
+        }) {
             Icon(
-                painter = painterResource(id = if (isSaved) R.drawable.ic_saved else R.drawable.ic_unsaved),
+                painter = painterResource(id = if (forum.isFavorite.value) R.drawable.ic_saved else R.drawable.ic_unsaved),
                 contentDescription = "Salvar"
             )
         }
     }
 }
-

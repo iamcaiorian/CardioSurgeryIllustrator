@@ -20,11 +20,9 @@ interface PatientService {
     @GET("/patient/form/{userId}")
     suspend fun getPatientForm(@Path("userId") userId: String): List<Map<String, Any>>
 
-    // Obter todos os IDs dos fóruns curtidos por um paciente específic
     @GET("/patient/{patientId}/forum/liked")
     suspend fun getAllLikedForumsId(@Path("patientId") patientId: String): List<String>
 
-    // Obter todos os IDs dos fóruns salvos por um paciente específico
     @GET("/patient/{patientId}/forum/saved")
     suspend fun getAllSavedForumsId(@Path("patientId") patientId: String): List<String>
 }

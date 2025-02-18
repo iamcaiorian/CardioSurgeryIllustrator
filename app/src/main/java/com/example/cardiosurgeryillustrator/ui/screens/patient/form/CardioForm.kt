@@ -27,12 +27,15 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.example.cardiosurgeryillustrator.R
 import com.example.cardiosurgeryillustrator.models.mock.patient.mockQuestions
+import com.example.cardiosurgeryillustrator.models.patient.patient.QuestionAndAnswer
 import com.example.cardiosurgeryillustrator.models.student.quiz.question.Question
 import com.example.cardiosurgeryillustrator.models.student.quiz.question.QuestionType
+import com.example.cardiosurgeryillustrator.repository.patient.community.PatientRepository
 import com.example.cardiosurgeryillustrator.navigation.BottomBarPacientAction
 import com.example.cardiosurgeryillustrator.ui.components.buttons.ButtonDefault
 import com.example.cardiosurgeryillustrator.ui.components.patient.form.CheckboxGroup
@@ -40,6 +43,8 @@ import com.example.cardiosurgeryillustrator.ui.components.patient.form.RadioGrou
 import com.example.cardiosurgeryillustrator.ui.components.patient.form.TextInputField
 import com.example.cardiosurgeryillustrator.ui.theme.Zinc500
 import com.example.cardiosurgeryillustrator.view_models.patient.form.CardioFormViewModel
+import com.example.cardiosurgeryillustrator.view_models.patient.form.CardioFormViewModelFactory
+import java.util.UUID
 import getQuestionIndex
 import removeAccents
 
@@ -47,9 +52,14 @@ import removeAccents
 fun CardioForm(
     navController: NavController,
     questionsList: List<Question>,
-    viewModel: CardioFormViewModel = CardioFormViewModel(LocalContext.current),
     modifier: Modifier = Modifier
 ) {
+    val patientRepository = PatientRepository()
+    val viewModel: CardioFormViewModel = viewModel(
+        factory = CardioFormViewModelFactory(LocalContext.current, patientRepository)
+    )
+
+
     var currentIndex by remember { mutableStateOf(0) }
     var answers by remember { mutableStateOf(mutableMapOf<String, String>()) }
 
@@ -163,9 +173,10 @@ fun CardioForm(
                 ButtonDefault(
                     text = "Finalizar",
                     onClick = {
-                        Log.d("Asnwers Array", answers.toString())
+                        Log.d("Answers Array", answers.toString())
 
-                        // Salvar a resposta da questão 14
+                        val userId = UUID.randomUUID().toString()
+
                         answers["14"]?.let { response ->
                             viewModel.saveQuestion14Response(response)
                         }
@@ -186,9 +197,13 @@ fun CardioForm(
                             viewModel.saveIMC(imcResult)
                         }
 
-                        viewModel.saveFormResponse()
+                        val questionAndAnswerList = answers.map { (question, answer) ->
+                            QuestionAndAnswer(question, answer)
+                        }
 
-                        navController.navigate("${BottomBarPacientAction.HomePacient.route}/$diseaseIndex")
+                        viewModel.saveFormResponse(userId = userId, questionsAndAnswers = questionAndAnswerList)
+
+                        navController.navigate("home-pacient/${diseaseIndex}")
                     },
                     isIcon = true
                 )
@@ -227,8 +242,5 @@ private fun CardioFormPreview() {
         navController = rememberNavController(),
         questionsList = mockQuestions,
         modifier = Modifier,
-        viewModel = CardioFormViewModel(
-            LocalContext.current
-        )
     )
 }

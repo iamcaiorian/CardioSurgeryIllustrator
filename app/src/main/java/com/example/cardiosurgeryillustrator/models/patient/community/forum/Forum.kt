@@ -1,9 +1,10 @@
 package com.example.cardiosurgeryillustrator.models.patient.community.forum
 
-import com.example.cardiosurgeryillustrator.models.patient.community.comment.CommentRequest
+import androidx.compose.runtime.MutableState
+import androidx.compose.runtime.mutableStateOf
 import com.example.cardiosurgeryillustrator.models.patient.community.comment.CommentResponse
 
-data class Topic(
+data class Forum(
     val id: String,
     val userId: String,
     val theme: String,
@@ -11,7 +12,7 @@ data class Topic(
     val commentResponse: List<CommentResponse>,
     var likes: Int,
     var comments: Int,
-    val timestamp: Long,
-    var isLiked: Boolean = false,
-    var isFavorite: Boolean = false
+    val timestamp: String,
+    var isLiked: MutableState<Boolean> = mutableStateOf(false),
+    var isFavorite: MutableState<Boolean> = mutableStateOf(false)
 )
