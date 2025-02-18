@@ -20,7 +20,7 @@ fun CardQuiz(
         modifier = modifier
             .fillMaxWidth()
             .padding(vertical = 8.dp),
-        colors = CardDefaults.cardColors(containerColor = Color(0xFFF5F5F5)),
+        colors = CardDefaults.cardColors(containerColor = Color(0xFFF5F5F5)), // Gray padronizado
         elevation = CardDefaults.cardElevation(2.dp)
     ) {
         Column(modifier = Modifier.padding(16.dp)) {
@@ -37,7 +37,7 @@ fun CardQuiz(
                 Button(
                     onClick = { onEdit(quiz) },
                     colors = ButtonDefaults.buttonColors(
-                        containerColor = Color.Gray,
+                        containerColor = Color.Gray, // Botão também cinza
                         contentColor = Color.White
                     ),
                     shape = MaterialTheme.shapes.medium

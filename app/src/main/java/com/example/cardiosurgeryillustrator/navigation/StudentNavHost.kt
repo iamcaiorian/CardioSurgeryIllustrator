@@ -533,7 +533,7 @@ fun StudentNavHost(
             HabitDetailScreen(
                 title = title,
                 description = description,
-                onBackClick = { studentNavController.popBackStack() }
+                navController = studentNavController // Passando o NavController corretamente
             )
         }
     }

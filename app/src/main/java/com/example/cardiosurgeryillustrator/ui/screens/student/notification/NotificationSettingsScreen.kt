@@ -2,8 +2,6 @@ package com.example.cardiosurgeryillustrator.ui.screens.student.notification
 
 import android.content.Context
 import androidx.compose.foundation.layout.*
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -15,7 +13,6 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.work.*
 import com.example.cardiosurgeryillustrator.ui.components.topBar.StandardTopBar
 import com.example.cardiosurgeryillustrator.utils.notification.HabitsNotificationWorker
-import com.example.cardiosurgeryillustrator.utils.notification.RiskNotificationWorker
 import com.example.cardiosurgeryillustrator.view_models.student.notification.NotificationViewModel
 import com.example.cardiosurgeryillustrator.view_models.student.notification.NotificationViewModelFactory
 import java.util.concurrent.TimeUnit
@@ -30,7 +27,6 @@ fun NotificationSettingsScreen(
         factory = NotificationViewModelFactory(context)
     )
 
-    val riskNotificationEnabled by viewModel.riskNotificationEnabled.collectAsState(initial = false)
     val habitsNotificationEnabled by viewModel.habitsNotificationEnabled.collectAsState(initial = false)
 
     Scaffold(
@@ -43,23 +39,8 @@ fun NotificationSettingsScreen(
         ) {
             Column(modifier = Modifier.fillMaxWidth().padding(16.dp)) {
                 NotificationOption(
-                    title = "Notificações de Risco",
-                    description = "Receber alertas para situações de risco médico relacionadas às artérias.",
-                    isEnabled = riskNotificationEnabled,
-                    onToggle = { isChecked ->
-                        viewModel.toggleRiskNotifications(isChecked)
-                        if (isChecked) {
-                            scheduleRiskNotifications(context)
-                        } else {
-                            cancelRiskNotifications(context)
-                        }
-                    }
-                )
-                HorizontalDivider(color = Color(0xFFE0E0E0), thickness = 1.dp)
-
-                NotificationOption(
                     title = "Notificações de Bons Hábitos",
-                    description = "Receber notificações de bons hábitos para seguir durante o dia.",
+                    description = "Receber notificações de bons hábitos a cada hora.",
                     isEnabled = habitsNotificationEnabled,
                     onToggle = { isChecked ->
                         viewModel.toggleHabitsNotifications(isChecked)
@@ -112,25 +93,9 @@ private fun NotificationOption(
     }
 }
 
-private fun scheduleRiskNotifications(context: Context) {
-    val workRequest = PeriodicWorkRequestBuilder<RiskNotificationWorker>(
-        15, TimeUnit.SECONDS
-    ).build()
-
-    WorkManager.getInstance(context).enqueueUniquePeriodicWork(
-        "RiskNotifications",
-        ExistingPeriodicWorkPolicy.UPDATE,
-        workRequest
-    )
-}
-
-private fun cancelRiskNotifications(context: Context) {
-    WorkManager.getInstance(context).cancelUniqueWork("RiskNotifications")
-}
-
 private fun scheduleHabitsNotifications(context: Context) {
     val workRequest = PeriodicWorkRequestBuilder<HabitsNotificationWorker>(
-        15, TimeUnit.SECONDS
+        1, TimeUnit.HOURS
     ).build()
 
     WorkManager.getInstance(context).enqueueUniquePeriodicWork(
