@@ -2,17 +2,7 @@ package com.example.cardiosurgeryillustrator.ui.components.patient.community.for
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxHeight
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.verticalScroll
@@ -25,27 +15,27 @@ import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.cardiosurgeryillustrator.R
+import com.example.cardiosurgeryillustrator.models.patient.community.forum.Forum
 import com.example.cardiosurgeryillustrator.ui.components.buttons.StandardButton
-import com.example.cardiosurgeryillustrator.ui.theme.Blue700
 import com.example.cardiosurgeryillustrator.ui.theme.Typography
 import com.example.cardiosurgeryillustrator.ui.theme.Zinc100
 import com.example.cardiosurgeryillustrator.ui.theme.Zinc300
+import com.example.cardiosurgeryillustrator.view_models.patient.community.CommunityViewModel
 
 @Composable
 fun ForumTopBar(
-    title: String,
-    subtitle: String,
+    forum: Forum,
     backgroundImageRes: Int,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    onBackClick: () -> Unit
 ) {
     val scrollState = rememberScrollState()
 
     Column(
-        modifier = Modifier
-            .verticalScroll(scrollState)
+        modifier = Modifier.verticalScroll(scrollState),
+        verticalArrangement = Arrangement.spacedBy(8.dp)
     ) {
         Box(
             modifier = modifier
@@ -74,9 +64,8 @@ fun ForumTopBar(
                     )
             )
 
-
             Column(
-                modifier = modifier
+                modifier = Modifier
                     .fillMaxWidth()
                     .fillMaxHeight()
                     .padding(16.dp),
@@ -87,18 +76,19 @@ fun ForumTopBar(
                     modifier = Modifier
                         .size(32.dp)
                         .clip(CircleShape),
-                    iconRes = R.drawable.ic_arrow_left
-                ) {}
+                    iconRes = R.drawable.ic_arrow_left,
+                    onClick = onBackClick
+                )
 
                 Column {
                     Text(
-                        text = subtitle,
+                        text = forum.title,
                         style = Typography.headlineLarge,
                         color = Zinc100
                     )
                     Spacer(modifier = Modifier.height(4.dp))
                     Text(
-                        text = title,
+                        text = forum.theme,
                         style = Typography.bodyLarge,
                         color = Zinc300
                     )
@@ -106,40 +96,8 @@ fun ForumTopBar(
             }
         }
 
-        Column(modifier = Modifier.fillMaxSize()) {
-            repeat(1) {
-                Row(
-                    modifier = Modifier
-                        .background(color = Blue700)
-                        .padding(horizontal = 16.dp, vertical = 16.dp)
-                        .fillMaxSize(),
-                    verticalAlignment = Alignment.CenterVertically,
-                    horizontalArrangement = Arrangement.spacedBy(12.dp)
-                ) {
-                    StandardButton(
-                        modifier = Modifier
-                            .size(28.dp)
-                            .clip(CircleShape),
-                        iconRes = R.drawable.ic_arrow_left
-                    ) {}
-
-                    Text(
-                        text = subtitle,
-                        style = Typography.headlineMedium,
-                        color = Zinc100
-                    )
-                }
-            }
-        }
+        ForumInteractions(
+            forum = forum
+        )
     }
-}
-
-@Preview
-@Composable
-private fun ForumTopBarPreview() {
-    ForumTopBar(
-        title = "Pós Operatório",
-        subtitle = "Como foi seu pós operatório?",
-        backgroundImageRes = R.drawable.img_defaul
-    )
 }

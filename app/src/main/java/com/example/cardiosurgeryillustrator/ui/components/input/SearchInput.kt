@@ -1,5 +1,7 @@
 package com.example.cardiosurgeryillustrator.ui.components.input
 
+import androidx.compose.foundation.border
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -25,31 +27,31 @@ fun SearchInput(
     query: String,
     onQueryChange: (String) -> Unit
 ) {
-    TextField(
+    Box(
         modifier = modifier
-            .height(48.dp)
-            .fillMaxWidth(),
-        shape = RoundedCornerShape(8.dp),
-        value = query,
-        onValueChange = onQueryChange,
-        colors = TextFieldDefaults.colors(
-            unfocusedIndicatorColor = Color.Transparent,
-            focusedIndicatorColor = Color.Transparent,
-            unfocusedContainerColor = Blue700.copy(alpha = 0.2f)
-        ),
-        leadingIcon = {
-            Icon(
-                painter = painterResource(id = R.drawable.ic_search),
-                contentDescription = "Search Icon",
-                modifier = Modifier
-                    .padding(start = 8.dp)
-                    .size(24.dp),
-                tint = Blue900
-            )
-        },
-        placeholder = { Text("Pesquisar", style = Typography.bodyMedium, color = Blue900) },
-        textStyle = Typography.bodyMedium.copy(color = Color.Black),
-        singleLine = true
-    )
+            .fillMaxWidth()
+    ) {
+        TextField(
+            modifier = modifier
+                .height(52.dp)
+                .fillMaxWidth(),
+            shape = RoundedCornerShape(8.dp),
+            value = query,
+            onValueChange = onQueryChange,
+            colors = TextFieldDefaults.colors(
+                unfocusedIndicatorColor = Color.Transparent,
+                focusedIndicatorColor = Color.Transparent,
+                unfocusedContainerColor = Blue700.copy(alpha = 0.2f)
+            ),
+            leadingIcon = {
+                Icon(
+                    painter = painterResource(id = R.drawable.ic_search),
+                    contentDescription = "Search Icon",
+                    modifier = Modifier.padding(4.dp).size(20.dp),
+                    tint = Blue900
+                )
+            },
+            placeholder = { Text("Pesquisar", style = Typography.bodyMedium, color = Blue900) },
+        )
+    }
 }
-

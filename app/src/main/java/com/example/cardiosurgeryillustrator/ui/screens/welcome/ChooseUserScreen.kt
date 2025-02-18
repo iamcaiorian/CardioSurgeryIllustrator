@@ -2,6 +2,7 @@ package com.example.cardiosurgeryillustrator.ui.screens.welcome
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -22,44 +23,61 @@ import com.example.cardiosurgeryillustrator.ui.components.welcome.WelcomeHeader
 import com.example.cardiosurgeryillustrator.ui.theme.Typography
 
 @Composable
-fun ChooseUserScreen(modifier: Modifier = Modifier, onNavigateToPatient: () -> Unit, onNavigateToStudent: () -> Unit) {
-    Column(
+fun ChooseUserScreen(
+    modifier: Modifier = Modifier,
+    onNavigateToPatient: () -> Unit,
+    onNavigateToStudent: () -> Unit,
+    onNavigateToAdmin: () -> Unit,
+) {
+    Box(
         modifier = modifier
-            .background(Color.White)
             .fillMaxSize()
-            .padding(horizontal = 32.dp, vertical = 96.dp)
-            .verticalScroll(state = rememberScrollState()),
-        verticalArrangement = Arrangement.spacedBy(80.dp, Alignment.Bottom),
-        horizontalAlignment = Alignment.CenterHorizontally
+            .padding(32.dp),
     ) {
-        WelcomeHeader()
-
-        Text(
-            text =  "Explore o passo a passo de cirurgias " +
-                    "cardiovasculares com ilustrações. Selecione " +
-                    "abaixo se você é estudante ou paciente para começar.",
-            style = Typography.bodyMedium,
-            textAlign = TextAlign.Center,
-            modifier = Modifier.fillMaxWidth()
-        )
-
         Column(
-            verticalArrangement = Arrangement.spacedBy(16.dp, Alignment.Bottom),
+            modifier = modifier
+                .verticalScroll(state = rememberScrollState())
+                .align(Alignment.BottomCenter),
+            verticalArrangement = Arrangement.spacedBy(80.dp, Alignment.Bottom),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            StandardButton(
-                modifier = Modifier.fillMaxWidth(),
-                text = "Estudante",
-                onClick = onNavigateToStudent
+            WelcomeHeader()
+
+            Text(
+                text = "Explore o passo a passo de cirurgias " +
+                        "cardiovasculares com ilustrações. Selecione " +
+                        "abaixo se você é estudante ou paciente para começar.",
+                style = Typography.bodyLarge,
+                textAlign = TextAlign.Center,
+                modifier = Modifier.fillMaxWidth()
             )
 
-            Text(text = "ou")
+            Column(
+                verticalArrangement = Arrangement.spacedBy(16.dp, Alignment.Bottom),
+                horizontalAlignment = Alignment.CenterHorizontally
+            ) {
+                StandardButton(
+                    modifier = Modifier.fillMaxWidth(),
+                    text = "Estudante",
+                    onClick = onNavigateToStudent
+                )
 
-            StandardButton(
-                modifier = Modifier.fillMaxWidth(),
-                text = "Paciente",
-                onClick = onNavigateToPatient
-            )
+                Text(text = "ou")
+
+                StandardButton(
+                    modifier = Modifier.fillMaxWidth(),
+                    text = "Paciente",
+                    onClick = onNavigateToPatient
+                )
+
+                Text(text = "ou")
+
+                StandardButton(
+                    modifier = Modifier.fillMaxWidth(),
+                    text = "Administrador",
+                    onClick = onNavigateToAdmin
+                )
+            }
         }
     }
 }
@@ -67,5 +85,5 @@ fun ChooseUserScreen(modifier: Modifier = Modifier, onNavigateToPatient: () -> U
 @Preview
 @Composable
 private fun ChooseUserScreenPreview() {
-    ChooseUserScreen(onNavigateToPatient = {}, onNavigateToStudent = {})
+    ChooseUserScreen(onNavigateToPatient = {}, onNavigateToStudent = {}, onNavigateToAdmin = {})
 }

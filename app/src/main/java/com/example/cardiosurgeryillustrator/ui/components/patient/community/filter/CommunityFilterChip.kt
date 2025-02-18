@@ -11,11 +11,10 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.cardiosurgeryillustrator.ui.theme.Blue600
-import com.example.cardiosurgeryillustrator.ui.theme.Zinc400
 import com.example.cardiosurgeryillustrator.ui.theme.Typography
+import com.example.cardiosurgeryillustrator.ui.theme.Zinc400
 
 @Composable
 fun CommunityCategoryFilterChip(
@@ -61,25 +60,3 @@ fun CommunityCategoryFilterChip(
         }
     )
 }
-
-
-@Preview
-@Composable
-fun CommunityCategoryFilterChipPreview() {
-    CommunityCategoryFilterChip(
-        category = CommunityFilterChipView.POPULARES,
-        isSelected = true,
-        onClick = {}
-    )
-}
-
-@Preview
-@Composable
-fun CommunityCategoryFilterChipNotSelectedPreview() {
-    CommunityCategoryFilterChip(
-        category = CommunityFilterChipView.SALVOS,
-        isSelected = false,
-        onClick = {}
-    )
-}
-

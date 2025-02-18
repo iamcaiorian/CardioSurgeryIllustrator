@@ -1,7 +1,6 @@
 package com.example.cardiosurgeryillustrator.ui.screens.patient.form
 
-import com.example.cardiosurgeryillustrator.ui.components.patient.form.CheckboxGroup
-import com.example.cardiosurgeryillustrator.ui.components.patient.form.RadioGroup
+import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -12,13 +11,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.ArrowBack
-import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -28,74 +20,88 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.navigation.NavController
+import androidx.navigation.compose.rememberNavController
 import com.example.cardiosurgeryillustrator.R
-import com.example.cardiosurgeryillustrator.models.Question
-import com.example.cardiosurgeryillustrator.models.QuestionType
-import com.example.cardiosurgeryillustrator.models.mock.mockQuestions
+import com.example.cardiosurgeryillustrator.models.mock.patient.mockQuestions
+import com.example.cardiosurgeryillustrator.models.patient.patient.QuestionAndAnswer
+import com.example.cardiosurgeryillustrator.models.student.quiz.question.Question
+import com.example.cardiosurgeryillustrator.models.student.quiz.question.QuestionType
+import com.example.cardiosurgeryillustrator.repository.patient.community.PatientRepository
+import com.example.cardiosurgeryillustrator.navigation.BottomBarPacientAction
+import com.example.cardiosurgeryillustrator.ui.components.buttons.ButtonDefault
+import com.example.cardiosurgeryillustrator.ui.components.patient.form.CheckboxGroup
+import com.example.cardiosurgeryillustrator.ui.components.patient.form.RadioGroup
 import com.example.cardiosurgeryillustrator.ui.components.patient.form.TextInputField
-import com.example.cardiosurgeryillustrator.ui.components.button.ConfirmationButton
+import com.example.cardiosurgeryillustrator.ui.theme.Zinc500
+import com.example.cardiosurgeryillustrator.view_models.patient.form.CardioFormViewModel
+import com.example.cardiosurgeryillustrator.view_models.patient.form.CardioFormViewModelFactory
+import java.util.UUID
+import getQuestionIndex
+import removeAccents
 
 @Composable
 fun CardioForm(
-    onNavigateToHome: () -> Unit, onBack: () -> Unit, questionsList: List<Question>
+    navController: NavController,
+    questionsList: List<Question>,
+    modifier: Modifier = Modifier
 ) {
+    val patientRepository = PatientRepository()
+    val viewModel: CardioFormViewModel = viewModel(
+        factory = CardioFormViewModelFactory(LocalContext.current, patientRepository)
+    )
 
+
+    var currentIndex by remember { mutableStateOf(0) }
     var answers by remember { mutableStateOf(mutableMapOf<String, String>()) }
 
-    LazyColumn(
-        modifier = Modifier
-            .fillMaxSize()
-            .padding(16.dp)
-    ) {
+    val currentQuestion = questionsList.getOrNull(currentIndex)
 
-        item {
-            Column(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(32.dp),
-                horizontalAlignment = Alignment.CenterHorizontally
-            ) {
-                Row(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(end = 16.dp),
-                    verticalAlignment = Alignment.CenterVertically
-                ) {
-                    IconButton(onClick = onBack, modifier = Modifier.padding(start = 0.dp)) {
-                        Icon(
-                            imageVector = Icons.Default.ArrowBack, contentDescription = "Voltar"
-                        )
-                    }
-                    Spacer(modifier = Modifier.width(80.dp))
-                    Image(
-                        painter = painterResource(id = R.drawable.heart_icon),
-                        contentDescription = "App Logo",
-                        modifier = Modifier.size(40.dp)
-                    )
-                }
-                Spacer(modifier = Modifier.height(16.dp))
-                Text(
-                    "Como vai sua saúde?", style = TextStyle(
-                        color = Color(0xFF0369A1), fontSize = 24.sp, fontWeight = FontWeight.Bold
-                    ), modifier = Modifier.padding(horizontal = 16.dp)
-                )
-            }
+    Column(
+        modifier = modifier
+            .fillMaxSize()
+            .padding(16.dp),
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+        // Header com botão de voltar
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.Center
+        ) {
+            Image(
+                painter = painterResource(id = R.drawable.heart_icon),
+                contentDescription = "App Logo",
+                modifier = Modifier.size(40.dp)
+            )
         }
 
-        items(questionsList) { question ->
+        Spacer(modifier = Modifier.height(16.dp))
+
+        Text(
+            text = "Como vai sua saúde?", style = TextStyle(
+                color = Color(0xFF0369A1), fontSize = 24.sp, fontWeight = FontWeight.Bold
+            ), modifier = Modifier.padding(horizontal = 16.dp)
+        )
+
+        Spacer(modifier = Modifier.height(32.dp))
+
+        currentQuestion?.let { question ->
             when (question.type) {
                 QuestionType.TEXTINPUT -> {
                     val value = answers[question.id.toString()] ?: ""
                     TextInputField(label = question.text,
+                        modifier = Modifier.padding(vertical = 32.dp),
                         value = value,
                         onValueChange = { newValue ->
-                            // Crie um novo mapa com as alterações
                             answers = answers.toMutableMap().apply {
                                 this[question.id.toString()] = newValue
                             }
@@ -147,17 +153,65 @@ fun CardioForm(
             }
         }
 
-        item {
-            Row(
-                modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.Center
-            ) {
-                Spacer(modifier = Modifier.height(16.dp))
-                ConfirmationButton(text = "Confirmar", onClick = onNavigateToHome)
+        Spacer(modifier = Modifier.height(32.dp))
+
+
+        Row(
+            modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween
+        ) {
+            if (currentIndex > 0) {
+                ButtonDefault(
+                    text = "Anterior", onClick = { currentIndex-- }, isIcon = false, color = Zinc500
+                )
+            }
+
+            if (currentIndex < questionsList.size - 1) {
+                ButtonDefault(
+                    text = "Próximo", onClick = { currentIndex++ }, isIcon = true
+                )
+            } else {
+                ButtonDefault(
+                    text = "Finalizar",
+                    onClick = {
+                        Log.d("Answers Array", answers.toString())
+
+                        val userId = UUID.randomUUID().toString()
+
+                        answers["14"]?.let { response ->
+                            viewModel.saveQuestion14Response(response)
+                        }
+
+                        val height = answers["1"] ?: ""
+                        val weight = answers["2"] ?: ""
+                        val disease = answers["14"] ?: ""
+                        Log.d("doença", disease)
+
+                        val diseaseIndex = getQuestionIndex(disease)
+                        val diseaseWithoutAccents = removeAccents(disease)
+                        Log.d("doença sem acentos", diseaseWithoutAccents)
+
+                        viewModel.saveUserDiseaseIndex(diseaseIndex)
+
+                        val imcResult = calculateIMC(height, weight)
+                        if (imcResult != "Altura ou peso inválido") {
+                            viewModel.saveIMC(imcResult)
+                        }
+
+                        val questionAndAnswerList = answers.map { (question, answer) ->
+                            QuestionAndAnswer(question, answer)
+                        }
+
+                        viewModel.saveFormResponse(userId = userId, questionsAndAnswers = questionAndAnswerList)
+
+                        navController.navigate("home-pacient/${diseaseIndex}")
+                    },
+                    isIcon = true
+                )
+
             }
         }
     }
 }
-
 
 fun toggleOption(
     option: String, selectedConditions: List<String>, setSelectedOptions: (List<String>) -> Unit
@@ -184,5 +238,9 @@ fun calculateIMC(height: String, weight: String): String {
 @Preview
 @Composable
 private fun CardioFormPreview() {
-    CardioForm(onNavigateToHome = {}, onBack = {}, questionsList = mockQuestions)
+    CardioForm(
+        navController = rememberNavController(),
+        questionsList = mockQuestions,
+        modifier = Modifier,
+    )
 }

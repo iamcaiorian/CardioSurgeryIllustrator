@@ -15,6 +15,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -27,16 +28,22 @@ fun StandardButton(
     modifier: Modifier = Modifier,
     text: String? = null,
     @DrawableRes iconRes: Int? = null,
-    onClick: () -> Unit
+    onClick: () -> Unit,
+    color: Color = Blue700,
+    enabled: Boolean = true
 ) {
+    val isIconOnly = text == null && iconRes != null
     Button(
-        modifier = modifier.heightIn(min = 40.dp),
+        modifier = modifier
+            .then(
+                if (isIconOnly) Modifier.size(48.dp)
+                else Modifier.heightIn(min = 48.dp)
+            ),
         shape = RoundedCornerShape(8.dp),
         contentPadding = if (text == null && iconRes != null) PaddingValues(0.dp) else ButtonDefaults.ContentPadding,
-        colors = ButtonDefaults.buttonColors(
-            containerColor = Blue700
-        ),
-        onClick = onClick
+        colors = ButtonDefaults.buttonColors(containerColor = color),
+        onClick = onClick,
+        enabled = enabled
     ) {
         Row(
             verticalAlignment = Alignment.CenterVertically,
@@ -61,8 +68,10 @@ private fun StandardButtonPreview() {
     StandardButton(
         modifier = Modifier.fillMaxWidth(),
         text = "Confirmar",
-        iconRes = R.drawable.ic_scan
-    ) {}
+        iconRes = R.drawable.ic_scan,
+        color = Color.Green,
+        onClick = {}
+    )
 }
 
 @Preview
@@ -71,7 +80,9 @@ private fun StandardButtonNoIconPreview() {
     StandardButton(
         modifier = Modifier.fillMaxWidth(),
         text = "Confirmar",
-    ) {}
+        color = Color.Red,
+        onClick = {}
+    )
 }
 
 @Preview
@@ -79,6 +90,8 @@ private fun StandardButtonNoIconPreview() {
 private fun StandardButtonNoTextPreview() {
     StandardButton(
         modifier = Modifier,
-        iconRes = R.drawable.ic_arrow_left
-    ) {}
+        iconRes = R.drawable.ic_arrow_left,
+        color = Blue700,
+        onClick = {}
+    )
 }

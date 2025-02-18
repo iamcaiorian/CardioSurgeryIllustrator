@@ -6,11 +6,9 @@ import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.NavigationBarItemDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.NavController
 import androidx.navigation.NavDestination.Companion.hierarchy
 import androidx.navigation.compose.currentBackStackEntryAsState
-import androidx.navigation.compose.rememberNavController
 import com.example.cardiosurgeryillustrator.navigation.BottomBarPacientAction
 import com.example.cardiosurgeryillustrator.ui.theme.Blue700
 
@@ -50,10 +48,4 @@ fun BottomBarPacient(navController: NavController) {
             )
         }
     }
-}
-
-@Preview
-@Composable
-private fun BottomBarPacientPreview() {
-    BottomBarPacient(navController = rememberNavController())
 }
