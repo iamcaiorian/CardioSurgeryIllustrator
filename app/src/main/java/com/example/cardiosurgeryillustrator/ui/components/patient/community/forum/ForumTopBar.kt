@@ -27,7 +27,6 @@ import com.example.cardiosurgeryillustrator.view_models.patient.community.Commun
 @Composable
 fun ForumTopBar(
     forum: Forum,
-    viewModel: CommunityViewModel,
     backgroundImageRes: Int,
     modifier: Modifier = Modifier,
     onBackClick: () -> Unit
@@ -98,8 +97,7 @@ fun ForumTopBar(
         }
 
         ForumInteractions(
-            forum = forum,
-            viewModel = viewModel
+            forum = forum
         )
     }
 }

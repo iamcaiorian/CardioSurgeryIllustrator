@@ -1,5 +1,6 @@
 package com.example.cardiosurgeryillustrator.view_models.patient.community
 
+import android.content.Context
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.cardiosurgeryillustrator.models.patient.community.Patient
@@ -9,19 +10,21 @@ import com.example.cardiosurgeryillustrator.models.patient.community.forum.Forum
 import com.example.cardiosurgeryillustrator.repository.patient.community.CommentRepository
 import com.example.cardiosurgeryillustrator.repository.patient.community.ForumRepository
 import com.example.cardiosurgeryillustrator.repository.patient.community.PatientRepository
+import com.example.cardiosurgeryillustrator.utils.DataStoreUtils
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 
 class ForumViewModel(
     private val forumRepository: ForumRepository,
     private val commentRepository: CommentRepository,
-    private val patientRepository: PatientRepository
+    private val patientRepository: PatientRepository,
+    private val context: Context
 ) : ViewModel() {
-    private val _currentUser = MutableStateFlow<Patient?>(null)
 
-    val patientId: String?
-        get() = _currentUser.value?.id
+    private val _patientId = MutableStateFlow<String?>(null)
+    val patientId: StateFlow<String?> = _patientId
 
     private val _forum = MutableStateFlow<ForumResponse?>(null)
     val forum: StateFlow<ForumResponse?> = _forum
@@ -35,16 +38,20 @@ class ForumViewModel(
     private val _isFavorite = MutableStateFlow(false)
     val isFavorite: StateFlow<Boolean> = _isFavorite
 
-    fun loadForum(forumId: String, userId: String) {
+    init {
+        loadPatientId()
+    }
+
+    private fun loadPatientId() {
+        viewModelScope.launch {
+            _patientId.value = DataStoreUtils.readPatientUUID(context).first()
+        }
+    }
+
+    fun loadForum(forumId: String) {
         viewModelScope.launch {
             val forumResponse = forumRepository.getForumById(forumId)
-            val likedForums = patientRepository.getAllForumsLiked(userId)
-            val savedForums = patientRepository.getAllForumsSaved(userId)
-
             _forum.value = forumResponse
-            _isLiked.value = forumId in likedForums
-            _isFavorite.value = forumId in savedForums
-
             getAllMessagesForForum(forumId)
         }
     }
@@ -57,24 +64,29 @@ class ForumViewModel(
 
     fun sendMessageToForum(forumId: String, message: String) {
         viewModelScope.launch {
-            val request =
-                CommentRequest(forumId = forumId, patientId = patientId, content = message)
-            commentRepository.createComment(request)
-            getAllMessagesForForum(forumId)
+            patientId?.let { id ->
+                val request = CommentRequest(forumId = forumId, patientId = patientId.value, content = message)
+                commentRepository.createComment(request)
+                getAllMessagesForForum(forumId)
+            }
         }
     }
 
-    fun likeForum(forumId: String, userId: String) {
+    fun likeForum(forumId: String) {
         viewModelScope.launch {
-            forumRepository.likeForum(forumId, userId)
-            _isLiked.value = true
+            patientId.value?.let { id ->
+                forumRepository.likeForum(forumId, id)
+                _isLiked.value = true
+            }
         }
     }
 
-    fun saveForum(forumId: String, userId: String) {
+    fun saveForum(forumId: String) {
         viewModelScope.launch {
-            forumRepository.saveForum(forumId, userId)
-            _isFavorite.value = true
+            patientId.value?.let { id ->
+                forumRepository.saveForum(forumId, id)
+                _isFavorite.value = true
+            }
         }
     }
 }

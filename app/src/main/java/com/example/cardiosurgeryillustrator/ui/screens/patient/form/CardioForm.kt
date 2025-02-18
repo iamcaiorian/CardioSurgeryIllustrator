@@ -30,9 +30,9 @@ import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
-import com.android.identity.util.UUID
 import com.example.cardiosurgeryillustrator.R
 import com.example.cardiosurgeryillustrator.models.mock.patient.mockQuestions
+import com.example.cardiosurgeryillustrator.models.patient.patient.QuestionAndAnswer
 import com.example.cardiosurgeryillustrator.models.student.quiz.question.Question
 import com.example.cardiosurgeryillustrator.models.student.quiz.question.QuestionType
 import com.example.cardiosurgeryillustrator.repository.patient.community.PatientRepository
@@ -43,6 +43,7 @@ import com.example.cardiosurgeryillustrator.ui.components.patient.form.TextInput
 import com.example.cardiosurgeryillustrator.ui.theme.Zinc500
 import com.example.cardiosurgeryillustrator.view_models.patient.form.CardioFormViewModel
 import com.example.cardiosurgeryillustrator.view_models.patient.form.CardioFormViewModelFactory
+import java.util.UUID
 
 @Composable
 fun CardioForm(
@@ -171,7 +172,7 @@ fun CardioForm(
                     onClick = {
                         Log.d("Answers Array", answers.toString())
 
-                        val userId = UUID.randomUUID().toString() // Gera um UUID para o usuário
+                        val userId = UUID.randomUUID().toString()
 
                         answers["14"]?.let { response ->
                             viewModel.saveQuestion14Response(response)
@@ -185,12 +186,11 @@ fun CardioForm(
                             viewModel.saveIMC(imcResult)
                         }
 
-                        viewModel.saveFormResponse(userId = userId, questionsAndAnswers = answers) // Salva o formulário preenchido
-
-                        // Salvar o ID do usuário no DataStore
-                        viewModelScope.launch {
-                            DataStoreUtils.savePatientUUID(LocalContext.current, userId)
+                        val questionAndAnswerList = answers.map { (question, answer) ->
+                            QuestionAndAnswer(question, answer)
                         }
+
+                        viewModel.saveFormResponse(userId = userId, questionsAndAnswers = questionAndAnswerList)
 
                         navController.navigate("home-pacient")
                     },

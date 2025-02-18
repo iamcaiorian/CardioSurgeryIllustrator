@@ -2,18 +2,37 @@ package com.example.cardiosurgeryillustrator.ui.screens.patient.community
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.*
-import androidx.compose.runtime.*
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Text
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.unit.dp
@@ -28,7 +47,6 @@ import com.example.cardiosurgeryillustrator.ui.components.patient.community.foru
 import com.example.cardiosurgeryillustrator.ui.components.patient.message_bottom.MessageBottomBar
 import com.example.cardiosurgeryillustrator.ui.theme.Blue700
 import com.example.cardiosurgeryillustrator.ui.theme.Zinc300
-import com.example.cardiosurgeryillustrator.view_models.patient.community.CommunityViewModel
 import com.example.cardiosurgeryillustrator.view_models.patient.community.ForumViewModel
 import com.example.cardiosurgeryillustrator.view_models.patient.community.ForumViewModelFactory
 
@@ -37,19 +55,30 @@ fun ForumScreen(
     navController: NavController,
     forumId: String,
     isLiked: Boolean,
-    isFavorite: Boolean,
-    viewModel: ForumViewModel = viewModel(factory = ForumViewModelFactory(ForumRepository(), CommentRepository(), PatientRepository())),
-    communityViewModel: CommunityViewModel
+    isFavorite: Boolean
 ) {
+    val context = LocalContext.current
+
+    val viewModel: ForumViewModel = viewModel(
+        factory = ForumViewModelFactory(
+            ForumRepository(),
+            CommentRepository(),
+            PatientRepository(),
+            context
+        )
+    )
+
     val forumResponse by viewModel.forum.collectAsState()
     val messages by viewModel.messages.collectAsState()
+    val patientId by viewModel.patientId.collectAsState()
+
     var messageText by remember { mutableStateOf(TextFieldValue("")) }
     val listState = rememberLazyListState()
 
     val forum = forumResponse?.let {
         Forum(
             id = it.id,
-            userId = it.creatorId,
+            userId = patientId ?: "",
             theme = it.theme,
             title = it.title,
             commentResponse = it.comments,
@@ -61,7 +90,8 @@ fun ForumScreen(
         )
     }
 
-    LaunchedEffect(forumId) { viewModel.loadForum(forumId, "1") }
+    LaunchedEffect(forumId) { viewModel.loadForum(forumId) }
+
     LaunchedEffect(messages.size) {
         if (messages.isNotEmpty()) {
             listState.animateScrollToItem(messages.lastIndex)
@@ -92,19 +122,20 @@ fun ForumScreen(
             forum?.let {
                 ForumTopBar(
                     forum = it,
-                    viewModel = communityViewModel,
                     backgroundImageRes = R.drawable.img_defaul,
                     modifier = Modifier.fillMaxWidth(),
                     onBackClick = { navController.popBackStack() }
                 )
                 LazyColumn(
-                    modifier = Modifier.fillMaxWidth().padding(8.dp),
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(8.dp),
                     state = listState
                 ) {
                     items(messages) { message ->
                         MessageBubble(
                             content = message.content,
-                            isUserMessage = message.id == "1",
+                            isUserMessage = message.id == patientId,
                             showAvatar = true,
                             userAvatar = R.drawable.avatar_1
                         )
@@ -145,7 +176,12 @@ fun MessageBubble(
             modifier = Modifier
                 .background(
                     color = if (isUserMessage) Blue700 else Zinc300,
-                    shape = if (isUserMessage) RoundedCornerShape(16.dp, 16.dp, 2.dp, 16.dp) else RoundedCornerShape(16.dp, 16.dp, 16.dp, 2.dp)
+                    shape = if (isUserMessage) RoundedCornerShape(
+                        16.dp,
+                        16.dp,
+                        2.dp,
+                        16.dp
+                    ) else RoundedCornerShape(16.dp, 16.dp, 16.dp, 2.dp)
                 )
                 .padding(12.dp)
                 .widthIn(max = 250.dp)

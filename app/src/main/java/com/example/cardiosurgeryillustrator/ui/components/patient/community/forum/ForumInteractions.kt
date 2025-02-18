@@ -7,25 +7,46 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
-import androidx.compose.runtime.*
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.cardiosurgeryillustrator.R
 import com.example.cardiosurgeryillustrator.models.patient.community.forum.Forum
+import com.example.cardiosurgeryillustrator.repository.patient.community.CommentRepository
+import com.example.cardiosurgeryillustrator.repository.patient.community.ForumRepository
+import com.example.cardiosurgeryillustrator.repository.patient.community.PatientRepository
 import com.example.cardiosurgeryillustrator.ui.theme.Typography
-import com.example.cardiosurgeryillustrator.view_models.patient.community.CommunityViewModel
+import com.example.cardiosurgeryillustrator.view_models.patient.community.ForumViewModel
+import com.example.cardiosurgeryillustrator.view_models.patient.community.ForumViewModelFactory
 
 @Composable
 fun ForumInteractions(
     forum: Forum,
-    viewModel: CommunityViewModel,
     modifier: Modifier = Modifier
 ) {
     var likes by remember { mutableStateOf(forum.likes) }
     var isLiked by remember { mutableStateOf(forum.isLiked) }
     var isSaved by remember { mutableStateOf(forum.isFavorite) }
+
+    val forumRepository = ForumRepository()
+    val commentRepository = CommentRepository()
+    val patientRepository = PatientRepository()
+    val viewModel: ForumViewModel = viewModel(
+        factory = ForumViewModelFactory(
+            forumRepository,
+            commentRepository,
+            patientRepository,
+            LocalContext.current
+        )
+    )
 
     Row(
         modifier = modifier

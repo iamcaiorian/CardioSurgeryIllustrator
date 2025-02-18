@@ -1,32 +1,39 @@
 package com.example.cardiosurgeryillustrator.view_models.patient.community
 
+import android.content.Context
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.cardiosurgeryillustrator.models.patient.community.Patient
 import com.example.cardiosurgeryillustrator.models.patient.community.forum.Forum
 import com.example.cardiosurgeryillustrator.models.patient.community.forum.ForumRequest
 import com.example.cardiosurgeryillustrator.repository.patient.community.ForumRepository
 import com.example.cardiosurgeryillustrator.repository.patient.community.PatientRepository
+import com.example.cardiosurgeryillustrator.utils.DataStoreUtils
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 import java.time.LocalDateTime
 
 class CommunityViewModel(
     private val forumRepository: ForumRepository,
-    private val patientRepository: PatientRepository
+    private val patientRepository: PatientRepository,
+    private val context: Context
 ) :
     ViewModel() {
     private val _forums = MutableStateFlow<List<Forum>>(emptyList())
     val forums: StateFlow<List<Forum>> = _forums
 
-    private val _currentUser = MutableStateFlow<Patient?>(null)
-
-    val patientId: String?
-        get() = _currentUser.value?.id
+    private var patientId: String? = null
 
     init {
-        loadForums()
+        loadPatientId()
+    }
+
+    private fun loadPatientId() {
+        viewModelScope.launch {
+            patientId = DataStoreUtils.readPatientUUID(context).first()
+            loadForums()
+        }
     }
 
     private fun loadForums() {
@@ -39,7 +46,7 @@ class CommunityViewModel(
             _forums.value = forumRepository.getAllForums().map { response ->
                 Forum(
                     id = response.id,
-                    userId = response.creatorId,
+                    userId = patientId ?: "",
                     theme = response.theme,
                     title = response.title,
                     likes = response.likesAmount,
@@ -120,7 +127,7 @@ class CommunityViewModel(
 
             val forum = Forum(
                 id = response.id,
-                userId = response.creatorId,
+                userId = patientId ?: "",
                 theme = response.theme,
                 title = response.title,
                 likes = response.likesAmount,

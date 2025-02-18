@@ -239,15 +239,7 @@ fun PatientNavHost() {
                     navController = patientNavController,
                     forumId = forumId,
                     isFavorite = isFavorite,
-                    isLiked = isLiked,
-                    viewModel = viewModel(
-                        factory = ForumViewModelFactory(
-                            ForumRepository(),
-                            CommentRepository(),
-                            PatientRepository()
-                        )
-                    ),
-                    communityViewModel = viewModel()
+                    isLiked = isLiked
                 )
             } else {
                 Log.e("Navigation", "Erro ao abrir a tela do fórum: ID do fórum vazio")

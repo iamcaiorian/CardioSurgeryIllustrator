@@ -19,6 +19,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -42,12 +43,11 @@ import com.example.cardiosurgeryillustrator.view_models.patient.community.Commun
 fun CommunityScreen(
     modifier: Modifier = Modifier,
     navController: NavController,
-    communityViewModel: CommunityViewModel = viewModel(
-        factory = CommunityViewModelFactory(
-            ForumRepository(),
-            PatientRepository()
-        )
-    )
+    communityViewModel: CommunityViewModel = viewModel(factory = CommunityViewModelFactory(
+        ForumRepository(),
+        PatientRepository(),
+        LocalContext.current
+    )),
 ) {
     var searchText by remember { mutableStateOf("") }
     var selectedFilter by remember { mutableStateOf(CommunityFilterChipView.POPULARES) }

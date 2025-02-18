@@ -12,8 +12,10 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
+import androidx.core.content.ContentProviderCompat.requireContext
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import com.example.cardiosurgeryillustrator.R
@@ -35,7 +37,8 @@ fun ForumItem(
     modifier: Modifier = Modifier,
     communityViewModel: CommunityViewModel = viewModel(factory = CommunityViewModelFactory(
         ForumRepository(),
-        PatientRepository()
+        PatientRepository(),
+        LocalContext.current
     )),
     patientViewModel: PatientViewModel = viewModel(factory = PatientViewModelFactory(PatientRepository()))
 ) {
@@ -108,8 +111,7 @@ fun ForumItem(
             }
 
             ForumInteractions(
-                forum = forum,
-                viewModel = communityViewModel
+                forum = forum
             )
 
             LastMessageForum(
