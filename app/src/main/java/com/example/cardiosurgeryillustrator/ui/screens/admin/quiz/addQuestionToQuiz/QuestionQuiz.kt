@@ -6,6 +6,7 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.cardiosurgeryillustrator.models.student.quiz.question.QuestionResponse
@@ -21,7 +22,7 @@ fun QuestionQuiz(
     quizId: String,
     onQuestionAdded: (QuestionResponse) -> Unit
 ) {
-    val quizRepository = QuizRepository()
+    val quizRepository = QuizRepository(LocalContext.current)
     val questionRepository = QuestionRepository()
     val moduleRepository = ModuleRepository()
     val factory = QuizViewModelFactory(quizRepository, questionRepository, moduleRepository)
