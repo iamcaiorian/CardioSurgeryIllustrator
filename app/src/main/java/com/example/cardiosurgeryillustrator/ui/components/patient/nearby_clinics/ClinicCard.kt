@@ -67,7 +67,8 @@ fun ClinicCard(
                 )
                 Spacer(modifier = Modifier.height(8.dp))
                 Text(
-                    text = clinic.description,
+                    text = clinic.description?.takeIf { it.isNotBlank() }
+                        ?: "Descrição não disponível",
                     maxLines = 2,
                     overflow = TextOverflow.Ellipsis,
                     color = Zinc500,
@@ -75,13 +76,13 @@ fun ClinicCard(
                 )
                 Spacer(modifier = Modifier.height(8.dp))
                 Text(
-                    text = "Endereço: ${clinic.address}",
+                    text = "Endereço: ${clinic.address?.takeIf { it.isNotBlank() } ?: "Endereço não informado"}",
                     color = Zinc500,
                     style = Typography.bodyMedium.copy(fontSize = 12.sp)
                 )
                 Spacer(modifier = Modifier.height(4.dp))
                 Text(
-                    text = "Contato: ${clinic.phone}",
+                    text = "Contato: ${clinic.phone?.takeIf { it.isNotBlank() } ?: "Contato não informado"}",
                     color = Zinc500,
                     style = Typography.bodyMedium.copy(fontSize = 12.sp)
                 )

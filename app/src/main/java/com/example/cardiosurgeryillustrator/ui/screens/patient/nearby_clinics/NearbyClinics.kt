@@ -30,7 +30,10 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
+import com.example.cardiosurgeryillustrator.core.services.fetchNearbyClinics
 import com.example.cardiosurgeryillustrator.models.mock.patient.mockClinics
+import com.example.cardiosurgeryillustrator.models.patient.nearby_clinics.Clinic
+import com.example.cardiosurgeryillustrator.models.patient.nearby_clinics.Element
 import com.example.cardiosurgeryillustrator.ui.components.patient.nearby_clinics.ClinicCardList
 import com.example.cardiosurgeryillustrator.ui.theme.Zinc100
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
@@ -57,12 +60,33 @@ fun NearbyClinics(modifier: Modifier, navController: NavController) {
         )
     )
 
-    var userLocation by remember { mutableStateOf(LatLng(-4.979093146453051, -39.05652788958835)) }
+    var userLocation by remember {
+        mutableStateOf(LatLng(-4.979093146453051, -39.05652788958835))
+    }
 
+    var clinicsList by remember { mutableStateOf(emptyList<Element>()) }
+
+    val markerState = remember(userLocation) { MarkerState(userLocation) }
+
+    val cameraPositionState = rememberCameraPositionState {
+        position = CameraPosition.fromLatLngZoom(userLocation, 14f)
+    }
+
+    // Lembre-se de parar as atualizações quando o Composable for destruído
     LaunchedEffect(locationPermissionState.allPermissionsGranted) {
         if (locationPermissionState.allPermissionsGranted) {
-            getCurrentLocation(fusedLocationClient) { location ->
-                userLocation = LatLng(location.latitude, location.longitude)
+            startLocationUpdates(fusedLocationClient) { location ->
+                val newLocation = LatLng(location.latitude, location.longitude)
+
+                // Atualiza a localização
+                userLocation = newLocation
+
+                // Move a câmera para a nova localização
+                cameraPositionState.position = CameraPosition.fromLatLngZoom(userLocation, 14f)
+
+                fetchNearbyClinics(location.latitude, location.longitude) { clinics ->
+                    clinicsList = clinics // Atualiza a lista de clínicas com os resultados
+                }
             }
         }
     }
@@ -77,7 +101,7 @@ fun NearbyClinics(modifier: Modifier, navController: NavController) {
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(16.dp),
-                clinics = mockClinics
+                clinics = convertElementToClinic(clinicsList)
             )
         },
         topBar = {
@@ -107,30 +131,62 @@ fun NearbyClinics(modifier: Modifier, navController: NavController) {
                     modifier = Modifier
                         .fillMaxSize()
                         .height(LocalConfiguration.current.screenHeightDp.dp * 0.5f),
-                    cameraPositionState = rememberCameraPositionState {
-                        position = CameraPosition.fromLatLngZoom(userLocation, 14f)
-                    }
+                    cameraPositionState = cameraPositionState
                 ) {
                     Marker(
-                        state = remember { MarkerState(position = userLocation) },
+                        state = markerState,
                         title = "Sua localização"
                     )
+
+                    clinicsList.forEach { clinic ->
+                        Marker(
+                            state = MarkerState(position = LatLng(clinic.lat, clinic.lon)),
+                            title = clinic.tags["name"] ?: "Clínica",
+                            snippet = clinic.tags["address"] ?: "Endereço desconhecido"
+                        )
+                    }
                 }
             }
-
         }
     )
 }
 
 @SuppressLint("MissingPermission")
-private fun getCurrentLocation(
+private fun startLocationUpdates(
     fusedLocationClient: FusedLocationProviderClient,
     onLocationReceived: (android.location.Location) -> Unit
 ) {
-    fusedLocationClient.lastLocation.addOnSuccessListener { location ->
-        location?.let { onLocationReceived(it) }
+    val locationRequest = com.google.android.gms.location.LocationRequest.Builder(
+        com.google.android.gms.location.Priority.PRIORITY_HIGH_ACCURACY, 5000
+    ).setMinUpdateIntervalMillis(2000).build()
+
+    val locationCallback = object : com.google.android.gms.location.LocationCallback() {
+        override fun onLocationResult(locationResult: com.google.android.gms.location.LocationResult) {
+            locationResult.lastLocation?.let { onLocationReceived(it) }
+        }
     }
+
+    fusedLocationClient.requestLocationUpdates(locationRequest, locationCallback, null)
 }
+
+
+fun Element.toClinic(): Clinic {
+    return Clinic(
+        id = id.toString(), // Transformando o id Long para String
+        name = tags["name"] ?: "Nome não disponível", // Usando o nome de "tags", se existir
+        description = tags["description"] ?: "Descrição não disponível", // Usando descrição de "tags", se existir
+        latitude = lat,
+        longitude = lon,
+        address = tags["address"] ?: "Endereço não informado", // Usando endereço de "tags", se existir
+        phone = tags["phone"] ?: "Contato não informado" // Usando telefone de "tags", se existir
+    )
+}
+
+fun convertElementToClinic(elements: List<Element>): List<Clinic> {
+    return elements.map { it.toClinic() }
+}
+
+
 
 
 @Preview
