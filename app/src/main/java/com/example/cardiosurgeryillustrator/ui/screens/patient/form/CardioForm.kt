@@ -203,7 +203,7 @@ fun CardioForm(
 
                         viewModel.saveFormResponse(userId = userId, questionsAndAnswers = questionAndAnswerList)
 
-                        navController.navigate("home-pacient")
+                        navController.navigate("home-pacient/${diseaseIndex}")
                     },
                     isIcon = true
                 )
