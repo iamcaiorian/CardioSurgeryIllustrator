@@ -8,9 +8,15 @@ android {
     namespace = "com.example.cardiosurgeryillustrator"
     compileSdk = 35
 
+    packagingOptions {
+        resources {
+            excludes += "META-INF/versions/9/OSGI-INF/MANIFEST.MF"
+        }
+    }
+
     defaultConfig {
         applicationId = "com.example.cardiosurgeryillustrator"
-        minSdk = 24
+        minSdk = 26
         targetSdk = 35
         versionCode = 1
         versionName = "1.0"

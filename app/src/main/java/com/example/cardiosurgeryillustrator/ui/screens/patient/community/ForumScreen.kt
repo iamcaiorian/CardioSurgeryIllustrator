@@ -1,5 +1,6 @@
 package com.example.cardiosurgeryillustrator.ui.screens.patient.community
 
+import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -47,16 +48,20 @@ import com.example.cardiosurgeryillustrator.ui.components.patient.community.foru
 import com.example.cardiosurgeryillustrator.ui.components.patient.message_bottom.MessageBottomBar
 import com.example.cardiosurgeryillustrator.ui.theme.Blue700
 import com.example.cardiosurgeryillustrator.ui.theme.Zinc300
+import com.example.cardiosurgeryillustrator.utils.makeForumEntity
 import com.example.cardiosurgeryillustrator.view_models.patient.community.ForumViewModel
 import com.example.cardiosurgeryillustrator.view_models.patient.community.ForumViewModelFactory
 
 @Composable
 fun ForumScreen(
+    modifier: Modifier = Modifier,
     navController: NavController,
     forumId: String,
     isLiked: Boolean,
     isFavorite: Boolean
 ) {
+
+
     val context = LocalContext.current
 
     val viewModel: ForumViewModel = viewModel(
@@ -75,26 +80,19 @@ fun ForumScreen(
     var messageText by remember { mutableStateOf(TextFieldValue("")) }
     val listState = rememberLazyListState()
 
-    val forum = forumResponse?.let {
-        Forum(
-            id = it.id,
-            userId = patientId ?: "",
-            theme = it.theme,
-            title = it.title,
-            commentResponse = it.comments,
-            likes = it.likesAmount,
-            comments = it.commentsAmount,
-            timestamp = it.createdAt,
-            isLiked = isLiked,
-            isFavorite = isFavorite
-        )
-    }
-
     LaunchedEffect(forumId) { viewModel.loadForum(forumId) }
 
     LaunchedEffect(messages.size) {
         if (messages.isNotEmpty()) {
             listState.animateScrollToItem(messages.lastIndex)
+        }
+    }
+
+    var forum by remember { mutableStateOf<Forum?>(null) }
+
+    LaunchedEffect(forumResponse, patientId) {
+        if (forumResponse != null && patientId != null) {
+            forum = makeForumEntity(forumResponse!!, patientId!!, isLiked, isFavorite)
         }
     }
 
@@ -114,7 +112,7 @@ fun ForumScreen(
         }
     ) { paddingValues ->
         Column(
-            modifier = Modifier
+            modifier = modifier
                 .background(Color.White)
                 .fillMaxSize()
                 .padding(paddingValues)

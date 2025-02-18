@@ -6,6 +6,8 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
@@ -45,25 +47,31 @@ fun ForumItem(
     val savedForums by patientViewModel.savedForums.collectAsState(emptyList())
     val isSaved = forum.id in savedForums
 
-    Box(
+    Card(
         modifier = modifier
             .fillMaxWidth()
-            .background(color = Color.Transparent, shape = RoundedCornerShape(12.dp))
+            .padding(8.dp)
             .clickable {
                 try {
-                    navController.navigate("forum_screen/${forum.id}/${forum.isFavorite}/${{forum.isLiked}}")
+                    navController.navigate("forum_screen/${forum.id}/${forum.isFavorite.value.toString()}/${forum.isLiked.value.toString()}")
                 } catch (e: Exception) {
                     Log.e("ForumItem", "Erro ao navegar para o fórum", e)
                 }
-            }
-    ) {
+
+            },
+        shape = RoundedCornerShape(12.dp),
+        colors = CardDefaults.cardColors(
+            containerColor = Color.Transparent // Define o fundo transparente
+        ),
+        elevation = CardDefaults.cardElevation(defaultElevation = 0.dp) // Remove sombra se necessário
+    )  {
         Column(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(8.dp)
+                .background(Color.Transparent)
         ) {
             Box(
-                modifier = modifier
+                modifier = Modifier
                     .fillMaxWidth()
                     .height(240.dp)
             ) {
@@ -90,7 +98,7 @@ fun ForumItem(
                 )
 
                 Column(
-                    modifier = modifier
+                    modifier = Modifier
                         .fillMaxWidth()
                         .fillMaxHeight()
                         .padding(16.dp),
@@ -110,9 +118,7 @@ fun ForumItem(
                 }
             }
 
-            ForumInteractions(
-                forum = forum
-            )
+            ForumInteractions(forum = forum)
 
             LastMessageForum(
                 userAvatar = R.drawable.avatar_1,
@@ -120,4 +126,5 @@ fun ForumItem(
             )
         }
     }
+
 }

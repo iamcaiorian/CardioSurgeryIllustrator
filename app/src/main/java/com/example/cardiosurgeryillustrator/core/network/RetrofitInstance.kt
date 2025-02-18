@@ -14,7 +14,7 @@ import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
 object RetrofitInstance {
-    private const val BASE_URL = "https://cardiosurgeryillustrator-api.onrender.com"
+    private const val BASE_URL = "http://10.0.2.2:8080"
     private const val CHATBOT_URL =
         "https://chatbot-rasa-fkdbekeafjbxecgb.canadacentral-01.azurewebsites.net"
 

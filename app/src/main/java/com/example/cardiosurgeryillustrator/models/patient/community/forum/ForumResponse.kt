@@ -10,5 +10,5 @@ data class ForumResponse(
     val comments: List<CommentResponse>,
     var likesAmount: Int,
     var commentsAmount: Int,
-    val createdAt: LocalDateTime
+    val createdAt: String
 )

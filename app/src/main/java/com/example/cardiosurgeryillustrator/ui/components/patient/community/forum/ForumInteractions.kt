@@ -58,32 +58,35 @@ fun ForumInteractions(
             Row(verticalAlignment = Alignment.CenterVertically) {
                 IconButton(onClick = {
                     viewModel.likeForum(forum.id)
-                    isLiked = forum.isLiked
+                    forum.isLiked.value = !forum.isLiked.value
                     likes++
                 }) {
                     Icon(
-                        painter = painterResource(id = if (isLiked) R.drawable.ic_liked else R.drawable.ic_unliked),
+                        painter = painterResource(id = if (forum.isLiked.value) R.drawable.ic_liked else R.drawable.ic_unliked),
                         contentDescription = "Curtir"
                     )
                 }
+
                 Text(text = likes.toString(), style = Typography.bodySmall)
             }
 
             Row(verticalAlignment = Alignment.CenterVertically) {
-                Icon(
-                    painter = painterResource(id = R.drawable.ic_comment),
-                    contentDescription = "Comentar"
-                )
+                IconButton(onClick = { }) {
+                    Icon(
+                        painter = painterResource(id = R.drawable.ic_comment),
+                        contentDescription = "Comentar"
+                    )
+                }
                 Text(text = forum.comments.toString(), style = Typography.bodySmall)
             }
         }
 
         IconButton(onClick = {
             viewModel.saveForum(forum.id)
-            isSaved = forum.isFavorite
+            forum.isFavorite.value = !forum.isFavorite.value
         }) {
             Icon(
-                painter = painterResource(id = if (isSaved) R.drawable.ic_saved else R.drawable.ic_unsaved),
+                painter = painterResource(id = if (forum.isFavorite.value) R.drawable.ic_saved else R.drawable.ic_unsaved),
                 contentDescription = "Salvar"
             )
         }

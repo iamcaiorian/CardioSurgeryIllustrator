@@ -59,7 +59,7 @@ fun CommunityScreen(
     val filteredForums = remember(selectedFilter, allForums, searchText) {
         when (selectedFilter) {
             CommunityFilterChipView.POPULARES -> allForums.sortedByDescending { it.likes }
-            CommunityFilterChipView.SALVOS -> allForums.filter { it.isFavorite }
+            CommunityFilterChipView.SALVOS -> allForums.filter { it.isFavorite.value }
         }.filter { forum ->
             forum.title.contains(searchText, ignoreCase = true) ||
                     forum.theme.contains(searchText, ignoreCase = true)

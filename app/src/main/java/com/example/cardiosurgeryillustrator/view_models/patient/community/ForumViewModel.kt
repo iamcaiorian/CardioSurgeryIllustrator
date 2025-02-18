@@ -1,6 +1,7 @@
 package com.example.cardiosurgeryillustrator.view_models.patient.community
 
 import android.content.Context
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.cardiosurgeryillustrator.models.patient.community.Patient
@@ -52,22 +53,17 @@ class ForumViewModel(
         viewModelScope.launch {
             val forumResponse = forumRepository.getForumById(forumId)
             _forum.value = forumResponse
-            getAllMessagesForForum(forumId)
+            _messages.value = forumResponse.comments
         }
     }
 
-    fun getAllMessagesForForum(forumId: String) {
-        viewModelScope.launch {
-            _messages.value = commentRepository.getAllComments().filter { it.id == forumId }
-        }
-    }
 
     fun sendMessageToForum(forumId: String, message: String) {
         viewModelScope.launch {
             patientId?.let { id ->
                 val request = CommentRequest(forumId = forumId, patientId = patientId.value, content = message)
                 commentRepository.createComment(request)
-                getAllMessagesForForum(forumId)
+                loadForum(forumId)
             }
         }
     }

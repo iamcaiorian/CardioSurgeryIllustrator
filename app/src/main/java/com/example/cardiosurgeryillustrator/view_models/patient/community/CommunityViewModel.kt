@@ -1,6 +1,8 @@
 package com.example.cardiosurgeryillustrator.view_models.patient.community
 
 import android.content.Context
+import android.util.Log
+import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.cardiosurgeryillustrator.models.patient.community.forum.Forum
@@ -8,6 +10,7 @@ import com.example.cardiosurgeryillustrator.models.patient.community.forum.Forum
 import com.example.cardiosurgeryillustrator.repository.patient.community.ForumRepository
 import com.example.cardiosurgeryillustrator.repository.patient.community.PatientRepository
 import com.example.cardiosurgeryillustrator.utils.DataStoreUtils
+import com.example.cardiosurgeryillustrator.utils.makeForumEntity
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.first
@@ -44,19 +47,14 @@ class CommunityViewModel(
                 patientId?.let { patientRepository.getAllForumsSaved(it) } ?: emptyList()
 
             _forums.value = forumRepository.getAllForums().map { response ->
-                Forum(
-                    id = response.id,
+                makeForumEntity(
+                    forumResponse = response,
                     userId = patientId ?: "",
-                    theme = response.theme,
-                    title = response.title,
-                    likes = response.likesAmount,
-                    comments = response.comments.size,
-                    timestamp = response.createdAt,
-                    commentResponse = response.comments,
                     isLiked = response.id in likedForums,
                     isFavorite = response.id in savedForums
                 )
             }
+
         }
     }
 
@@ -66,17 +64,11 @@ class CommunityViewModel(
                 val request = ForumRequest(theme = theme, title = title, creatorId = it)
                 val response = forumRepository.createForum(request)
 
-                val newForum = Forum(
-                    id = response.id,
-                    userId = it,
-                    theme = response.theme,
-                    title = response.title,
-                    likes = response.likesAmount,
-                    comments = response.comments.size,
-                    timestamp = LocalDateTime.now(),
-                    commentResponse = response.comments,
-                    isLiked = false,
-                    isFavorite = false
+                val newForum = makeForumEntity(
+                    response ?: throw IllegalArgumentException("ForumResponse não pode ser nulo"),
+                    patientId ?: throw IllegalArgumentException("patientId não pode ser nulo"),
+                    false,
+                    false
                 )
                 _forums.value = _forums.value + newForum
             }
@@ -92,13 +84,15 @@ class CommunityViewModel(
 
     fun likeForum(forumId: String) {
         viewModelScope.launch {
-            patientId?.let {
-                forumRepository.likeForum(forumId, it)
+            patientId?.let { patientId ->
+                forumRepository.likeForum(forumId, patientId)
                 _forums.value = _forums.value.map { forum ->
-                    if (forum.id == forumId) forum.copy(
-                        likes = forum.likes + 1,
-                        isLiked = true
-                    ) else forum
+                    if (forum.id == forumId) {
+                        forum.copy(
+                            likes = forum.likes + 1,
+                            isLiked = mutableStateOf(true) // Atualizando corretamente como MutableState
+                        )
+                    } else forum
                 }
             }
         }
@@ -106,14 +100,19 @@ class CommunityViewModel(
 
     fun saveForum(forumId: String) {
         viewModelScope.launch {
-            patientId?.let {
-                forumRepository.saveForum(forumId, it)
+            patientId?.let { patientId ->
+                forumRepository.saveForum(forumId, patientId)
                 _forums.value = _forums.value.map { forum ->
-                    if (forum.id == forumId) forum.copy(isFavorite = true) else forum
+                    if (forum.id == forumId) {
+                        forum.copy(
+                            isFavorite = mutableStateOf(true) // Atualizando corretamente como MutableState
+                        )
+                    } else forum
                 }
             }
         }
     }
+
 
     fun getForumById(forumId: String) {
         viewModelScope.launch {
@@ -125,17 +124,11 @@ class CommunityViewModel(
                 patientId?.let { patientRepository.getAllForumsSaved(it).contains(response.id) }
                     ?: false
 
-            val forum = Forum(
-                id = response.id,
-                userId = patientId ?: "",
-                theme = response.theme,
-                title = response.title,
-                likes = response.likesAmount,
-                comments = response.comments.size,
-                timestamp = response.createdAt,
-                commentResponse = response.comments,
-                isLiked = isLiked,
-                isFavorite = isFavorite
+            val forum = makeForumEntity(
+                response ?: throw IllegalArgumentException("ForumResponse não pode ser nulo"),
+                patientId ?: throw IllegalArgumentException("patientId não pode ser nulo"),
+                isLiked,
+                isFavorite
             )
             _forums.value = _forums.value.filterNot { it.id == forumId } + forum
         }

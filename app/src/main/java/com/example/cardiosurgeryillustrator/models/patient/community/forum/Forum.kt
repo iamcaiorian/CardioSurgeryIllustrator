@@ -1,7 +1,8 @@
 package com.example.cardiosurgeryillustrator.models.patient.community.forum
 
+import androidx.compose.runtime.MutableState
+import androidx.compose.runtime.mutableStateOf
 import com.example.cardiosurgeryillustrator.models.patient.community.comment.CommentResponse
-import java.time.LocalDateTime
 
 data class Forum(
     val id: String,
@@ -11,7 +12,7 @@ data class Forum(
     val commentResponse: List<CommentResponse>,
     var likes: Int,
     var comments: Int,
-    val timestamp: LocalDateTime,
-    var isLiked: Boolean = false,
-    var isFavorite: Boolean = false
+    val timestamp: String,
+    var isLiked: MutableState<Boolean> = mutableStateOf(false),
+    var isFavorite: MutableState<Boolean> = mutableStateOf(false)
 )
