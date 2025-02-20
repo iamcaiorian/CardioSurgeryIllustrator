@@ -9,7 +9,7 @@ data class Module(
     val subjectId: String,
     val title: String,
     val description: String,
-    val cover: String,
+    val cover: String? = null,
     val progress: Float,
     val longDescription: String,
     var isFavorite: MutableState<Boolean> = mutableStateOf(false),

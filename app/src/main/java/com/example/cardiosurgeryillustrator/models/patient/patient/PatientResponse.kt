@@ -6,7 +6,7 @@ import java.util.UUID
 
 data class PatientResponse(
     val userId: UUID,
-    val questionsAndAnswers: String, // JSON String
+    val questionsAndAnswers: String,
     val createdForums: List<ForumResponse>,
     val likedForums: List<ForumResponse>,
     val savedForums: List<ForumResponse>,

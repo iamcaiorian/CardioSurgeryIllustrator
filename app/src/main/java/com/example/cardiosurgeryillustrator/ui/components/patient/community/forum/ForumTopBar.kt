@@ -22,7 +22,6 @@ import com.example.cardiosurgeryillustrator.ui.components.buttons.StandardButton
 import com.example.cardiosurgeryillustrator.ui.theme.Typography
 import com.example.cardiosurgeryillustrator.ui.theme.Zinc100
 import com.example.cardiosurgeryillustrator.ui.theme.Zinc300
-import com.example.cardiosurgeryillustrator.view_models.patient.community.CommunityViewModel
 
 @Composable
 fun ForumTopBar(
@@ -97,7 +96,7 @@ fun ForumTopBar(
         }
 
         ForumInteractions(
-            forum = forum
+            forum = forum,
         )
     }
 }

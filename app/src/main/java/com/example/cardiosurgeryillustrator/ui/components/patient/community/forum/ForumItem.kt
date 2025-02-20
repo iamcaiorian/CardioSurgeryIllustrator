@@ -45,7 +45,6 @@ fun ForumItem(
     patientViewModel: PatientViewModel = viewModel(factory = PatientViewModelFactory(PatientRepository()))
 ) {
     val savedForums by patientViewModel.savedForums.collectAsState(emptyList())
-    val isSaved = forum.id in savedForums
 
     Card(
         modifier = modifier
@@ -61,9 +60,9 @@ fun ForumItem(
             },
         shape = RoundedCornerShape(12.dp),
         colors = CardDefaults.cardColors(
-            containerColor = Color.Transparent // Define o fundo transparente
+            containerColor = Color.Transparent
         ),
-        elevation = CardDefaults.cardElevation(defaultElevation = 0.dp) // Remove sombra se necessário
+        elevation = CardDefaults.cardElevation(defaultElevation = 0.dp)
     )  {
         Column(
             modifier = Modifier

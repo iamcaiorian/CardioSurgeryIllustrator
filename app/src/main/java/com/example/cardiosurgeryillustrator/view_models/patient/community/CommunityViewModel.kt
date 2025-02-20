@@ -41,22 +41,25 @@ class CommunityViewModel(
 
     private fun loadForums() {
         viewModelScope.launch {
-            val likedForums =
-                patientId?.let { patientRepository.getAllForumsLiked(it) } ?: emptyList()
-            val savedForums =
-                patientId?.let { patientRepository.getAllForumsSaved(it) } ?: emptyList()
-
-            _forums.value = forumRepository.getAllForums().map { response ->
-                makeForumEntity(
-                    forumResponse = response,
-                    userId = patientId ?: "",
-                    isLiked = response.id in likedForums,
-                    isFavorite = response.id in savedForums
+            try {
+                val likedForums = patientRepository.getAllForumsLiked(patientId.toString())
+                val savedForums = patientRepository.getAllForumsSaved(patientId.toString()
                 )
-            }
 
+                _forums.value = forumRepository.getAllForums().map { response ->
+                    makeForumEntity(
+                        forumResponse = response,
+                        userId = "",
+                        isLiked = response.id in likedForums,
+                        isFavorite = response.id in savedForums
+                    )
+                }
+            } catch (e: Exception) {
+                Log.e("ForumViewModel", "Erro ao carregar os fóruns", e)
+            }
         }
     }
+
 
     fun createNewForum(theme: String, title: String) {
         viewModelScope.launch {
