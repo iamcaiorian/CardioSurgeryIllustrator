@@ -61,7 +61,6 @@ fun ForumScreen(
     isFavorite: Boolean
 ) {
 
-
     val context = LocalContext.current
 
     val viewModel: ForumViewModel = viewModel(
@@ -75,7 +74,7 @@ fun ForumScreen(
 
     val forumResponse by viewModel.forum.collectAsState()
     val messages by viewModel.messages.collectAsState()
-    val patientId by viewModel.patientId.collectAsState()
+    val patientResponse by viewModel.patientResponse.collectAsState()
 
     var messageText by remember { mutableStateOf(TextFieldValue("")) }
     val listState = rememberLazyListState()
@@ -90,11 +89,13 @@ fun ForumScreen(
 
     var forum by remember { mutableStateOf<Forum?>(null) }
 
-    LaunchedEffect(forumResponse, patientId) {
-        if (forumResponse != null && patientId != null) {
-            forum = makeForumEntity(forumResponse!!, patientId!!, isLiked, isFavorite)
+    LaunchedEffect(forumResponse, patientResponse) {
+        if (forumResponse != null && patientResponse != null) {
+            forum = makeForumEntity(forumResponse!!, patientResponse!!.userId.toString(), isLiked, isFavorite)
         }
     }
+
+    val userCommentIds = patientResponse?.comments?.map { it.id } ?: emptyList()
 
     Scaffold(
         bottomBar = {
@@ -122,7 +123,7 @@ fun ForumScreen(
                     forum = it,
                     backgroundImageRes = R.drawable.img_defaul,
                     modifier = Modifier.fillMaxWidth(),
-                    onBackClick = { navController.popBackStack() }
+                    onBackClick = { navController.popBackStack() },
                 )
                 LazyColumn(
                     modifier = Modifier
@@ -131,9 +132,10 @@ fun ForumScreen(
                     state = listState
                 ) {
                     items(messages) { message ->
+                        val isUserMessage = message.id in userCommentIds
                         MessageBubble(
                             content = message.content,
-                            isUserMessage = message.id == patientId,
+                            isUserMessage = isUserMessage,
                             showAvatar = true,
                             userAvatar = R.drawable.avatar_1
                         )

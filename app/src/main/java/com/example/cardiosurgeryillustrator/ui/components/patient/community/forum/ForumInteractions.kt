@@ -9,6 +9,7 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
@@ -26,15 +27,15 @@ import com.example.cardiosurgeryillustrator.repository.patient.community.Patient
 import com.example.cardiosurgeryillustrator.ui.theme.Typography
 import com.example.cardiosurgeryillustrator.view_models.patient.community.ForumViewModel
 import com.example.cardiosurgeryillustrator.view_models.patient.community.ForumViewModelFactory
+import java.time.temporal.TemporalAmount
 
 @Composable
 fun ForumInteractions(
     forum: Forum,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
 ) {
-    var likes by remember { mutableStateOf(forum.likes) }
-    var isLiked by remember { mutableStateOf(forum.isLiked) }
-    var isSaved by remember { mutableStateOf(forum.isFavorite) }
+    var likes: Int by remember { mutableIntStateOf(forum.likes) }
+    var commentsAmount: Int by remember { mutableIntStateOf(forum.comments) }
 
     val forumRepository = ForumRepository()
     val commentRepository = CommentRepository()
@@ -57,9 +58,15 @@ fun ForumInteractions(
         Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
             Row(verticalAlignment = Alignment.CenterVertically) {
                 IconButton(onClick = {
-                    viewModel.likeForum(forum.id)
-                    forum.isLiked.value = !forum.isLiked.value
-                    likes++
+                    if (forum.isLiked.value) {
+                        viewModel.likeForum(forum.id)
+                        forum.isLiked.value = false
+                        likes--
+                    } else {
+                        viewModel.likeForum(forum.id)
+                        forum.isLiked.value = true
+                        likes++
+                    }
                 }) {
                     Icon(
                         painter = painterResource(id = if (forum.isLiked.value) R.drawable.ic_liked else R.drawable.ic_unliked),
@@ -77,7 +84,7 @@ fun ForumInteractions(
                         contentDescription = "Comentar"
                     )
                 }
-                Text(text = forum.comments.toString(), style = Typography.bodySmall)
+                Text(text = commentsAmount.toString(), style = Typography.bodySmall)
             }
         }
 

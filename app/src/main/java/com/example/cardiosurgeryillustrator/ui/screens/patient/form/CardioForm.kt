@@ -177,6 +177,8 @@ fun CardioForm(
 
                         val userId = UUID.randomUUID().toString()
 
+                        Log.d("user id", userId)
+
                         answers["14"]?.let { response ->
                             viewModel.saveQuestion14Response(response)
                         }
