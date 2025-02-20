@@ -11,42 +11,51 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.example.cardiosurgeryillustrator.ui.theme.Blue700
 import com.example.cardiosurgeryillustrator.ui.theme.Zinc300
+import kotlinx.coroutines.delay
 
 @Composable
-fun AssistantMessageBubble(
-    content: String,
-    isUserMessage: Boolean
-) {
+fun AssistantTypingBubble() {
+    var dotCount by remember { mutableStateOf(1) }
+    val dots = remember { listOf(".", "..", "...") }
+
+    // Atualiza a animação a cada 500ms para simular digitação
+    LaunchedEffect(Unit) {
+        while (true) {
+            delay(275)
+            dotCount = (dotCount + 1) % dots.size
+        }
+    }
+
     Row(
         modifier = Modifier
             .fillMaxWidth()
             .padding(vertical = 8.dp),
-        horizontalArrangement = if (isUserMessage) Arrangement.End else Arrangement.Start,
+        horizontalArrangement = Arrangement.Start,
         verticalAlignment = Alignment.Bottom
     ) {
         Box(
             modifier = Modifier
                 .background(
-                    color = if (isUserMessage) Blue700 else Zinc300,
-                    shape = if (isUserMessage) RoundedCornerShape(
-                        16.dp,
-                        16.dp,
-                        2.dp,
-                        16.dp
-                    ) else RoundedCornerShape(16.dp, 16.dp, 16.dp, 2.dp)
+                    color = Zinc300,
+                    shape = RoundedCornerShape(16.dp, 16.dp, 16.dp, 2.dp)
                 )
                 .padding(12.dp)
-                .widthIn(max = 250.dp)
+                .widthIn(max = 100.dp)
         ) {
             Text(
-                text = content,
+                text = dots[dotCount], // Alterna entre ".", "..", "..."
                 style = MaterialTheme.typography.bodyMedium.copy(
-                    color = if (isUserMessage) MaterialTheme.colorScheme.onPrimary else MaterialTheme.colorScheme.onSurface
+                    color = MaterialTheme.colorScheme.onSurface
                 )
             )
         }

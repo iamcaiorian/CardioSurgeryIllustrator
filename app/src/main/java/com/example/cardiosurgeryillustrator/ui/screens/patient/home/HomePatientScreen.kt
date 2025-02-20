@@ -48,85 +48,62 @@ fun HomePacientScreen(
             .padding(16.dp),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        val showBottomSheet = remember { mutableStateOf(false) }
-
-        Row {
-            Image(
-                painter = painterResource(id = R.drawable.heart_icon),
-                modifier = Modifier.size(24.dp),
-                contentDescription = "Logo do aplicativo"
-            )
-
-            Spacer(modifier = Modifier.width(8.dp))
-
+        Column (
+            modifier = Modifier,
+            horizontalAlignment = Alignment.CenterHorizontally
+        ){
             Text(
-                text = "Cardio Surgery Illustrator",
-                modifier = Modifier.padding(bottom = 8.dp),
-                fontSize = 20.sp,
-                color = Color(0xFF0369A1)
-            )
-        }
-
-        Spacer(modifier = Modifier.height(24.dp))
-
-        Text(
-            text = "Meu coração",
-            fontSize = 22.sp,
-        )
-
-        Box(modifier = Modifier.fillMaxWidth()) {
-            val heartImage: Painter = painterResource(id = R.drawable.heart_image)
-            Image(
-                painter = heartImage,
-                contentDescription = "Heart illustration",
-                contentScale = ContentScale.Fit,
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .size(300.dp)
+                text = "Meu coração",
+                fontSize = 22.sp,
             )
 
-            selectedDisease.points.forEach { point ->
-                Box(
+            Box(modifier = Modifier.fillMaxWidth()) {
+                val heartImage: Painter = painterResource(id = R.drawable.heart_image)
+                Image(
+                    painter = heartImage,
+                    contentDescription = "Heart illustration",
+                    contentScale = ContentScale.Fit,
                     modifier = Modifier
-                        .size(24.dp)
-                        .offset(x = point.xOffset, y = point.yOffset)
-                        .clickable { navController.navigate(point.route) }
-                ) {
-                    Image(
-                        painter = painterResource(id = R.drawable.point_icon), // Ícone do ponto
-                        contentDescription = "Clickable artery",
-                        modifier = Modifier.fillMaxSize()
-                    )
+                        .fillMaxWidth()
+                        .size(300.dp)
+                )
+
+                selectedDisease.points.forEach { point ->
+                    Box(
+                        modifier = Modifier
+                            .size(24.dp)
+                            .offset(x = point.xOffset, y = point.yOffset)
+                            .clickable { navController.navigate(point.route) }
+                    ) {
+                        Image(
+                            painter = painterResource(id = R.drawable.point_icon), // Ícone do ponto
+                            contentDescription = "Clickable artery",
+                            modifier = Modifier.fillMaxSize()
+                        )
+                    }
                 }
             }
         }
 
-        Spacer(modifier = Modifier.height(16.dp))
-
-        StandardButton(
-            onClick = { showBottomSheet.value = true },
-            text = "Abrir Feedback",
-            modifier = Modifier.fillMaxWidth()
-        )
-
-        Spacer(modifier = Modifier.height(16.dp))
+        Spacer(modifier = Modifier.weight(1f))
 
         StandardButton(
             onClick = { navController.navigate("life_Style") },
             text = "Ver Estilo de Vida",
-            modifier = Modifier.fillMaxWidth()
+            modifier = Modifier
+                .fillMaxWidth()
+                .align(Alignment.CenterHorizontally)
         )
-
-        if (showBottomSheet.value) {
-            FeedbackModal(
-                onDismiss = { showBottomSheet.value = false }
-            )
-        }
     }
+
 }
 
 @Preview
 @Composable
 private fun HomePacientScreenPreview() {
-    HomePacientScreen(modifier = Modifier.fillMaxWidth(), navController = rememberNavController(), diseaseIndex = 0)
+    HomePacientScreen(
+        modifier = Modifier.fillMaxWidth(),
+        navController = rememberNavController(),
+        diseaseIndex = 0
+    )
 }

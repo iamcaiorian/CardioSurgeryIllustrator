@@ -11,9 +11,14 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.FavoriteBorder
 import androidx.compose.material.icons.filled.MoreVert
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Text
+import androidx.compose.material3.TopAppBar
+import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
@@ -47,7 +52,10 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.example.cardiosurgeryillustrator.repository.patient.community.CommentRepository
 import com.example.cardiosurgeryillustrator.repository.patient.community.ForumRepository
 import com.example.cardiosurgeryillustrator.repository.patient.community.PatientRepository
+import com.example.cardiosurgeryillustrator.ui.components.patient.home.HomePatientTopBar
 import com.example.cardiosurgeryillustrator.ui.screens.patient.home.LifeStyleScreen
+import com.example.cardiosurgeryillustrator.ui.theme.Blue700
+import com.example.cardiosurgeryillustrator.ui.theme.Typography
 import com.example.cardiosurgeryillustrator.view_models.patient.community.ForumViewModelFactory
 
 
@@ -203,7 +211,8 @@ fun PatientNavHost() {
             val diseaseIndex = backStackEntry.arguments?.getInt("diseaseIndex") ?: 0
 
             Scaffold(
-                bottomBar = { BottomBarPacient(navController = patientNavController) }
+                bottomBar = { BottomBarPacient(navController = patientNavController) },
+                topBar = { HomePatientTopBar() }
             ) { innerPadding ->
                 HomePacientScreen(
                     navController = patientNavController,
@@ -255,6 +264,12 @@ fun PatientNavHost() {
         // Tela Assistente
         composable(BottomBarPacientAction.Assistant.route) {
             Scaffold(
+                topBar = {
+                    TopAppBar(
+                        title = { Text("Assistente", style = Typography.headlineLarge, color = Color.White) },
+                        colors = TopAppBarDefaults.topAppBarColors(containerColor = Blue700)
+                    )
+                },
                 bottomBar = { BottomBarPacient(navController = patientNavController) }
             ) { innerPadding ->
                 AssistantScreen(

@@ -1,13 +1,17 @@
 package com.example.cardiosurgeryillustrator.ui.screens.patient.assistant
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
@@ -29,11 +33,12 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.cardiosurgeryillustrator.repository.patient.assistent.AssistantRepository
 import com.example.cardiosurgeryillustrator.ui.components.patient.assistent.AssistantMessageBubble
+import com.example.cardiosurgeryillustrator.ui.components.patient.assistent.AssistantTypingBubble
 import com.example.cardiosurgeryillustrator.ui.components.patient.message_bottom.MessageBottomBar
+import com.example.cardiosurgeryillustrator.ui.theme.Blue700
 import com.example.cardiosurgeryillustrator.view_models.patient.assistent.AssistantViewModel
 import com.example.cardiosurgeryillustrator.view_models.patient.assistent.AssistantViewModelFactory
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun AssistantScreen(
     modifier: Modifier = Modifier,
@@ -43,6 +48,7 @@ fun AssistantScreen(
 ) {
     val CustomBlue = Color(0xFF0074B7)
     val messages by viewModel.messages.collectAsState()
+    val isLoading by viewModel.isLoading.collectAsState()
     var messageText by remember { mutableStateOf(TextFieldValue()) }
     val listState = rememberLazyListState()
 
@@ -50,47 +56,50 @@ fun AssistantScreen(
         listState.animateScrollToItem(messages.size)
     }
 
-    Scaffold(
-        topBar = {
-            TopAppBar(
-                title = { Text("Assistente", style = MaterialTheme.typography.titleLarge, color = Color.White) },
-                colors = TopAppBarDefaults.smallTopAppBarColors(containerColor = CustomBlue)
-            )
-        }
-    ) { padding ->
-        Column(
-            modifier = modifier
-                .padding(padding)
+    Column(
+        modifier = modifier
+            .fillMaxSize()
+            .background(MaterialTheme.colorScheme.background)
+    ) {
+        LazyColumn(
+            modifier = Modifier
                 .fillMaxSize()
-                .background(MaterialTheme.colorScheme.background)
+                .weight(1f)
+                .padding(8.dp),
+            state = listState
         ) {
-            LazyColumn(
-                modifier = Modifier
-                    .weight(1f)
-                    .padding(8.dp),
-                state = listState
-            ) {
-                items(messages) { message ->
-                    AssistantMessageBubble(
-                        content = message.message,
-                        isUserMessage = message.sender == "user",
-                        customBlue = CustomBlue
-                    )
-                }
+            items(messages) { message ->
+                AssistantMessageBubble(
+                    content = message.message,
+                    isUserMessage = message.sender == "user",
+                )
             }
 
-            MessageBottomBar(
-                messageText = messageText,
-                onMessageTextChange = { messageText = it },
-                onSendClick = {
-                    if (messageText.text.isNotEmpty()) {
-                        viewModel.sendMessage(messageText.text)
-                        messageText = TextFieldValue("") // Limpar após enviar
+            if (isLoading) {
+                item {
+                    Row(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(8.dp),
+                        horizontalArrangement = Arrangement.Center
+                    ) {
+                        AssistantTypingBubble()
                     }
-                },
-                placeholder = "Digite aqui sua pergunta..."
-            )
+                }
+            }
         }
+
+        MessageBottomBar(
+            messageText = messageText,
+            onMessageTextChange = { messageText = it },
+            onSendClick = {
+                if (messageText.text.isNotEmpty() && !isLoading) {
+                    viewModel.sendMessage(messageText.text)
+                    messageText = TextFieldValue("")
+                }
+            },
+            placeholder = if (isLoading) "Aguarde..." else "Digite aqui sua pergunta..."
+        )
     }
 }
 

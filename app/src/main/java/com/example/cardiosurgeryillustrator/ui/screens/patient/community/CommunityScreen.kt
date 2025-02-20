@@ -69,6 +69,7 @@ fun CommunityScreen(
     Column(
         modifier = modifier
             .background(Color.White)
+            .padding(vertical = 8.dp)
             .fillMaxHeight()
             .fillMaxWidth(),
         horizontalAlignment = Alignment.CenterHorizontally,
