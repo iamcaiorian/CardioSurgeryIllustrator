@@ -29,4 +29,10 @@ class SettingsViewModel(context: Context) : ViewModel() {
             DataStoreUtils.saveTheme(context, newTheme)
         }
     }
+
+    fun logout(context: Context) {
+        viewModelScope.launch {
+            DataStoreUtils.clearAuthToken(context)
+        }
+    }
 }

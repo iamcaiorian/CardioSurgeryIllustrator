@@ -15,8 +15,10 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
+import com.example.cardiosurgeryillustrator.navigation.LoginFlow
 import com.example.cardiosurgeryillustrator.navigation.PasswordRecoveryAction
 import com.example.cardiosurgeryillustrator.navigation.SettingsAction
+import com.example.cardiosurgeryillustrator.navigation.WelcomeFlow
 
 import com.example.cardiosurgeryillustrator.ui.components.student.settings_student.SettingsOption
 import com.example.cardiosurgeryillustrator.ui.components.student.settings_student.SettingsOptionSwitch
@@ -61,6 +63,14 @@ fun SettingsStudentScreen(
             SettingsOption(title = "Alterar senha", onClickOption = {
                 navController.navigate(
                     PasswordRecoveryAction.GenerateCode.route
+                )
+            })
+
+            SettingsOption(title = "Realizar logout", onClickOption = {
+
+                viewModel.logout(navController.context)
+                navController.navigate(
+                    LoginFlow.Login.route
                 )
             })
 
