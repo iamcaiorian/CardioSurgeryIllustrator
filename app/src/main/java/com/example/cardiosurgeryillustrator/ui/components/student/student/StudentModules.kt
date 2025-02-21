@@ -31,30 +31,17 @@ fun StudentModules(modifier: Modifier = Modifier) {
                 horizontalAlignment = Alignment.CenterHorizontally,
                 verticalArrangement = Arrangement.Center
             ) {
-                CircularProgressWithPercentage(Modifier, 0.23f)
+                CircularProgressWithPercentage(Modifier, 0.25f)
 
                 Spacer(modifier = Modifier.height(4.dp))
 
                 Text(
-                    text = "Modulo 1",
+                    text = "Hiperteasão arteri...",
                     style = Typography.headlineMedium,
                     textAlign = TextAlign.Center
                 )
             }
-            Column(
-                horizontalAlignment = Alignment.CenterHorizontally,
-                verticalArrangement = Arrangement.Center
-            ) {
-                CircularProgressWithPercentage(Modifier, 0.77f)
 
-                Spacer(modifier = Modifier.height(4.dp))
-
-                Text(
-                    text = "Modulo 2",
-                    style = Typography.headlineMedium,
-                    textAlign = TextAlign.Center
-                )
-            }
         }
     }
 }

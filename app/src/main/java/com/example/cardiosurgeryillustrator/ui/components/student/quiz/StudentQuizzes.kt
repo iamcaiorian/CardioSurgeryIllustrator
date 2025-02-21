@@ -32,30 +32,17 @@ fun StudentQuizzes(modifier: Modifier = Modifier) {
                 horizontalAlignment = Alignment.CenterHorizontally,
                 verticalArrangement = Arrangement.Center
             ) {
-                CircularProgressWithPercentage(Modifier, 0.5f)
+                CircularProgressWithPercentage(Modifier, 0.4f)
 
                 Spacer(modifier = Modifier.height(4.dp))
 
                 Text(
-                    text = "Quiz 1",
+                    text = "Fundamentos da sa...",
                     style = Typography.headlineMedium,
                     textAlign = TextAlign.Center
                 )
             }
-            Column(
-                horizontalAlignment = Alignment.CenterHorizontally,
-                verticalArrangement = Arrangement.Center
-            ) {
-                CircularProgressWithPercentage(Modifier, 0f)
-
-                Spacer(modifier = Modifier.height(4.dp))
-
-                Text(
-                    text = "Quiz 2",
-                    style = Typography.headlineMedium,
-                    textAlign = TextAlign.Center
-                )
-            }
+            
         }
     }
 }

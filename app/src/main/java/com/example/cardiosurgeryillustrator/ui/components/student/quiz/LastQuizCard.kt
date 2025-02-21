@@ -23,17 +23,18 @@ import androidx.compose.ui.unit.dp
 import com.example.cardiosurgeryillustrator.R
 import com.example.cardiosurgeryillustrator.models.student.module.Module
 import com.example.cardiosurgeryillustrator.models.mock.student.mockModules
+import com.example.cardiosurgeryillustrator.models.student.quiz.quiz.Quiz
 import com.example.cardiosurgeryillustrator.ui.components.student.student.CircularProgressWithPercentage
 import com.example.cardiosurgeryillustrator.ui.theme.Typography
 import com.example.cardiosurgeryillustrator.ui.theme.Zinc700
 
 @Composable
-fun LastQuizCard(modifier: Modifier = Modifier, module: Module, onClick: (Module) -> Unit) {
-    val percentageProgress = (module.progress * 100).toInt()
+fun LastQuizCard(modifier: Modifier = Modifier, quiz: Quiz, onClick: () -> Unit) {
+
 
     Card(
         modifier = modifier.fillMaxWidth(),
-        onClick = { onClick(module) },
+        onClick = onClick,
         colors = CardDefaults.cardColors(
             containerColor = Color.Transparent
         )
@@ -43,14 +44,14 @@ fun LastQuizCard(modifier: Modifier = Modifier, module: Module, onClick: (Module
                 .fillMaxWidth(),
             horizontalArrangement = Arrangement.spacedBy(16.dp)
         ) {
-            CircularProgressWithPercentage(Modifier, module.progress)
+            CircularProgressWithPercentage(Modifier, 0f)
 
             Column(
                 modifier = Modifier
                     .fillMaxWidth(),
                 verticalArrangement = Arrangement.SpaceBetween
             ) {
-                Text(text = "Quiz 2", style = Typography.headlineLarge)
+                Text(text = quiz.title, style = Typography.headlineLarge, maxLines = 1)
 
                 Spacer(modifier = Modifier.height(48.dp))
 
@@ -80,8 +81,8 @@ fun LastQuizCard(modifier: Modifier = Modifier, module: Module, onClick: (Module
 }
 
 
-@Preview
-@Composable
-private fun LastQuizCardPreview() {
-    LastQuizCard(module = mockModules[0], onClick = {})
-}
+//@Preview
+//@Composable
+//private fun LastQuizCardPreview() {
+//    LastQuizCard(module = mockModules[0], onClick = {})
+//}

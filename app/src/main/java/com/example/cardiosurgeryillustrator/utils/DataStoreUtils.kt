@@ -26,6 +26,8 @@ object DataStoreUtils {
     private val TOKEN_KEY = stringPreferencesKey("auth_token")
     private val TOKEN_ADMIN_KEY = stringPreferencesKey("auth_token_admin")
 
+    private val LAST_MODULE_OPENED = stringPreferencesKey("last_module_opened")
+
 
     suspend fun saveTheme(context: Context, isDark: Boolean) {
         context.dataStore.edit { prefs ->
@@ -132,5 +134,18 @@ object DataStoreUtils {
             preferences[stringPreferencesKey("user_disease_index")]?.toIntOrNull()
         }
     }
+
+    suspend fun saveLastModuleOpenedId(context: Context, moduleId: String) {
+        context.dataStore.edit { prefs ->
+            prefs[LAST_MODULE_OPENED] = moduleId
+        }
+    }
+
+    fun redLastModuleOpenedId(context: Context): Flow<String?> {
+        return context.dataStore.data.map { preferences ->
+            preferences[LAST_MODULE_OPENED]
+        }
+    }
+
 }
 

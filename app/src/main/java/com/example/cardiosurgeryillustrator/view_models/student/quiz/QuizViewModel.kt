@@ -7,15 +7,20 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.cardiosurgeryillustrator.models.student.quiz.quiz.Quiz
 import com.example.cardiosurgeryillustrator.repository.quiz.QuizRepository
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
 class QuizViewModel(private val quizRepository: QuizRepository): ViewModel() {
-    var quiz: Quiz? by mutableStateOf(null)
+    private val _quiz = MutableStateFlow<Quiz?>(null)
+    val quiz = _quiz.asStateFlow()
 
     fun getQuizById(quizId: String) {
         viewModelScope.launch {
             try {
-                quiz = quizRepository.getQuizById(quizId)
+                val loadedQuiz = quizRepository.getQuizById(quizId)
+                _quiz.update { loadedQuiz }
             } catch (e: Exception) {
                 e.printStackTrace()
             }

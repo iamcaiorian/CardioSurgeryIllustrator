@@ -11,6 +11,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.tooling.preview.Preview
+import com.example.cardiosurgeryillustrator.ui.theme.Typography
 
 @ExperimentalMaterial3Api
 @Composable
@@ -30,7 +31,7 @@ fun TopBarQuiz(
             ) {
                 Text(
                     text = title,
-                    style = MaterialTheme.typography.titleLarge,
+                    style = Typography.headlineMedium,
                     maxLines = 1,
                     overflow = TextOverflow.Ellipsis
                 )
@@ -39,7 +40,7 @@ fun TopBarQuiz(
                     Text(
                         text = subtitle,
                         maxLines = 1,
-                        style = MaterialTheme.typography.bodyMedium,
+                        style = Typography.headlineSmall,
                         color = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.7f)
                     )
                 }

@@ -37,7 +37,7 @@ fun TopBarStudent(navController: NavController) {
                 TopBarStudentAction.Profile.icon()
                 Text(
                     text = "Estudante",
-                    style = Typography.headlineSmall,
+                    style = Typography.headlineMedium,
                     color = Zinc900
                 )
             }
