@@ -60,7 +60,7 @@ fun HomePacientScreen(
                     contentDescription = "Heart illustration",
                     contentScale = ContentScale.Fit,
                     modifier = Modifier
-                        .size(700.dp)
+                        .size(600.dp)
                 )
 
                 selectedDisease.points.forEach { point ->
@@ -97,6 +97,6 @@ private fun HomePacientScreenPreview() {
     HomePacientScreen(
         modifier = Modifier.fillMaxWidth(),
         navController = rememberNavController(),
-        diseaseIndex = 7
+        diseaseIndex = 0
     )
 }
