@@ -103,6 +103,12 @@ object DataStoreUtils {
         }
     }
 
+    suspend fun clearAuthToken(context: Context) {
+        context.dataStore.edit { preferences ->
+            preferences.remove(TOKEN_KEY)
+        }
+    }
+
     fun readToken(context: Context): Flow<String?> = context.dataStore.data.map { prefs ->
         prefs[TOKEN_KEY]
     }
