@@ -21,6 +21,7 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.cardiosurgeryillustrator.R
 import com.example.cardiosurgeryillustrator.models.student.auth.AuthUserRequest
 import com.example.cardiosurgeryillustrator.repository.student.auth.AuthRepository
+import com.example.cardiosurgeryillustrator.ui.components.buttons.StandardButton
 import com.example.cardiosurgeryillustrator.ui.components.input.StandardTextField
 import com.example.cardiosurgeryillustrator.ui.theme.Blue700
 import com.example.cardiosurgeryillustrator.ui.theme.Typography
@@ -120,9 +121,9 @@ fun LoginScreen(
             Spacer(modifier = Modifier.height(26.dp))
 
             if (isLoading) {
-                CircularProgressIndicator()
+                CircularProgressIndicator(color = Blue700)
             } else {
-                Button(
+                StandardButton(
                     onClick = {
                         isLoading = true
                         val request = AuthUserRequest(email, password)
@@ -139,14 +140,8 @@ fun LoginScreen(
                         }
                     },
                     modifier = Modifier.fillMaxWidth(),
-                    colors = ButtonDefaults.buttonColors(
-                        containerColor = Blue700,
-                        contentColor = Color.White
-                    ),
-                    shape = MaterialTheme.shapes.small
-                ) {
-                    Text("Entrar")
-                }
+                    text = "Entrar"
+                )
             }
 
             errorMessage?.let {

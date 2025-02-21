@@ -50,7 +50,7 @@ fun TopBarModules(
                 Spacer(modifier = Modifier.width(12.dp))
                 Text(
                     text = title,
-                    style = Typography.headlineSmall,
+                    style = Typography.headlineMedium,
                     maxLines = 1,
                     overflow = TextOverflow.Ellipsis
                 )

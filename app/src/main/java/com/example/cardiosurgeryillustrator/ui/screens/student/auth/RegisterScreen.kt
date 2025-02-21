@@ -19,6 +19,8 @@ import com.example.cardiosurgeryillustrator.R
 import com.example.cardiosurgeryillustrator.models.student.auth.CreateStudentRequest
 import com.example.cardiosurgeryillustrator.models.student.auth.Role
 import com.example.cardiosurgeryillustrator.repository.student.auth.AuthRepository
+import com.example.cardiosurgeryillustrator.ui.components.buttons.StandardButton
+import com.example.cardiosurgeryillustrator.ui.theme.Blue700
 import com.example.cardiosurgeryillustrator.view_models.student.auth.AuthViewModel
 import com.example.cardiosurgeryillustrator.view_models.student.auth.AuthViewModelFactory
 
@@ -61,13 +63,13 @@ fun RegisterScreen(
                 Text(
                     text = "Cardio Surgery",
                     fontSize = 24.sp,
-                    color = Color(0xFF0D47A1),
+                    color = Blue700,
                     fontWeight = FontWeight.Bold
                 )
                 Text(
                     text = "Illustrator",
                     fontSize = 24.sp,
-                    color = Color(0xFF0D47A1),
+                    color = Blue700,
                     fontWeight = FontWeight.Bold
                 )
             }
@@ -138,7 +140,7 @@ fun RegisterScreen(
             if (isLoading) {
                 CircularProgressIndicator()
             } else {
-                Button(
+                StandardButton(
                     onClick = {
                         isLoading = true
                         val request = CreateStudentRequest(
@@ -159,14 +161,8 @@ fun RegisterScreen(
                         }
                     },
                     modifier = Modifier.fillMaxWidth(),
-                    colors = ButtonDefaults.buttonColors(
-                        containerColor = Color(0xFF0D47A1),
-                        contentColor = Color.White
-                    ),
-                    shape = MaterialTheme.shapes.small
-                ) {
-                    Text("Cadastre-se")
-                }
+                    text = "cadastre-se"
+                )
             }
 
             errorMessage?.let {

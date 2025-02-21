@@ -1,4 +1,4 @@
-package com.example.cardiosurgeryillustrator.ui.components.button
+package com.example.cardiosurgeryillustrator.ui.components.buttons
 
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -12,6 +12,13 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.tooling.preview.Preview
+import com.example.cardiosurgeryillustrator.ui.theme.Blue200
+import com.example.cardiosurgeryillustrator.ui.theme.Typography
+import com.example.cardiosurgeryillustrator.ui.theme.Zinc300
+import com.example.cardiosurgeryillustrator.ui.theme.Zinc400
+import com.example.cardiosurgeryillustrator.ui.theme.Zinc500
+import com.example.cardiosurgeryillustrator.ui.theme.Zinc800
+import com.example.cardiosurgeryillustrator.ui.theme.Zinc900
 
 @Composable
 fun QuestionsButton(
@@ -19,22 +26,23 @@ fun QuestionsButton(
     onClick: () -> Unit,
     isSelected: Boolean = false,
     modifier: Modifier = Modifier,
-    shape: Shape = RoundedCornerShape(50.dp)
+    shape: Shape = RoundedCornerShape(16.dp)
 ) {
-    val insideColor = if (isSelected) Color(0xFFD0E8FF) else Color(0xFFE0E0E0) // Cor de fundo (azul claro se selecionado)
-    val borderColor = if (isSelected) Color(0xFF1976D2) else Color(0xFF8A8A8A) // Cor da borda/texto
+    val insideColor = if (isSelected) Zinc400 else Zinc300
+    val borderColor = if (isSelected) Zinc800 else Color.Transparent
+    val textColor = if (isSelected) Zinc900 else Zinc800
 
     Button(
         onClick = onClick,
         shape = shape,
         modifier = modifier.fillMaxWidth(),
         colors = ButtonDefaults.buttonColors(
-            containerColor = insideColor, // Cor de fundo
-            contentColor = borderColor // Cor do texto
+            containerColor = insideColor,
+            contentColor = borderColor
         ),
-        border = BorderStroke(2.dp, borderColor) // Borda dinâmica
+        border = BorderStroke(2.dp, borderColor)
     ) {
-        Text(text = text, color = borderColor)
+        Text(text = text, color = textColor, style = Typography.labelLarge)
     }
 }
 
@@ -44,6 +52,6 @@ fun QuestionsButtonPreview() {
     QuestionsButton(
         text = "Opção A",
         onClick = { println("Option clicked") },
-        isSelected = false
+        isSelected = true
     )
 }

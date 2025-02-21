@@ -33,7 +33,9 @@ import androidx.navigation.navArgument
 import com.example.cardiosurgeryillustrator.R
 import com.example.cardiosurgeryillustrator.models.mock.student.mockModules
 import com.example.cardiosurgeryillustrator.models.mock.student.mockQuizzes
+import com.example.cardiosurgeryillustrator.ui.components.student.modules.TopBarModules
 import com.example.cardiosurgeryillustrator.ui.components.student.student.BottomBarStudent
+import com.example.cardiosurgeryillustrator.ui.components.student.student.TopBarStudent
 import com.example.cardiosurgeryillustrator.ui.screens.student.auth.LoginScreen
 import com.example.cardiosurgeryillustrator.ui.screens.student.auth.RegisterScreen
 import com.example.cardiosurgeryillustrator.ui.screens.student.modules.ModuleVideoScreen
@@ -318,7 +320,8 @@ fun StudentNavHost(
 
         composable(BottomBarStudentAction.Home.route) {
             Scaffold(
-                bottomBar = { BottomBarStudent(navController = studentNavController) }
+                bottomBar = { BottomBarStudent(navController = studentNavController) },
+                topBar = { TopBarStudent(navController = studentNavController)  }
             ) { innerPadding ->
                 HomeStudentScreen(
                     navController = studentNavController,
@@ -381,13 +384,18 @@ fun StudentNavHost(
             val subjectId = backStackEntry.arguments?.getString("subjectId")
 
             Scaffold(
-                bottomBar = { BottomBarStudent(navController = studentNavController) }
+                bottomBar = { BottomBarStudent(navController = studentNavController) },
+                topBar = {
+                    TopBarModules(
+                        title = "Módulos",
+                        onNavigateBack = { studentNavController.popBackStack() }
+                    )
+                }
             ) { innerPadding ->
                 ModulesScreen(
                     navController = studentNavController,
                     modifier = Modifier.padding(innerPadding),
                     subjectId = subjectId ?: "unknown_id",
-                    onNavigateBack = { studentNavController.popBackStack() }
                 )
             }
         }
