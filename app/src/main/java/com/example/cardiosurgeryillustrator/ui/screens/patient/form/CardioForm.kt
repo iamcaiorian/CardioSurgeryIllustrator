@@ -11,6 +11,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -36,17 +37,15 @@ import com.example.cardiosurgeryillustrator.models.patient.patient.QuestionAndAn
 import com.example.cardiosurgeryillustrator.models.student.quiz.question.Question
 import com.example.cardiosurgeryillustrator.models.student.quiz.question.QuestionType
 import com.example.cardiosurgeryillustrator.repository.patient.community.PatientRepository
-import com.example.cardiosurgeryillustrator.navigation.BottomBarPacientAction
-import com.example.cardiosurgeryillustrator.ui.components.buttons.ButtonDefault
+import com.example.cardiosurgeryillustrator.ui.components.buttons.StandardButton
 import com.example.cardiosurgeryillustrator.ui.components.patient.form.CheckboxGroup
 import com.example.cardiosurgeryillustrator.ui.components.patient.form.RadioGroup
 import com.example.cardiosurgeryillustrator.ui.components.patient.form.TextInputField
 import com.example.cardiosurgeryillustrator.ui.theme.Zinc500
 import com.example.cardiosurgeryillustrator.view_models.patient.form.CardioFormViewModel
 import com.example.cardiosurgeryillustrator.view_models.patient.form.CardioFormViewModelFactory
-import java.util.UUID
 import getQuestionIndex
-import removeAccents
+import java.util.UUID
 
 @Composable
 fun CardioForm(
@@ -58,7 +57,6 @@ fun CardioForm(
     val viewModel: CardioFormViewModel = viewModel(
         factory = CardioFormViewModelFactory(LocalContext.current, patientRepository)
     )
-
 
     var currentIndex by remember { mutableStateOf(0) }
     var answers by remember { mutableStateOf(mutableMapOf<String, String>()) }
@@ -98,14 +96,16 @@ fun CardioForm(
             when (question.type) {
                 QuestionType.TEXTINPUT -> {
                     val value = answers[question.id.toString()] ?: ""
-                    TextInputField(label = question.text,
+                    TextInputField(
+                        label = question.text,
                         modifier = Modifier.padding(vertical = 32.dp),
                         value = value,
                         onValueChange = { newValue ->
                             answers = answers.toMutableMap().apply {
                                 this[question.id.toString()] = newValue
                             }
-                        })
+                        }
+                    )
                 }
 
                 QuestionType.CHECKBOX -> {
@@ -153,24 +153,33 @@ fun CardioForm(
             }
         }
 
-        Spacer(modifier = Modifier.height(32.dp))
-
+        Spacer(modifier = Modifier.weight(1f))
 
         Row(
-            modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(bottom = 16.dp),
+            horizontalArrangement = Arrangement.Center
         ) {
             if (currentIndex > 0) {
-                ButtonDefault(
-                    text = "Anterior", onClick = { currentIndex-- }, isIcon = false, color = Zinc500
+                StandardButton(
+                    text = "Voltar",
+                    onClick = { currentIndex-- },
+                    iconRes = R.drawable.ic_arrow_left,
+                    color = Zinc500
                 )
             }
 
+            Spacer(modifier = Modifier.width(32.dp))
+
             if (currentIndex < questionsList.size - 1) {
-                ButtonDefault(
-                    text = "Próximo", onClick = { currentIndex++ }, isIcon = true
+                StandardButton(
+                    text = "Próximo",
+                    onClick = { currentIndex++ },
+                    iconRes = R.drawable.ic_selected
                 )
             } else {
-                ButtonDefault(
+                StandardButton(
                     text = "Finalizar",
                     onClick = {
                         Log.d("Answers Array", answers.toString())
@@ -186,11 +195,8 @@ fun CardioForm(
                         val height = answers["1"] ?: ""
                         val weight = answers["2"] ?: ""
                         val disease = answers["14"] ?: ""
-                        Log.d("doença", disease)
 
                         val diseaseIndex = getQuestionIndex(disease)
-                        val diseaseWithoutAccents = removeAccents(disease)
-                        Log.d("doença sem acentos", diseaseWithoutAccents)
 
                         viewModel.saveUserDiseaseIndex(diseaseIndex)
 
@@ -203,17 +209,19 @@ fun CardioForm(
                             QuestionAndAnswer(question, answer)
                         }
 
-                        viewModel.saveFormResponse(userId = userId, questionsAndAnswers = questionAndAnswerList)
+                        viewModel.saveFormResponse(
+                            userId = userId,
+                            questionsAndAnswers = questionAndAnswerList
+                        )
 
                         navController.navigate("home-pacient/${diseaseIndex}")
-                    },
-                    isIcon = true
+                    }
                 )
-
             }
         }
     }
 }
+
 
 fun toggleOption(
     option: String, selectedConditions: List<String>, setSelectedOptions: (List<String>) -> Unit
