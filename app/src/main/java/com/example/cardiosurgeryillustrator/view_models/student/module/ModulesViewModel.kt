@@ -23,4 +23,24 @@ class ModulesViewModel(
             }
         }
     }
+
+    fun favoriteModule(moduleId: String) {
+        viewModelScope.launch {
+            try {
+                moduleRepository.toggleFavoriteModule(moduleId)
+            } catch (e: Exception) {
+                e.printStackTrace()
+            }
+        }
+    }
+
+    fun getAllModules() {
+        viewModelScope.launch {
+            try {
+                modules = moduleRepository.getAllModules()
+            } catch (e: Exception) {
+                e.printStackTrace()
+            }
+        }
+    }
 }

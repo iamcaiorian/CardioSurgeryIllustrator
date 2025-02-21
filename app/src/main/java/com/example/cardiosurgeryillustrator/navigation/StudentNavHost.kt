@@ -348,7 +348,6 @@ fun StudentNavHost(
             ) { innerPadding ->
                 FavoriteScreen(
                     navController = studentNavController,
-                    modulesList = mockModules,
                     modifier = Modifier.padding(innerPadding)
                 )
             }

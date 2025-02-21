@@ -5,12 +5,16 @@ import com.example.cardiosurgeryillustrator.models.student.module.ModuleCreateRe
 import com.example.cardiosurgeryillustrator.models.student.module.ModuleResponse
 import retrofit2.http.Body
 import retrofit2.http.GET
+import retrofit2.http.PATCH
 import retrofit2.http.POST
 import retrofit2.http.Path
 
 interface ModuleService {
     @POST("/module/")
     suspend fun createModule(@Body moduleCreateRequest: ModuleCreateRequest): ModuleResponse
+
+    @PATCH("/module/{module_id}/toggle-favorite")
+    suspend fun toggleFavorite(@Path("module_id") moduleId: String): ModuleResponse
 
     @GET("/module/")
     suspend fun getAllModules(): List<ModuleResponse>

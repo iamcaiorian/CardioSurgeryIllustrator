@@ -40,12 +40,16 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.cardiosurgeryillustrator.R
 import com.example.cardiosurgeryillustrator.models.student.module.Module
 import com.example.cardiosurgeryillustrator.models.mock.student.mockModules
+import com.example.cardiosurgeryillustrator.repository.student.module.ModuleRepository
 import com.example.cardiosurgeryillustrator.ui.theme.Blue700
 import com.example.cardiosurgeryillustrator.ui.theme.Typography
 import com.example.cardiosurgeryillustrator.ui.theme.Zinc300
+import com.example.cardiosurgeryillustrator.view_models.student.module.ModulesViewModel
+import com.example.cardiosurgeryillustrator.view_models.student.module.ModulesViewModelFactory
 
 @Composable
 fun ModuleCard(
@@ -53,6 +57,11 @@ fun ModuleCard(
     module: Module,
     onClick: (Module) -> Unit
 ) {
+    val moduleRepository = ModuleRepository()
+    val viewModel: ModulesViewModel = viewModel(
+        factory = ModulesViewModelFactory(moduleRepository)
+    )
+
 
     Card(
         modifier = modifier,
@@ -103,6 +112,7 @@ fun ModuleCard(
                                 ).value.dp
                             )
                             .clickable {
+                                viewModel.favoriteModule(moduleId = module.id)
                                 module.isFavorite.value = !module.isFavorite.value
                             }
                     )
