@@ -22,4 +22,8 @@ class ModuleRepository() {
     suspend fun getAllModulesBySubjectId(subjectId: String): List<ModuleResponse> {
         return RetrofitInstance.moduleService.getAllModulesBySubjectId(subjectId)
     }
+
+    suspend fun toggleFavoriteModule(moduleId: String): ModuleResponse {
+        return RetrofitInstance.moduleService.toggleFavorite(moduleId)
+    }
 }

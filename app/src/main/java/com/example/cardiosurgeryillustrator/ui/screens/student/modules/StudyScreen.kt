@@ -42,6 +42,7 @@ fun StudyScreen(
 
     LaunchedEffect(moduleId) {
         isLoading = true
+        viewModel.saveLastModuleOpenedId(moduleId)
         viewModel.getModuleById(moduleId)
     }
 
